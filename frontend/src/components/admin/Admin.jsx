@@ -64,8 +64,8 @@ function Admin() {
 
 
                     {/* Report */}
-                    <li class="nav-item"><Link class="nav-link" to="/admin/issue">
-                        <FcHighPriority className='nav-icon' /> Report Issue</Link></li>
+                    {/* <li class="nav-item"><Link class="nav-link" to="/admin/issue">
+                        <FcHighPriority className='nav-icon' /> Report Issue</Link></li> */}
                     {/* End of Report */}
 
 
