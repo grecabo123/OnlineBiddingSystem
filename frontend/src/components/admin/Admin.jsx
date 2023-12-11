@@ -62,33 +62,25 @@ function Admin() {
                         <li class="nav-item"><Link class="nav-link" to="/admin/pending"><HiOutlineX className='nav-icon text-danger' /> Non Registered</Link></li>
                     </div>
 
-
-                    {/* Report */}
-                    {/* <li class="nav-item"><Link class="nav-link" to="/admin/issue">
-                        <FcHighPriority className='nav-icon' /> Report Issue</Link></li> */}
-                    {/* End of Report */}
-
-
                     <li class="nav-item"><Link class="nav-link" to="/admin/bid">
                         <FcFolder className='nav-icon' /> Bid Items</Link></li>
 
-                    <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#message">
+                    {/* <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#message">
                         <FcSms className='nav-icon' />Message </a>
-                    </li>
+                    </li> */}
 
-                    <div class="collapse" id='message'>
+                    {/* <div class="collapse" id='message'>
                         <li class="nav-item"><Link class="nav-link" to="/admin/compose"><FaPen className='nav-icon' /> Compose Message</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/admin/inbox"><FaEnvelope  className='nav-icon text-danger' /> Inbox</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/admin/sent"><FcFeedback className='nav-icon text-danger' /> Sent Items</Link></li>
-                    </div>
+                    </div> */}
 
                     <li class="nav-title">Manage</li>
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#price">
                         <FaBox className='nav-icon' />Price</a>
                     </li>
                     <div class="collapse" id='price'>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/copras"> <span className='nav-icon'></span> Copras</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/whole" ><span className='nav-icon'></span>Whole Nut</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/AddProduct"> <span className='nav-icon'></span>Add Product</Link></li>
                     </div>
 
 

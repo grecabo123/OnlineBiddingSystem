@@ -1,3 +1,4 @@
+import CreateProduct from "../components/admin/CreateProduct/CreateProduct";
 import ReportIssue from "../components/admin/Reports/ReportIssue";
 import AccountDetails from "../components/admin/accounts/AccountDetails";
 import AccountPending from "../components/admin/accounts/AccountPending";
@@ -24,8 +25,9 @@ const AdminRoutes = [
     {path: '/admin/sent', exact: true, name: "Bid", component: Sent},
     {path: '/admin/issue', exact: true, name: "Issue", component: ReportIssue},
     {path: '/admin/copras', exact: true, name: "Copras", component: Copras },
-    {path: '/admin/whole', exact: true, name: "Whole", component: Wholenut },
+    {path: '/admin/whole', exact: true, name: "Whole", component: Wholenut},
     {path: '/admin/compose', exact: true, name: "Copras", component: Compose },
+    {path: '/admin/AddProduct', exact: true, name: "Copras", component: CreateProduct },
     {path: '/admin/account/refid=:id', exact: true, name: "Pending", component: AccountDetails},
 ];
 
