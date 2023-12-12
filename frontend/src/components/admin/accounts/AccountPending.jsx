@@ -1,41 +1,23 @@
 import axios from 'axios'
-import { Button } from 'primereact/button';
-import { Skeleton } from 'primereact/skeleton';
 import React, { useEffect, useState } from 'react'
-import DataTable, {createTheme} from 'react-data-table-component'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import swal from 'sweetalert';
 import { Badge } from 'primereact/badge'
 import { FcBusinessContact } from 'react-icons/fc';
-import { InputText } from 'primereact/inputtext';
 import { Card } from 'primereact/card';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Tag } from 'primereact/tag';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import AccountDetails from './AccountDetails';
 
 function AccountPending() {
 
-    createTheme('solarized', {
-        text: {
-            primary: '#bfc5c7',
-            secondary: '#2aa198',
-        },
-        background: {
-            default: 'transparent',
-        },
-        context: {
-            background: '#cb4b16',
-            text: '#FFFFFF',
-        },
-        divider: {
-            default: '#bfc5c7',
-        },
-        action: {
-            button: 'rgba(0,0,0,.54)',
-            hover: 'rgba(0,0,0,.08)',
-            disabled: 'rgba(0,0,0,.12)',
-        },
-    }, 'dark');
-
     const [RegisteredData, setRegister] = useState([]);
     const [loading, setloading] = useState(true);
+    const [Dataid, setDataId] = useState([]);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         axios.get(`/api/nonregistered`).then(res => {
@@ -51,61 +33,47 @@ function AccountPending() {
         })
     }, []);
 
-    const columns = [
-        {
-            name: "Name",
-            selector: row => <span><FcBusinessContact size={20} className='me-2' />{row.name_user}</span>,
-            sortable: true,
-        },
-        {
-            name: "Email",
-            selector: row => row.email,
-            sortable: true,
-        },
-        {
-            name: "Role",
-            selector: row => row.role === 1 ? <span className='p-tag'>Admin</span> : <span className='p-tag'>User</span>,
-        },
-        {
-            name: "Actions",
-            cell: row => <>
-                <Link className="me-2" to={`/admin/account/refid=${row.id}`}><Badge severity={'info'} value={'View'} /> </Link>
-                <Link className="me-2" to={`/admin/account/id=${row.id}`}><Badge severity={'danger'} value={'Deactivate'} /> </Link>
-            </>,
-            sortable: true,
-        },
+    const AccountStatus = (RegisteredData) => {
+        return (
+            <>
+                {
+                    RegisteredData.status === 1 ? <Tag className='p-tag' value="Active" severity={'success'} /> : <Tag value="In Active" className='p-tag' severity={'danger'} />
+                }
+            </>
+        )
+    }
+    const Action_Btn = (RegisteredData) => {
+        return (
+            <>
 
-    ]
+                <Button className="p-button-info p-button-sm" value={RegisteredData.id} label="View" onClick={GetDetails} />
+            </>
+        )
+    }
+
+    const GetDetails = (e) => {
+        setDataId(e.target.value);
+        setVisible(true)
+    }
+    const onHide = () => {
+        setVisible(false)
+
+    }
+
     return (
-        <div className='container  p-3'>
-               <Card>
-               <DataTable
-                    title="Not Registered Account"
-                    columns={columns}
-                    data={RegisteredData}
-                    pagination
-                    progressPending={loading}
-                    progressComponent={
-                        <>
-                            <div className="container">
-                                <div className="col-lg-12 mb-4">
-                                    <Skeleton width='100%' borderRadius='20px' />
-                                </div>
-                                
-                            </div>
-                        </>
-                    }
-                    selectableRows
-                    subHeader
-                    subHeaderAlign='right'
-                    subHeaderComponent={
-                        <>
-                            <InputText className="w-25 p-inputtext-sm" placeholder='Search ID' />
-                        </>
-                    }
-                    theme='solarized'
-                />
-               </Card>
+        <div className='container-fluid'>
+            <Card title="Pending Account" >
+                <DataTable value={RegisteredData} paginator paginatorLeft rows={10}>
+                    <Column field='name_user' header="Name of User"></Column>
+                    <Column field='email' header="Email"></Column>
+                    <Column field='status' body={AccountStatus} header="Status"></Column>
+                    <Column field='id' body={Action_Btn} header="Actions"></Column>
+                </DataTable>
+            </Card>
+
+            <Dialog header="Account Details" visible={visible} position='top' draggable={false} onHide={onHide} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '50vw' }}>
+                <AccountDetails data={Dataid} />
+            </Dialog>
         </div>
     )
 }

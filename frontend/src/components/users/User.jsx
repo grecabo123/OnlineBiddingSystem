@@ -60,18 +60,18 @@ function User() {
           
                 
                         <li class="nav-title">Sell Product</li>
-                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <li class="nav-item"><Link class="nav-link" to="/user/add">
                         <FaPen className='nav-icon' /> Post Product</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/product">
                         <FcStatistics className='nav-icon' /> Status Product</Link></li>
 
                         <li class="nav-title">Buy Product</li>
-                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <li class="nav-item"><Link class="nav-link" to="/user/auction">
                         <FcSearch className='nav-icon' /> Auction Product</Link></li>
                 
 
                         <li class="nav-title">History</li>
-                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <li class="nav-item"><Link class="nav-link" to="/user/logs">
                         <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
                     
                 </ul>

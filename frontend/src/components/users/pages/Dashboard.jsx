@@ -5,7 +5,9 @@ import { Skeleton } from 'primereact/skeleton'
 import React, { useEffect, useState } from 'react'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 import { FcDown } from 'react-icons/fc'
+import { motion } from "framer-motion";
 import swal from 'sweetalert'
+import ProductTables from '../ProductUpdates/ProductTables'
 
 function Dashboard() {
 
@@ -41,87 +43,76 @@ function Dashboard() {
                     :
                     <div className='container-fluid'>
                         <div className="row">
-                            <div className="col-lg-6 col-md-6 col-sm-12 mb-4">
-                                <Card title="Product Sold" className='zoom' >
-                                    <div className="d-flex justify-content-between">
-                                        <span>Total </span>
-                                        <Badge severity={'success'} value={52} />
-                                    </div>
-                                </Card>
-                                <div className="row mt-2">
-                                    <div className="col-lg-6 mb-2">
-                                        <Card title="Whole Nut Price" className='zoom' >
-                                            <div className="d-flex justify-content-between">
-                                            ₱ {PriceMonitor.whole.new_price} 
-                                                <div className='mt-0'>
-                                                    {
-                                                        PriceMonitor.whole.new_price > PriceMonitor.whole.current_price
-                                                            ? <div className='mt-0'>
-                                                                <FaArrowUp className='text-success  mb-0 me-2 fs-5' />
-                                                                <small>₱ {(PriceMonitor.whole.new_price - PriceMonitor.whole.current_price).toFixed(2)}</small>
-                                                            </div>
-                                                            : <div className='mt-0'>
-                                                            <FaArrowDown className='text-danger  mb-0 me-2 fs-5' />
-                                                            <small>₱ {(PriceMonitor.whole.current_price - PriceMonitor.whole.new_price).toFixed(2)}</small>
-                                                        </div>        
-                                                    }
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                    <div className="col-lg-6 mb-2">
-                                        <Card title={PriceMonitor.copras.name_tag_int === 1 ? "Copras" : ""} className='zoom' >
-                                            <div className="d-flex justify-content-between">
-                                                ₱ {PriceMonitor.copras.new_price} 
-                                                <div className='mt-0'>
-                                                    {
-                                                        PriceMonitor.copras.new_price > PriceMonitor.copras.current_price
-                                                            ? <div className='mt-0'>
-                                                                <FaArrowUp className='text-success  mb-0 me-2 fs-5' />
-                                                                <small>₱ {(PriceMonitor.copras.new_price - PriceMonitor.copras.current_price).toFixed(2)}</small>
-                                                            </div>
-                                                            : <div className='mt-0'>
-                                                            <FaArrowDown className='text-danger  mb-0 me-2 fs-5' />
-                                                            <small>₱ {(PriceMonitor.copras.current_price - PriceMonitor.copras.new_price).toFixed(2)}</small>
-                                                        </div>        
-                                                    }
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.4,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Product Sold" className='zoom' >
+                                        <div className="d-flex justify-content-between">
+                                            <span>Total </span>
+                                            <Badge severity={'success'} value={52} />
+                                        </div>
+                                    </Card>
+                                </motion.div>
                             </div>
-                            <div className="col-lg-6 col-md-6 col-sm-12 mb-4">
-                                <Card title="Total Cost" className='zoom' >
-                                    <div className="d-flex justify-content-between">
-                                    <span>₱ 423,044</span>
-                                        {/* <Badge severity={'info'} value={20} /> */}
-                                    </div>
-                                </Card>
-                                <div className="row mt-2">
-                                    <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
-                                        <Card title="Profit Income" className='zoom'>
-                                            <div className="d-flex justify-content-between">
-                                                <span>₱ 123,531</span>
-                                                {
-                                                        PriceMonitor.copras.new_price > PriceMonitor.copras.current_price
-                                                            ? <div className='mt-0'>
-                                                                <FaArrowUp className='text-success  mb-0 me-2 fs-5' />
-                                                                <small> {(PriceMonitor.copras.new_price - PriceMonitor.copras.current_price).toFixed(2)} %</small>
-                                                            </div>
-                                                            : <div className='mt-0'>
-                                                            <FaArrowDown className='text-danger  mb-0 me-2 fs-5' />
-                                                            <small> {(PriceMonitor.copras.current_price - PriceMonitor.copras.new_price).toFixed(2)} %</small>
-                                                        </div>        
-                                                    }
-                                                {/* <Badge severity={'info'} value={20} /> */}
-                                            </div>
-                                        </Card>
-                                    </div>
-                                   
-                                </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.6,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Product Sold" className='zoom' >
+                                        <div className="d-flex justify-content-between">
+                                            <span>Total </span>
+                                            <Badge severity={'success'} value={52} />
+                                        </div>
+                                    </Card>
+                                </motion.div>
+                            </div>
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.8,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Product Sold" className='zoom' >
+                                        <div className="d-flex justify-content-between">
+                                            <span>Total </span>
+                                            <Badge severity={'success'} value={52} />
+                                        </div>
+                                    </Card>
+                                </motion.div>
                             </div>
                         </div>
+
+                        <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{
+                                    duration: 0.8,
+                                    delay: 1.0,
+                                    ease: [0, 0.71, 0.2, 1.01]
+                                }}
+                            >
+                            <ProductTables />
+                            </motion.div>
+                        </div>
+
                     </div>
             }
         </>

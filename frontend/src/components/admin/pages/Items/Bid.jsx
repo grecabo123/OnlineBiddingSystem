@@ -9,6 +9,8 @@ import {FcFolder} from 'react-icons/fc'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
+import { PrimeIcons } from 'primereact/api';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Bid() {
     
@@ -53,16 +55,39 @@ function Bid() {
         )
     }
 
+    const Actions_btn = (tbldata) => {
+        return (
+            <>
+                <div className="me-2">
+                   <Link to={`/admin/product/refid=${tbldata.id}`}> <Button  className='p-button-sm p-button-info me-2 mb-1' label='Details' icon={PrimeIcons.EYE} /></Link>
+                    <Button onClick={RemoveItem} value={tbldata.id} className='p-button-sm p-button-danger mb-1' label='Remove' icon={PrimeIcons.TRASH}  />
+                </div>
+            </>
+        )
+    }
+
+    const ProductItem = (tbldata) => {
+        return (
+            <>
+                <FcFolder size={25} className='align-middle' /> <span className='align-middle fs-6'>{tbldata.product_name}</span>
+            </>
+        )
+    }
+
+    const RemoveItem = (e) => {
+        
+    }
 
 
     return (
         <div className='container-fluid'>
-            <Card title="My Product">
-                <DataTable value={tbldata} paginator paginatorLeft rows={10}>
-                    <Column field='product_name' header="Product Name"></Column>
-                    <Column field='product_price' body={PriceFormat} header="Product Price"></Column>
-                    <Column field='quantity_product' body={PriceUnit} header="Price Unit"></Column>
-                    <Column field='price_status' body={StatusProduct} header="Product Status"></Column>
+            <Card title="Bid Items">
+                <DataTable value={tbldata} sortMode='multiple' paginator paginatorLeft loading={loading} rows={10}>
+                    <Column field='product_name' sortable body={ProductItem} header="Product Name"></Column>
+                    <Column field='product_price' sortable body={PriceFormat} header="Product Price"></Column>
+                    <Column field='quantity_product' sortable body={PriceUnit} header="Price Unit"></Column>
+                    <Column field='price_status' sortable body={StatusProduct} header="Product Status"></Column>
+                    <Column field='uniq_key' sortable body={Actions_btn} header="Actions"></Column>
                 </DataTable>
             </Card>
         </div>

@@ -50,9 +50,9 @@ function ProductList() {
                 <div className="row">
                     <Card title="My Product">
                         <div className="d-flex justify-content-end mb-3">
-                            <Link to="/user/add"><Button icon="pi pi-plus" className='p-button-sm p-button-info' label='Register Product' /></Link>
+                            {/* <Link to="/user/add"><Button icon="pi pi-plus" className='p-button-sm p-button-info' label='Register Product' /></Link> */}
                         </div>
-                        <DataTable value={Product} paginator rows={10} paginatorLeft>
+                        <DataTable value={Product} paginator rows={10} loading={loading} paginatorLeft>
                             <Column field='product_name' header="Product Name"></Column>
                             <Column field='product_price' header="Product Price"></Column>
                             <Column field='quantity_product' header="Product Price"></Column>

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\AcitivityLogs;
 use App\Models\PriceUpdate;
+use App\Models\ProductData;
 use Illuminate\Http\Request;
+use App\Models\AcitivityLogs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,5 +69,15 @@ class PriceMonitor extends Controller
             "copras"            =>          $copras,
             "whole"             =>          $whole,
         ]);
+    }
+
+    public function PriceData(){
+        $data = ProductData::orderBy('product_name','ASC')->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+        
     }
 }

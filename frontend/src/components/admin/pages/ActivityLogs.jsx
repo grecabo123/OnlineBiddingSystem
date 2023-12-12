@@ -1,36 +1,12 @@
 import axios from 'axios';
-import moment from 'moment';
-import { Skeleton } from 'primereact/skeleton';
 import React, { useEffect, useState } from 'react'
-import DataTable, {createTheme} from 'react-data-table-component';
-import { FaDesktop } from 'react-icons/fa';
 import swal from 'sweetalert';
-import { FcInspection } from "react-icons/fc";
 import { Card } from 'primereact/card';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import moment from 'moment';
 
 function ActivityLogs() {
-
-    createTheme('solarized', {
-        text: {
-            primary: '#bfc5c7',
-            secondary: '#2aa198',
-        },
-        background: {
-            default: 'transparent',
-        },
-        context: {
-            background: '#cb4b16',
-            text: '#FFFFFF',
-        },
-        divider: {
-            default: '#bfc5c7',
-        },
-        action: {
-            button: 'rgba(0,0,0,.54)',
-            hover: 'rgba(0,0,0,.08)',
-            disabled: 'rgba(0,0,0,.12)',
-        },
-    }, 'dark');
 
     const [Logs, setLogs] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,44 +14,36 @@ function ActivityLogs() {
         const id = localStorage.getItem('auth_id');
 
         axios.get(`/api/Logs/${id}`).then(res => {
-            if(res.data.status === 200){
+            if (res.data.status === 200) {
                 setLogs(res.data.data);
             }
             setLoading(false)
         }).catch((error) => {
-            if(error.response.status === 500){
-                swal("Warning",error.response.statusText,'warning');
+            if (error.response.status === 500) {
+                swal("Warning", error.response.statusText, 'warning');
             }
         })
-    },[]);
+    }, []);
+    
+    const dateformat = (Logs) =>{
+        return (
+            <>
+                {
+                    moment(Logs.created_at).format("MMM DD YYYY h:m a")
+                }
+            </>
+        )
+    }
 
-    const column = [
-        {
-            name: "Activity",
-            selector: row => <span><FaDesktop size={15} /> {row.activity}</span>,
-        },
-        {
-            name: "Date Time",
-            selector: row => moment(row.created_at).format('MMMM DD YYYY hh:mm a')
-        },
-    ]
 
     return (
-        <div className='container mt-5 p-3'>
-                <Card>
-                <DataTable 
-                    title="Activity Logs"
-                    data={Logs}
-                    columns={column}
-                    selectableRows
-                    pagination
-                    progressPending={loading}
-                    progressComponent={
-                        <Skeleton  className='w-100' borderRadius='20' />
-                    }
-                    theme='solarized'
-                />
-                </Card>
+        <div className='container-fluid'>
+            <Card title="Activity Logs">
+                <DataTable value={Logs} loading={loading} paginator rows={10} paginatorLeft>
+                    <Column field='activity' header="Activity"></Column>
+                    <Column field='created_at' body={dateformat} header="DateTime"></Column>
+                </DataTable>
+            </Card>
         </div>
     )
 }

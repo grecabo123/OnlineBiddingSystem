@@ -23,6 +23,7 @@ function AddProduct() {
         productname: "",
         productdetails: "",
         address: "",
+        youtube: "",
         error: [],
     });
 
@@ -35,6 +36,7 @@ function AddProduct() {
     const [value1, setValue1] = useState()
     const toast = useRef(null);
     const history = useHistory();
+    const [PriceData, setPrice] = useState([]);
     const [btndis, setbtndis] = useState(false);
     const [startbit, setStart] = useState([]);
     const [endbit, setEnd] = useState([]);
@@ -52,6 +54,18 @@ function AddProduct() {
             }
         })
     }, []);
+
+    useEffect(() => {
+        axios.get(`/api/PriceProduct`).then(res => {
+            if(res.data.status === 200) {
+                setPrice(res.data.data);
+            }
+        }).catch((error) => {
+            if (error.response.status === 500) {
+                swal("Warning", error.response.statusText, 'warning');
+            }
+        })
+    },[]);
 
     const handleInput = (e) => {
         e.persist();
@@ -72,7 +86,7 @@ function AddProduct() {
         data.append('productdetails', ProductData.productdetails);
         data.append('producttype',TypeProductData);
         data.append('barangay',brgypick);
-        data.append('price',value1);
+        data.append('youtube',ProductData.youtube);
         data.append('startbit',moment(startbit).format('MMM D YYYY '));
         data.append('endbit',moment(endbit).format("MMM D YYYY"));
         data.append('time_end',moment(endbit).format('hh:mm a'));
@@ -109,10 +123,11 @@ function AddProduct() {
         )
     });
 
-    const TypeProduct = [
-        { label: "Copras", value: "Copras" },
-        { label: "Whole", value: "Whole" },
-    ];
+    const TypeProduct = PriceData.map((data) => {
+        return (
+            {label: data.product_name+' - '+'₱'+data.product_price, value: data.id}
+        )
+    });
 
     const onHide = () => {
         setVisible(false)
@@ -129,7 +144,7 @@ function AddProduct() {
                                 :
                                 <>
                                     <div className="d-flex justify-content-end">
-                                        <Link to="/user/product"><Button className='p-button-sm p-button-primary me-2' icon={PrimeIcons.LIST} label='List Bid' /></Link>
+                                        {/* <Link to="/user/product"><Button className='p-button-sm p-button-primary me-2' icon={PrimeIcons.LIST} label='List Bid' /></Link> */}
                                         {/* <Button className='p-button-sm p-button-success' label='Import CSV' onClick={(e) => setVisible(true)} /> */}
                                     </div>
                                     <div className="mt-3">
@@ -144,7 +159,7 @@ function AddProduct() {
                                                 </div>
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Product Type
+                                                    <span className='text-danger'>*</span>Product Category
                                                     </label>
                                                     <Dropdown placeholder='Type of Product' className='w-100 p-inputtext-sm' value={TypeProductData} name='product_type' options={TypeProduct} onChange={(e) => setTypeData(e.target.value)} />
                                                     <small className='text-danger'>{ProductData.error.producttype}</small>
@@ -164,14 +179,6 @@ function AddProduct() {
                                                     </label>
                                                     <InputText className="w-100 p-inputtext-sm" onChange={handleInput} name='address' />
                                                     <small className='text-danger'>{ProductData.error.address}</small>
-
-                                                </div>
-                                                <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
-                                                    <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Price
-                                                    </label>
-                                                    <InputNumber disabled readOnly className='w-100 p-inputnumber-horizontal p-inputtext-sm' value={value1} onValueChange={(e) => setValue1(e.value)} mode="decimal" minFractionDigits={2} />
-                                                    <small className='text-danger'>{ProductData.error.price}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
@@ -179,6 +186,13 @@ function AddProduct() {
                                                     </label>
                                                     <InputTextarea className='w-100 p-inputtext-sm' onChange={handleInput} name='productdetails' rows={5} />
                                                     <small className='text-danger'>{ProductData.error.productdetails}</small>
+                                                </div>
+                                                <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
+                                                    <label htmlFor="Product Name" className="form-label">
+                                                    <span className='text-danger'>*</span>Link Youtube 
+                                                    </label>
+                                                    <InputText className="w-100 p-inputtext-sm" onChange={handleInput} name='youtube' />
+                                                    <small className='text-danger'>{ProductData.error.youtube}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                                                     <label htmlFor="" className="form-label">

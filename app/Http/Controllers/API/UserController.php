@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\BiddingInfo;
 use App\Models\BiddingItem;
 use App\Models\BiddingImage;
+use App\Models\ProductData;
 use Illuminate\Http\Request;
 use App\Models\AcitivityLogs;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class UserController extends Controller
             // "auctiondate"           =>          "required",
             "producttype"           =>          "required",
             "barangay"              =>          "required",
-            "price"                 =>          "required",
+            // "youtube"                 =>          "required",
             "address"               =>          "required",
             "files"                 =>          "required|mimes:jpg,jpeg,png",
             "startbit"              =>          "required",
@@ -61,18 +62,20 @@ class UserController extends Controller
         }
         else{
 
+            $product = ProductData::find($request->producttype);
+
             $biddingitem = new BiddingItem;
             $biddingitem->name = $request->productname;
             $biddingitem->uniq_key = md5(time().$request->productname);
-            $biddingitem->product_type = $request->producttype;
             $biddingitem->description = $request->productdetails;
-            $biddingitem->price = $request->price;
             $biddingitem->start_date_now = $request->startbit;
             $biddingitem->end_date_now = $request->endbit;
             $biddingitem->milliseconds_data = $request->time_end;
             $biddingitem->save();
     
             $biddinginfo = new BiddingInfo;
+            $biddinginfo->product_name =  $request->productname;
+            $biddinginfo->product_price =  $product->product_price;
             $biddinginfo->address = $request->address;
             $biddinginfo->bidding_brgy_fk = $request->barangay;
             $biddinginfo->bidding_item_fk = $biddingitem->id;
@@ -179,5 +182,13 @@ class UserController extends Controller
 
             ]);
         }
+    }
+    public function GetProductUpdate(){
+        $product = ProductData::orderBy('product_name','ASC')->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $product,
+        ]);
     }
 }

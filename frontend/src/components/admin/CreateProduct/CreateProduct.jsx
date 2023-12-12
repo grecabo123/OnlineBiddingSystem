@@ -120,7 +120,7 @@ function CreateProduct() {
     const unit = [
         {label: "Per Kilo", value: 1},
         {label: "Per Pieces", value: 2},
-    ]
+    ];
 
 
     return (

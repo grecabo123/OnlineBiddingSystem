@@ -1,3 +1,4 @@
+import Auction from "../components/users/Auction/Auction";
 import AddProduct from "../components/users/pages/AddProduct";
 import Dashboard from "../components/users/pages/Dashboard";
 import InviteUser from "../components/users/pages/InviteUser";
@@ -13,6 +14,8 @@ const UserRoutes = [
     {path: "/user/add", exact: true, name: "product", component: AddProduct},
     {path: "/user/invite", exact: true, name: "invite", component: InviteUser},
     {path: "/user/logs", exact: true, name: "Logs", component: Logs},
+    {path: "/user/auction", exact: true, name: "Logs", component: Auction},
+   
     {path: '/user/update/refid=:id', exact: true, name: "Products", component: UpdateProducts},
     {path: '/user/product/details/refid=:id', exact: true, name: "Products", component: ProductDetails},
 

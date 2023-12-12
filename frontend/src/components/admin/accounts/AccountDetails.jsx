@@ -13,20 +13,23 @@ import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 
 
-function AccountDetails(props) {
+function AccountDetails({data}) {
 
     const [AccountInfo, setAccount] = useState([]);
+    const [BrgyData, setbrgy] = useState([]);
     const [loading, setloading] = useState(true);
     const history = useHistory();
     const [visible, setVisible] = useState(false);
     const [text, setText] = useState();
     const [subjectvalue, setSubject] = useState([]);
     const toast = useRef();
+    const [BrgyPick, setPickBrgy] = useState([]);
 
     useEffect(() => {
-        axios.get(`/api/AccountInformation/${props.match.params.id}`).then(res => {
+        axios.get(`/api/AccountInformation/${data}`).then(res => {
             if (res.data.status === 200) {
                 setAccount(res.data.account);
+                setbrgy(res.data.brgy);
             }
             else if (res.data.status === 504) {
                 swal("Warning", res.data.message, 'warning');
@@ -38,7 +41,7 @@ function AccountDetails(props) {
                 swal("Warning", error.response.statusText, 'warning');
             }
         })
-    }, [props.match.params.id]);
+    }, [data]);
 
     const Subjects = [
         { label: "Blurred Image", value: "Blurred Image" },
@@ -51,6 +54,29 @@ function AccountDetails(props) {
         setVisible(false)
         setSubject([])
     }
+
+  
+
+    const Barangay = BrgyData.map((data) => {
+        if (AccountInfo.user_brgy_fk === data.id) {
+
+
+            // return {
+            //     label: data.brgy_name,
+            //     value: data.id,
+            // };
+        }
+        else{
+            return (
+                {
+                    label: data.brgy_name, 
+                    value: data.id,
+                }
+            )
+        }
+    })
+
+   
 
     const SendMessage = (e) => {
         e.preventDefault();
@@ -87,52 +113,51 @@ function AccountDetails(props) {
         })
     }
 
-
     return (
         <div className='mt-5'>
             <Toast ref={toast} />
-            <Panel header="Account Information">
                 {
                     loading ?
                         <Skeleton /> :
                         <div className="row">
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Full Name
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.name_user} />
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Email
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.email} />
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Birthdate
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.birthdate} />
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Contact
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.contact_number} />
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Barangay
                                 </label>
-                                <InputText className='w-100' name='name' value={AccountInfo.barangay_list} />
+                                <Dropdown className='w-100' value={BrgyPick} options={Barangay} onChange={(e) => setPickBrgy(e.target.value)}  />
+                                {/* <InputText className='w-100' name='name' value={AccountInfo.barangay_list} /> */}
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Home Address
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.home_address} />
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12">
+                            <div className="col-lg-12 col-md-6 col-sm-12">
                                 <label htmlFor="" className="form-label">
                                     ID
                                 </label>
@@ -178,7 +203,6 @@ function AccountDetails(props) {
                             </Dialog>
                         </div>
                 }
-            </Panel>
         </div>
     )
 }

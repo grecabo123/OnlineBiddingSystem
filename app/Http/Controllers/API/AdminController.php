@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\BarangayData;
 use App\Models\User;
 use App\Models\BiddingInfo;
 use App\Models\BiddingItem;
@@ -19,7 +20,7 @@ class AdminController extends Controller
 {
     public function RegisteredAccount(){
 
-        $data = User::selectRaw('id,name_user,username,email,status,role')
+        $data = User::selectRaw('id,name_user,username,email,status,role,user_brgy_fk')
             ->where('status', 1)
                 ->get();
 
@@ -31,7 +32,7 @@ class AdminController extends Controller
 
     public function NonRegistered(){
 
-        $data = User::selectRaw('id,name_user,username,email,status,role')
+        $data = User::selectRaw('id,name_user,username,email,status,role,user_brgy_fk')
             ->where('status', 0)
                 ->get();
 
@@ -49,11 +50,14 @@ class AdminController extends Controller
                     ->selectRaw('users.name_user,users.email,users.birthdate,users.files,tbl_contact.contact_number,tbl_contact.home_address,tbl_contact.zipcode,tbl_barangay_coordinates.brgy_name')
                         ->where('users.id',$id)
                             ->first();
+        
+        $brgy = BarangayData::orderBy('brgy_name','ASC')->get();
 
         if($data){
             return response()->json([
                 "status"        =>      200,
                 "account"       =>      $data,
+                "brgy"          =>      $brgy,
             ]);
         }
         else{
@@ -162,19 +166,19 @@ class AdminController extends Controller
         $verified = User::where('status', 1)->get();
         $pending = User::where('status', 0)->get();
         $reports = ReportMessage::all();
-        $copras = BiddingItem::where('product_type','Copras')->get();
-        $whole = BiddingItem::where('product_type','Whole')->get();
+        // $copras = BiddingItem::where('product_type','Copras')->get();
+        // $whole = BiddingItem::where('product_type','Whole')->get();
         $copras_price = PriceUpdate::select('*')->whereIn('name_tag_int',[1])->orderBy('created_at','DESC')->first();
         $whole_price = PriceUpdate::select('*')->whereIn('name_tag_int',[2])->orderBy('created_at','DESC')->first();
-        $copras_sold = BiddingItem::where([
-            "product_type"          =>      "Copras",
-            "price_status"          =>      1,
-        ])->get();
+        // $copras_sold = BiddingItem::where([
+        //     "product_type"          =>      "Copras",
+        //     "price_status"          =>      1,
+        // ])->get();
 
-        $whole_sold = BiddingItem::where([
-            "product_type"          =>      "Whole",
-            "price_status"          =>      1,
-        ])->get();
+        // $whole_sold = BiddingItem::where([
+        //     "product_type"          =>      "Whole",
+        //     "price_status"          =>      1,
+        // ])->get();
         
 
         return response()->json([
@@ -183,12 +187,12 @@ class AdminController extends Controller
             "verified"              =>           $verified->count(),
             "pending"               =>           $pending->count(),
             "reports"               =>           $reports->count(),
-            "copras_total"          =>           $copras->count(),
-            "whole_total"           =>           $whole->count(),
+            // "copras_total"          =>           $copras->count(),
+            // "whole_total"           =>           $whole->count(),
             "copras_price"          =>           $copras_price,
             "whole_price"           =>           $whole_price,
-            "copras_sold"           =>           $copras_sold->count(),
-            "whole_sold"            =>           $whole_sold->count(),
+            // "copras_sold"           =>           $copras_sold->count(),
+            // "whole_sold"            =>           $whole_sold->count(),
         ]);
     } 
 

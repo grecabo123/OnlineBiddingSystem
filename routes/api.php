@@ -39,6 +39,7 @@ Route::delete('removeprice/{id}',[PriceMonitor::class ,'remove']);
 // Price Monitor
 Route::get('PriceMonitor',[PriceMonitor::class ,'monitor']);
 
+Route::get('PriceProduct',[PriceMonitor::class, 'PriceData']);
 
 
 // Admin router
@@ -76,7 +77,7 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
     Route::post('AddProducts', [UserController::class,  'AddProducts']);
     Route::get('ProductDetails', [UserController::class,  'ProductDetails']);
     Route::delete('RemoveProducts/{id}', [UserController::class,  'RemoveProducts']);
-    // Route::get('Logs/{id}', [UserController::class, 'Logs']);
+    Route::get('GetProductUpdate', [UserController::class, 'GetProductUpdate']);
     Route::get('ProductInformation/{id}', [UserController::class, 'ProductInformation']);
     Route::put('UpdateProductData/{$id}',[UserController::class, 'UpdateProductData']);
     Route::get('ProductDetailsInformation/{id}', [UserController::class,  'ProductDetailsInformation']);
