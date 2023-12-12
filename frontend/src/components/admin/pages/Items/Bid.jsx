@@ -5,8 +5,10 @@ import { Badge } from 'primereact/badge';
 import { Card } from 'primereact/card'
 import { Skeleton } from 'primereact/skeleton';
 import React, { useEffect, useState } from 'react'
-import DataTable,{createTheme} from 'react-data-table-component'
 import {FcFolder} from 'react-icons/fc'
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Tag } from 'primereact/tag';
 
 function Bid() {
     
@@ -26,76 +28,42 @@ function Bid() {
 
         })
     },[]);
+    
+    const PriceUnit = (tbldata) => {
+        return (
+            <>
+            {
+                tbldata.quantity_product === 1 ? <Tag className='p-tag' severity={'info'} value="Per Kilo" /> : <Tag className='p-tag' value="Per Pieces" />
+            }
+            </>
+        )
+    }
+    const PriceFormat = (tbldata) => {
+        return(
+            <>
+                ₱{tbldata.product_price.toFixed(2)}
+            </>
+        )
+    }
+    const StatusProduct = (tbldata) => {
+        return(
+            <>
+                {tbldata.price_status === 0  ? <Tag severity={'info'} value="Selling" /> : <Tag severity={'success'} value="Sold" />}
+            </>
+        )
+    }
 
-    createTheme('solarized', {
-        text: {
-            primary: '#bfc5c7',
-            secondary: '#2aa198',
-        },
-        background: {
-            default: 'transparent',
-        },
-        context: {
-            background: '#cb4b16',
-            text: '#FFFFFF',
-        },
-        divider: {
-            default: '#bfc5c7',
-        },
-        action: {
-            button: 'rgba(0,0,0,.54)',
-            hover: 'rgba(0,0,0,.08)',
-            disabled: 'rgba(0,0,0,.12)',
-        },
-    }, 'dark');
 
-    const column = [
-        {
-            name: "Product name",
-            selector: row => <><FcFolder size={23} /> {row.name}</>,
-            sortable: true,
-        },
-        {
-            name: "Product type",
-            selector: row => row.product_type,
-            sortable: true,
-        },
-        {
-            name: "Price",
-            selector: row => "₱"+row.price,
-        },
-        {
-            name: "Status",
-            selector: row => row.price_status === 0 ? <Badge  severity={'danger'} value={'Not Sold'} /> : <Badge severity={'success'} value={'Sold'} />
-        },
-        {
-            name: "Actions",
-            cell: row => <div className=''>
-                <Button className='p-button-sm w-100 mt-2 mb-2 p-button-info' label='View' />
-                <Button className='p-button-sm w-100 p-button-danger mb-2' label='Delete' />
-            </div>,
-        },
- 
-    ]
 
     return (
         <div className='container-fluid'>
-            <Card>
-            <DataTable
-                title={"Bidding Item"}
-                theme='solarized'
-                columns={column}
-                data={tbldata}
-                pagination
-                selectableRows
-                responsive={true}
-                progressPending={loading}
-                progressComponent={
-                    <>
-                        <Skeleton className='w-100' borderRadius='20' />
-                    </>
-                }
-            />
+            <Card title="My Product">
+                <DataTable value={tbldata} paginator paginatorLeft rows={10}>
+                    <Column field='product_name' header="Product Name"></Column>
+                    <Column field='product_price' body={PriceFormat} header="Product Price"></Column>
+                    <Column field='quantity_product' body={PriceUnit} header="Price Unit"></Column>
+                    <Column field='price_status' body={StatusProduct} header="Product Status"></Column>
+                </DataTable>
             </Card>
         </div>
     )

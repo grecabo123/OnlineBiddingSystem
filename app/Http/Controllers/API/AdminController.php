@@ -7,6 +7,7 @@ use App\Models\BiddingInfo;
 use App\Models\BiddingItem;
 use App\Models\MessageForm;
 use App\Models\PriceUpdate;
+use App\Models\ProductData;
 use Illuminate\Http\Request;
 use App\Models\AcitivityLogs;
 use App\Models\ReportMessage;
@@ -191,6 +192,42 @@ class AdminController extends Controller
         ]);
     } 
 
+    public function CreateProduct(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            "name"              =>          "required",
+            "price"             =>          "required",
+            "UnitType"          =>          "required",
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                "error"         =>          $validator->messages(),
+            ]);
+        }
+        else{
+
+            $product = new ProductData;
+            $product->product_name = $request->name;
+            $product->product_price = $request->price;
+            $product->type_of_quantity = $request->UnitType;
+            $product->save();
+
+            return response()->json([
+                "status"                =>              200,
+                "messages"              =>              "Successfully",
+            ]);
+        }
+    }
+
+    public function GetProduct(){
+        $data = ProductData::all();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
     
     
 }

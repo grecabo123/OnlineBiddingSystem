@@ -56,8 +56,11 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('UpdatePrice', [AdminController::class,  'UpdatePrice']);
     Route::post('PostUpdatedPrice', [AdminController::class, 'PostUpdatedPrice']);
     Route::get('TotalCount', [AdminController::class,  'TotalCount']);
-    
     Route::get('ReportIssue',[AdminController::class, 'ReportIssue']); 
+    Route::post('CreateProduct', [AdminController::class, 'CreateProduct']);
+    Route::get('GetProduct',[AdminController::class, 'GetProduct']); 
+
+    
     
 });
 

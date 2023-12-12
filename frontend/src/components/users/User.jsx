@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { Divider } from 'primereact/divider';
 import { Menubar } from 'primereact/menubar';
-import { FcComments, FcOvertime, FcOpenedFolder, FcHome, FcList, FcPositiveDynamic, FcPaid, FcHighPriority, FcFolder, FcSms } from 'react-icons/fc'
+import { FcComments, FcOvertime, FcOpenedFolder, FcHome, FcList, FcPositiveDynamic, FcPaid, FcHighPriority, FcFolder, FcSms, FcSearch, FcStatistics } from 'react-icons/fc'
 import { FaBars, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaUserAlt, FaUsers } from 'react-icons/fa'
 import { Button } from 'primereact/button';
 import axios from 'axios';
@@ -52,22 +52,27 @@ function User() {
                     <li class="nav-item"><a class="nav-link" href="/user">
                         <FcHome className='nav-icon' /> Dashboard</a></li>
                         
-                    {/* Report */}
-                    {/* <li class="nav-item"><Link class="nav-link" to="/user/invite">
-                        <FcHighPriority className='nav-icon' /> Invite Bid</Link></li> */}
-                    {/* End of Report */}
+               
                     
                     <li class="nav-item"><Link class="nav-link" to="/user/product">
                         <FcFolder className='nav-icon' /> Bid Items</Link></li>
 
-                    {/* Mail */}
-                    <li class="nav-item"><a class="nav-link">
-                        <FcSms className='nav-icon' /> Message <Badge severity={'danger'} value={3} /> </a></li>
-                    {/* end of mail */}
+          
+                
+                        <li class="nav-title">Sell Product</li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <FaPen className='nav-icon' /> Post Product</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <FcStatistics className='nav-icon' /> Status Product</Link></li>
 
-                    {/* <li class="nav-item mt-auto"><a class="nav-link nav-link-danger fw-bold text-danger"target="_top">
-                        <BiLogOut className="nav-icon" /> Logout
-                    </a></li> */}
+                        <li class="nav-title">Buy Product</li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <FcSearch className='nav-icon' /> Auction Product</Link></li>
+                
+
+                        <li class="nav-title">History</li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
                     
                 </ul>
                 {/* <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button> */}
