@@ -13,6 +13,7 @@ import { Toast } from 'primereact/toast';
 import swal from 'sweetalert';
 import { Tag } from 'primereact/tag';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow, Data } from '@react-google-maps/api';
+import { Badge } from 'primereact/badge';
 
 
 
@@ -122,11 +123,13 @@ function Auction() {
                     <div className="col-lg-12 mb-3">
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
-                                <div className="d-flex justify-content-evenly">
-                                    <Image className='me-2' preview src={`http://127.0.0.1:8000/${ProductData.image}`} width='200' height='150' />
+                                <div className="d-flex justify-content-evenly p-2">
+                                    <Image className='me-1' preview src={`http://127.0.0.1:8000/${ProductData.image}`} width='200' height='150' />
                                     <div className="m-2 p-3">
                                         <div className='mb-2'> <span className='fs-6'>Product Name:</span> {ProductData.product_name}</div>
                                         <div className='mb-2'> <span className='fs-6'>Product Price:</span> ₱{ProductData.amount_bidding.toFixed(2)}</div>
+                                        <div className='mb-2'> <span className='fs-6'>Per Unit:</span> {ProductData.type_of_quantity == 1 ? <Badge severity="info" value="Per Kilo" /> : <Badge severity={'success'} value={"Per Pieces"} />}</div>
+
                                         <div className='mb-2'> <Rating style={{ color: "yellow" }} value={4} readOnly cancel={false} /></div>
                                     </div>
                                 </div>
@@ -148,7 +151,7 @@ function Auction() {
         <div className='container-fluid'>
             <Toast ref={toast} />
             <Card title="Auction Product">
-                <DataView value={ProductData} loading={loading} itemTemplate={itemTemplate} paginator paginatorPosition='both' paginatorLeft rows={5} />
+                <DataView value={ProductData} loading={loading} itemTemplate={itemTemplate} paginator paginatorPosition='both' paginatorLeft rows={5} className='border-0' />
             </Card>
 
             <Dialog header={NameProduct} draggable={false} position='top' visible={visible} onHide={() => setVisible(false)}
@@ -167,7 +170,7 @@ function Auction() {
                             streetView={true}
                             mapTypeId="satellite"   
                         >
-                            <Marker position={{ lat: parseFloat(productlocation.lat), lng: parseFloat(productlocation.lng) }} animation={window.google.maps.Animation.DROP}  icon={`https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=` + `${productlocation.brgy_name}`.replace(/:/g, '') + '|' + `${productlocation.marker_color}` + '|000000'}>
+                            <Marker position={{ lat: parseFloat(productlocation.lat), lng: parseFloat(productlocation.lng) }}   icon={`https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=` + `${productlocation.brgy_name}`.replace(/:/g, '') + '|' + `${productlocation.marker_color}` + '|000000'}>
 
                             </Marker>
 

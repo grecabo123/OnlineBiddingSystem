@@ -58,7 +58,7 @@ function ProductDetails({data}) {
                                         <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                                             <p>{ProductDetailsInfo.description}</p>
                                         </div>
-                                        <h6>Winner: <Tag className='' severity={'success'} value={BiddingUserWin.name_user} /> - <Tag severity={'success'} value={`₱${BiddingUserWin.tbl_biddingprice_fk}`} /></h6>
+                                        <h6>Winner: <Tag className='' severity={'success'} value={BiddingUserWin.name_user} /> - <Tag severity={'success'} value={`₱${BiddingUserWin.tbl_biddingprice_fk.toFixed(2)}`} /></h6>
                                         <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                                             <DataTable  value={BiddingUser} header="Bid User"  paginatorLeft paginator rows={10}>
                                                 <Column field='name_user' header="Name of Bidder" ></Column>

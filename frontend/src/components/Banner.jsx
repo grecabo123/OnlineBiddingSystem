@@ -15,7 +15,7 @@ function Banner() {
                             <h1>Better Solutions For Your Business</h1>
                             <span className='text-light mb-5'>Empower Your Bid, Elevate Your Win</span>
                             <div class="d-flex justify-content-center justify-content-lg-start">
-                                <Link to="/search/product"><Button className='p-button-raised p-button-info' label='Auction Product' /></Link>
+                                {/* <Link to="/search/product"><Button className='p-button-raised p-button-info' label='Auction Product' /></Link> */}
                                 {/* <a href="/search/product" class="btn-get-started ">Current Auctions</a> */}
                             </div>
                         </div>

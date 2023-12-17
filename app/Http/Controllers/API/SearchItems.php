@@ -77,8 +77,9 @@ class SearchItems extends Controller
                 ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
                     ->join('tbl_barangay_coordinates','tbl_barangay_coordinates.id','=','tbl_biddinginfo.bidding_brgy_fk')
                         ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
-                            ->orderBy('tbl_biddingitem.created_at','ASC')
-                                ->get();
+                            ->join('tbl_productanme_tbl','tbl_biddinginfo.tbl_productanme_tbl_fk','=','tbl_productanme_tbl.id')
+                                ->orderBy('tbl_biddingitem.created_at','ASC')
+                                    ->get();
 
         
 
