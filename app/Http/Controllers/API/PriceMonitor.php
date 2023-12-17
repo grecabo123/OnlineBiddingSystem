@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Models\BiddingInfo;
 use App\Models\PriceUpdate;
 use App\Models\ProductData;
@@ -64,11 +65,12 @@ class PriceMonitor extends Controller
     public function AllProductsTotal($id){
         $total = BiddingInfo::where('user_info_fk',$id)->get();
         $whole = PriceUpdate::select('*')->whereIn('name_tag_int',[2])->orderBy('created_at','DESC')->get()->first();
-        
+        $user = User::where('id',$id)->first();
         return response()->json([
             "status"            =>          200,
             "overall"           =>          $total->count(),
             "whole"             =>          $whole,
+            "name"              =>          $user,
         ]);
     }
 

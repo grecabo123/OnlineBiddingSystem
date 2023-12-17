@@ -20,6 +20,7 @@ function Dashboard() {
     const [ProductCount, setProductCount] = useState({
         overall: "",
         whole: "",
+        name: "",
     });
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -35,6 +36,7 @@ function Dashboard() {
                 setProductCount({
                     overall: res.data.overall,
                     whole: res.data.whole,
+                    name: res.data.name,
                 });
             }
             setloading(false)
@@ -161,7 +163,7 @@ function Dashboard() {
                                             <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                                                 <TabPanel header="Acount Rating">
                                                     <div className="">
-                                                        <h6>Name: </h6>
+                                                        <h6>Name:  {ProductCount.name.name_user}</h6>
                                                     </div>
                                                     <Rating readOnly className='' stars={10} value={6} cancel={false} />
                                                 </TabPanel>
