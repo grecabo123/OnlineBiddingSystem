@@ -36,7 +36,7 @@ class AuthControll extends Controller
         else{
             $user = new User;
 
-            $user->name = $request->fname." ".$request->mname." ".$request->lname;
+            $user->name_user = $request->fname." ".$request->mname." ".$request->lname;
             $user->username = $request->username;
             $user->email = $request->email;
             $user->role = 2;
