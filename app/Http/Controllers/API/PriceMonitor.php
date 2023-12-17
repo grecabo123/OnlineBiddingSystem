@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\BiddingInfo;
 use App\Models\PriceUpdate;
 use App\Models\ProductData;
 use Illuminate\Http\Request;
@@ -60,13 +61,13 @@ class PriceMonitor extends Controller
         }
     }
 
-    public function monitor(){
-        $copras = PriceUpdate::select('*')->whereIn('name_tag_int',[1])->orderBy('created_at','DESC')->get()->first();
+    public function AllProductsTotal($id){
+        $total = BiddingInfo::where('user_info_fk',$id)->get();
         $whole = PriceUpdate::select('*')->whereIn('name_tag_int',[2])->orderBy('created_at','DESC')->get()->first();
         
         return response()->json([
             "status"            =>          200,
-            "copras"            =>          $copras,
+            "overall"           =>          $total->count(),
             "whole"             =>          $whole,
         ]);
     }

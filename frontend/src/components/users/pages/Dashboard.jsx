@@ -8,13 +8,21 @@ import { FcDown } from 'react-icons/fc'
 import { motion } from "framer-motion";
 import swal from 'sweetalert'
 import ProductTables from '../ProductUpdates/ProductTables'
+import BarChartdata from '../../admin/analytics/BarChartdata'
+import { Panel } from 'primereact/panel'
+import { TabView, TabPanel } from 'primereact/tabview';
+import { Rating } from 'primereact/rating'
+import Monthly from '../Profit/Monthly'
+
 
 function Dashboard() {
 
-    const [PriceMonitor, setPriceMonitor] = useState({
-        copras: "",
+    const [ProductCount, setProductCount] = useState({
+        overall: "",
         whole: "",
     });
+
+    const [activeIndex, setActiveIndex] = useState(0);
     const [loading, setloading] = useState(true);
 
     useEffect(() => {
@@ -22,10 +30,10 @@ function Dashboard() {
     }, [])
 
     const PriceData = () => {
-        axios.get(`/api/PriceMonitor`).then(res => {
+        axios.get(`/api/AllProductsTotal/${localStorage.getItem('auth_id')}`).then(res => {
             if (res.data.status === 200) {
-                setPriceMonitor({
-                    copras: res.data.copras,
+                setProductCount({
+                    overall: res.data.overall,
                     whole: res.data.whole,
                 });
             }
@@ -43,7 +51,7 @@ function Dashboard() {
                     :
                     <div className='container-fluid'>
                         <div className="row">
-                            <div className="col-lg-6 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-2">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.5 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -53,15 +61,33 @@ function Dashboard() {
                                         ease: [0, 0.71, 0.2, 1.01]
                                     }}
                                 >
-                                    <Card title="Product Sold" className='zoom' >
+                                    <Card title="All Products" className='zoom' >
                                         <div className="d-flex justify-content-between">
                                             <span>Total </span>
-                                            <Badge severity={'success'} value={52} />
+                                            <Badge severity={'success'} value={ProductCount.overall} />
                                         </div>
                                     </Card>
                                 </motion.div>
                             </div>
-                            <div className="col-lg-6 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.6,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Monthly Profit" className='zoom' >
+                                        <div className="d-flex justify-content-between">
+                                            <span>Total </span>
+                                            <Badge severity={'success'} value={0} />
+                                        </div>
+                                    </Card>
+                                </motion.div>
+                            </div>
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-2">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.5 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -74,43 +100,84 @@ function Dashboard() {
                                     <Card title="Product Sold" className='zoom' >
                                         <div className="d-flex justify-content-between">
                                             <span>Total </span>
-                                            <Badge severity={'success'} value={52} />
+                                            <Badge severity={'success'} value={0} />
                                         </div>
                                     </Card>
                                 </motion.div>
                             </div>
-                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 1.0,
+                                        delay: 0.8,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Product Sell" className='zoom' >
+                                        <div className="d-flex justify-content-between">
+                                            <span>Total </span>
+                                            <Badge severity={'success'} value={0} />
+                                        </div>
+                                    </Card>
+                                </motion.div>
+                            </div>
+
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.5 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{
                                         duration: 0.8,
-                                        delay: 0.8,
+                                        delay: 1.0,
                                         ease: [0, 0.71, 0.2, 1.01]
                                     }}
                                 >
-                                    <Card title="Product Sold" className='zoom' >
-                                        <div className="d-flex justify-content-between">
-                                            <span>Total </span>
-                                            <Badge severity={'success'} value={52} />
-                                        </div>
-                                    </Card>
+                                    <ProductTables />
                                 </motion.div>
                             </div>
-                        </div>
 
-                        <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.5 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{
-                                    duration: 0.8,
-                                    delay: 1.0,
-                                    ease: [0, 0.71, 0.2, 1.01]
-                                }}
-                            >
-                            <ProductTables />
-                            </motion.div>
+                            <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 1.0,
+                                        ease: [0, 0.71, 0.2, 1.01]
+                                    }}
+                                >
+                                    <Card title="Price Monitoring">
+                                        <BarChartdata />
+                                        <div className="mt-3 ">
+                                            The Price of product will update after 1 week.
+                                        </div>
+                                    </Card>
+                                    <div className="col-lg-12 mt-3 mb-3">
+                                        <Card title="Account Review">
+                                            <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
+                                                <TabPanel header="Acount Rating">
+                                                    <div className="">
+                                                        <h6>Name: </h6>
+                                                    </div>
+                                                    <Rating readOnly className='' stars={10} value={6} cancel={false} />
+                                                </TabPanel>
+                                                <TabPanel header="Feedback">
+                                                    Comments
+                                                </TabPanel>
+                                            </TabView>
+                                        </Card>
+                                    </div>
+                                </motion.div>
+                            </div>
+                            <div className="mt-3">
+                                <Panel header="Monthly Profit" >
+                                    <Monthly />
+                                </Panel>
+                            </div>
                         </div>
 
                     </div>

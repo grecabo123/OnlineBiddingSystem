@@ -38,7 +38,7 @@ Route::delete('removeprice/{id}',[PriceMonitor::class ,'remove']);
 
 
 // Price Monitor
-Route::get('PriceMonitor',[PriceMonitor::class ,'monitor']);
+Route::get('AllProductsTotal/{id}',[PriceMonitor::class ,'AllProductsTotal']);
 
 Route::get('PriceProduct',[PriceMonitor::class, 'PriceData']);
 
