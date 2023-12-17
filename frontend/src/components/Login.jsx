@@ -126,7 +126,7 @@ function Login() {
                                         <div className="mt-3">
                                             <div className="d-flex justify-content-around">
                                                 <Link to="/register"><small>Create an Account</small></Link>
-                                                <a href=""><small>Forgot password</small></a>
+                                                {/* <a href=""><small>Forgot password</small></a> */}
                                             </div>
                                         </div>
                                     </div>
