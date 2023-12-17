@@ -139,6 +139,10 @@ footer {
     }
 }
 
+.p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+    color: #dce619 !important;
+}
+
 
 .container p {
     color: rgba(255, 255, 255, 0.6);

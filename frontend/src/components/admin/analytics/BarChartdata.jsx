@@ -1,80 +1,77 @@
-import React, { PureComponent } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import React, { useEffect, useState } from 'react';
+import { Chart } from 'primereact/chart';
+import { Card } from 'primereact/card';
+import axios from 'axios';
+import swal from 'sweetalert';
 
 function BarChartdata() {
 
+    var product_name = [];
+    var product_price = [];
+    var product_color = [];
+    const [BarFetch, setBarData] = useState([]);
 
-    const data = [
-        {
-            name: 'Page A',
-            uv: 4000,
-            pv: 2400,
-            amt: 2400,
-        },
-        {
-            name: 'Page B',
-            uv: 3000,
-            pv: 1398,
-            amt: 2210,
-        },
-        {
-            name: 'Page C',
-            uv: 2000,
-            pv: 9800,
-            amt: 2290,
-        },
-        {
-            name: 'Page D',
-            uv: 2780,
-            pv: 3908,
-            amt: 2000,
-        },
-        {
-            name: 'Page E',
-            uv: 1890,
-            pv: 4800,
-            amt: 2181,
-        },
-        {
-            name: 'Page F',
-            uv: 2390,
-            pv: 3800,
-            amt: 2500,
-        },
-        {
-            name: 'Page G',
-            uv: 3490,
-            pv: 4300,
-            amt: 2100,
-        },
-    ];
+    useEffect(() => {
+        BarData();
+    },[]);
+
+
+    const BarData = () => {
+        axios.get(`/api/PriceProduct`).then(res => {
+            if(res.data.status === 200) {
+                setBarData(res.data.data);
+            }
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning');
+            }
+        })
+    }
+
+    for (let index = 0; index < BarFetch.length; index++) {
+        product_name.push(BarFetch[index].product_name);
+        product_price.push(BarFetch[index].product_price);
+        product_color.push('#'+BarFetch[index].product_color_code)
+    }
+
+
+
+    const data = {
+        
+        labels: product_name,
+        datasets: [
+            {
+                label: 'Product Price Chart',
+                data: product_price,
+                backgroundColor: product_color,
+                borderWidth: 1
+            }
+        ]
+    };
+    const options = {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    display: false
+                }
+            }
+        }
+    };
 
     return (
-        <div className='card' style={{ height: "200px", border: "none", backgroundColor: "transparent" }}>
-            <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-
-                    width={500}
-                    height={300}
-                    data={data}
-                    margin={{
-                        top: 0,
-                        right: 0,
-                        left: 0,
-                        bottom: 0,
-                    }}
-                >
-                    <CartesianGrid horizontal={false} vertical={false} strokeDasharray="3 3" />
-                    {/* <XAxis dataKey="name" /> */}
-                    <YAxis />
-                    <Tooltip cursor={{ fill: "transparent" }} wrapperStyle={{ backgroundColor: 'red' }} />
-                    <Legend  />
-                    <Bar dataKey="pv" fill="#8884d8" />
-                    <Bar dataKey="uv" fill="#82ca9d" />
-                </BarChart>
-            </ResponsiveContainer>
+        <div className=''>
+            <Chart type="bar" style={{ height: "320px" }} width='100%'   data={data} options={options} />
         </div>
+        
     )
 }
 

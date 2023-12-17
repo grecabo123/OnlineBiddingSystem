@@ -85,9 +85,9 @@ function Admin() {
 
 
                     {/* Chart */}
-                    <li class="nav-title">Chart</li>
+                    <li class="nav-title">Comnplaint</li>
                     <li class="nav-item"><Link class="nav-link" to="/admin/issue">
-                        <FaChartLine className='nav-icon' /> Reports</Link></li>
+                        <FcSms className='nav-icon' /> Reports</Link></li>
 
 
                     {/* History */}

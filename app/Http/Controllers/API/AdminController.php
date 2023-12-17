@@ -202,6 +202,7 @@ class AdminController extends Controller
             "name"              =>          "required",
             "price"             =>          "required",
             "UnitType"          =>          "required",
+            "color"             =>          "required",
         ]);
 
         if($validator->fails()) {
@@ -215,6 +216,7 @@ class AdminController extends Controller
             $product->product_name = $request->name;
             $product->product_price = $request->price;
             $product->type_of_quantity = $request->UnitType;
+            $product->product_color_code = $request->color;
             $product->save();
 
             return response()->json([

@@ -75,8 +75,12 @@ class SearchItems extends Controller
         $data = DB::table('tbl_biddingitem')
             ->join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
                 ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
-                    ->orderBy('tbl_biddingitem.created_at','ASC')
-                        ->get();
+                    ->join('tbl_barangay_coordinates','tbl_barangay_coordinates.id','=','tbl_biddinginfo.bidding_brgy_fk')
+                        ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
+                            ->orderBy('tbl_biddingitem.created_at','ASC')
+                                ->get();
+
+        
 
 
         return response()->json([

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Models\BiddingInfo;
 use App\Models\BiddingItem;
 use App\Models\BiddingImage;
+use App\Models\BiddingPost;
+use App\Models\BidHistory;
 use App\Models\ProductData;
 use Illuminate\Http\Request;
 use App\Models\AcitivityLogs;
@@ -83,9 +85,7 @@ class UserController extends Controller
             $biddinginfo->save();
 
             $biddingimg = new BiddingImage;
-
             $biddingimg->item_fk = $biddingitem->id;
-
             if($request->hasFile('files')){
                 $file = $request->file('files');
                 $extension = $file->getClientOriginalExtension();
@@ -93,13 +93,24 @@ class UserController extends Controller
                 $file->move('Uploads/Files/',$filename);
                 $biddingimg->image =  "Uploads/Files/".$filename;                
             }
-
             $biddingimg->save();
 
             $logs = new AcitivityLogs;
             $logs->activity = "Creating Bidding Item"." ".$request->productname;
             $logs->user_logs_fk = $request->user_logs;
             $logs->save();
+
+            $productprice = new BiddingPost;
+            $productprice->bidding_amt_fk = $biddinginfo->id;
+            $productprice->amount_bidding = $product->product_price;
+            $productprice->bidding_item_user_fk = $request->user_logs;
+            $productprice->save();
+
+            $bidding_history = new BidHistory;
+            $bidding_history->tbl_bidding_history = $biddingitem->id;
+            $bidding_history->tbl_biddingprice_fk = $product->product_price;
+            $bidding_history->user_fk = $request->user_logs;
+            $bidding_history->save();
     
             return response()->json([
                 "status"        =>          200,
@@ -109,11 +120,12 @@ class UserController extends Controller
         }
     }
 
-    public function ProductDetails(){
+    public function ProductDetails($id){
         $data = DB::table('tbl_biddingitem')
             ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
-                ->orderBy('tbl_biddingitem.created_at','DESC')
-                    ->get();
+                ->where('tbl_biddinginfo.user_info_fk',$id)
+                    ->orderBy('tbl_biddingitem.created_at','DESC')
+                        ->get();
 
         return response()->json([
             "status"            =>          200,
@@ -122,6 +134,20 @@ class UserController extends Controller
     }
 
     public function ProductDetailsInformation($id){
+
+        $bid = BiddingItem::where('uniq_key',$id)->first();
+
+        $bid_user = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
+            ->selectRaw('tbl_bidding_history.tbl_biddingprice_fk,users.name_user')
+                ->where('tbl_bidding_history.tbl_biddingitem_fk',$bid->id)
+                    ->get();
+
+            $bidwin = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
+                ->selectRaw('users.name_user,tbl_bidding_history.tbl_biddingprice_fk,users.id,users.email')
+                    ->where('tbl_biddingitem_fk', $bid->id)
+                        ->orderBy('tbl_bidding_history.tbl_biddingprice_fk','DESC')
+                            ->first();
+
         $data = DB::table('tbl_biddingitem')
             ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
                 ->join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
@@ -131,6 +157,8 @@ class UserController extends Controller
         return response()->json([
             "status"            =>          200,
             "product"           =>          $data,
+            "list"              =>          $bid_user,
+            "win"               =>          $bidwin,
         ]);
     }
 

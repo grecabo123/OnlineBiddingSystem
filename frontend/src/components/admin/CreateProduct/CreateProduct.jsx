@@ -14,13 +14,15 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import swal from 'sweetalert';
 import { Toast } from 'primereact/toast';
-
+import { ColorPicker } from 'primereact/colorpicker';
+        
 
 function CreateProduct() {
 
     const [product, setProduct] = useState([]);
     const [loading, setloading] = useState(true);
     const [visible, setVisible] = useState(false);
+    const [color, setColor] = useState([]);
     const toast = useRef();
     const [Unit, setUnit] = useState([]);
     const [AddItem, setAddItem] = useState({
@@ -99,6 +101,7 @@ function CreateProduct() {
             name: AddItem.product_name,
             price: AddItem.product_price,
             UnitType: Unit,
+            color: color,
         };
 
         axios.post(`/api/CreateProduct`,data).then(res => {
@@ -157,6 +160,13 @@ function CreateProduct() {
                                         Per Unit
                                     </label>
                                     <Dropdown className='w-100' value={Unit} options={unit} placeholder='Choose Unit' onChange={(e) => setUnit(e.target.value)} />
+                                </div>
+                                <div className="col-lg-12 mb-2">
+                                    <label htmlFor="" className="form-label">
+                                        Color Code Product
+                                    </label>
+                                    {color}
+                                    <ColorPicker className='w-100' value={color} onChange={(e) => setColor(e.value)} />
                                 </div>
                                 <div className="mt-3 d-flex justify-content-end">
                                     <Button className='p-button-sm p-button-info' label='Create Product' />

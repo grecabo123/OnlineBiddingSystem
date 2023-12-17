@@ -1,9 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import swal from 'sweetalert';
-import { Badge } from 'primereact/badge'
-import { FcBusinessContact } from 'react-icons/fc';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';

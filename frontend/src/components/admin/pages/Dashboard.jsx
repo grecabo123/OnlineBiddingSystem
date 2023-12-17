@@ -45,7 +45,7 @@ function Dashboard() {
                     verified: res.data.verified,
                     pending: res.data.pending,
                     report: res.data.reports,
-               
+
                 })
             }
             else {
@@ -139,23 +139,31 @@ function Dashboard() {
                             </motion.div>
                         </div>
                         <motion.div
-                                initial={{ opacity: 0, scale: 0.5 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 1.3,
-                                    ease: [0, 0.71, 0.2, 1.01]
-                                }}
-                            >
-                        <div className="row mb-3">
-                            <div className="col-lg-12 col-sm-12 mb-2">
-                                <TableRecords />
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.6,
+                                delay: 1.3,
+                                ease: [0, 0.71, 0.2, 1.01]
+                            }}
+                        >
+                            <div className="row mb-3">
+                                <div className="col-lg-4 col-sm-12 mb-2">
+                                    <Card title="Products">
+                                        <PieChartdata />
+                                    </Card>
+                                </div>
+                                <div className="col-lg-8 col-sm-12 mb-2">
+                                    {/* <Card title="Products"> */}
+                                        <BarChartdata />
+                                        {/* <PieChartdata /> */}
+                                    {/* </Card> */}
+                                </div>
+                                <div className="col-lg-12 col-sm-12 mb-2">
+                                    <TableRecords />
+                                </div>
                             </div>
-                            <div className="col-lg-3 col-sm-12 mb-2">
-                                {/* <PieChartdata /> */}
-                            </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
 
                         {/* <div className="row mb-3">
                             <div className="col-lg-6 col-md-6 col-sm-12 mb-2">

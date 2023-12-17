@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\API\PriceMonitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SearchItems;
 use App\Http\Controllers\API\ActivityLogs;
 use App\Http\Controllers\API\AuthControll;
+use App\Http\Controllers\API\PriceMonitor;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\BarangayController;
+use App\Http\Controllers\API\PlaceBidController;
 use App\Http\Controllers\API\SearchingController;
 
 Route::post('Login',[AuthControll::class, 'Login']);
@@ -18,7 +19,7 @@ Route::get('BarangayData', [BarangayController::class, 'ListBarangay']);
 Route::get('AllUsers',[SearchingController::class, 'AllUsers']);
 Route::get('Logs/{id}', [ActivityLogs::class, 'Logs']);
 
-
+Route::post('PlaceBid',[PlaceBidController::class, 'PlaceBid']);
 
 
 // Search Item
@@ -75,7 +76,7 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
         ],200);
     });
     Route::post('AddProducts', [UserController::class,  'AddProducts']);
-    Route::get('ProductDetails', [UserController::class,  'ProductDetails']);
+    Route::get('ProductDetails/{id}', [UserController::class,  'ProductDetails']);
     Route::delete('RemoveProducts/{id}', [UserController::class,  'RemoveProducts']);
     Route::get('GetProductUpdate', [UserController::class, 'GetProductUpdate']);
     Route::get('ProductInformation/{id}', [UserController::class, 'ProductInformation']);

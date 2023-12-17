@@ -161,11 +161,9 @@ function AddProduct() {
                                                     <label htmlFor="Product Name" className="form-label">
                                                     <span className='text-danger'>*</span>Product Category
                                                     </label>
-                                                    <Dropdown placeholder='Type of Product' className='w-100 p-inputtext-sm' value={TypeProductData} name='product_type' options={TypeProduct} onChange={(e) => setTypeData(e.target.value)} />
+                                                    <Dropdown filter placeholder='Type of Product' className='w-100 p-inputtext-sm' value={TypeProductData} name='product_type' options={TypeProduct} onChange={(e) => setTypeData(e.target.value)} />
                                                     <small className='text-danger'>{ProductData.error.producttype}</small>
-
                                                 </div>
-                                            
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
                                                     <span className='text-danger'>*</span>Barangay

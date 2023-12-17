@@ -42,7 +42,7 @@ function User() {
         <>
             <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
                 <div class="sidebar-brand d-none d-md-flex">
-                    <h4>Users</h4>
+                    <h4>Bidder</h4>
                 </div>
                 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
                     <li class="nav-item"><a class="nav-link fs-5">
@@ -56,6 +56,8 @@ function User() {
                     
                     <li class="nav-item"><Link class="nav-link" to="/user/product">
                         <FcFolder className='nav-icon' /> Bid Items</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/product">
+                        <FcSms className='nav-icon' /> Notification</Link></li>
 
           
                 
@@ -81,12 +83,13 @@ function User() {
                 <header class="header  mb-4">
                     <div class="container-fluid">
 
-                        <Button className='p-button-sm p-button-info p-button-outlined' icon={PrimeIcons.REFRESH} label='Refresh' />
+                        {/* <Button className='p-button-sm p-button-info p-button-outlined' icon={PrimeIcons.REFRESH} label='Refresh' /> */}
 
                         <ul class="header-nav ms-auto">
                         </ul>
                         <ul class="header-nav ms-3">
                             <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                {/* <span className='me-2 text-light m-0'>dawdawdw</span> */}
                             <Menu model={items} id="popup_menu" popup ref={menu}  />
                             <Avatar className='text-white fw-bold' onClick={(event) => menu.current.toggle(event)} aria-controls="popup_menu" aria-haspopup  shape='square' label='A' size='large' />
                                 {/* <div class="avatar avatar-md"> <Avatar className='text-white fw-bold' shape='square' label='A'  size='large' /> </div> */}

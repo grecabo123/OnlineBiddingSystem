@@ -8,25 +8,24 @@ import { Toast } from 'primereact/toast'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import swal from 'sweetalert'
-import differenceBy from "lodash.differenceby";
-import { NumericFormat } from 'react-number-format';
-import { FcFolder } from 'react-icons/fc'
-import { Card } from 'primereact/card'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
+import { Dialog } from 'primereact/dialog'
+import { Card } from 'primereact/card'
+import ProductDetails from './ProductDetails'
 
 function ProductList() {
 
     const history = useHistory();
     const [loading, setloading] = useState(true);
     const [Product, setProduct] = useState([]);
-    const [filter, setfilter] = useState([]);
-    const [selectedRows, setSelectedRows] = React.useState([]);
-    const [toggleCleared, setToggleCleared] = React.useState(false);
+    const [Details, setDetails] = useState([]);
+    const [visible, setVisible] = useState(false);
     const toast = useRef();
 
     useEffect(() => {
-        axios.get(`/api/ProductDetails`).then(res => {
+        const id = localStorage.getItem('auth_id');
+        axios.get(`/api/ProductDetails/${id}`).then(res => {
             if (res.data.status === 200) {
                 setProduct(res.data.product);
             }
@@ -42,6 +41,36 @@ function ProductList() {
         })
     }, []);
 
+    const product_status_data = (Product) => {
+        return (
+            <>
+                {Product.price_status === 0 ? <Tag severity={'danger'} value='Selling' /> : <Tag severity={'success'} value='Sold' />}
+            </>
+        )
+    }
+
+    const DisplayData = (e) => {
+        setDetails(e.currentTarget.getAttribute('data-uniq-key'));
+        setVisible(true);
+    }
+
+
+    const product_action = (Product) => {
+        return (
+            <>
+                <Button className='p-button-sm p-button-info' label='Details' onClick={DisplayData} data-uniq-key={Product.uniq_key} />
+            </>
+        )
+    }
+
+    const PriceFormat = (Product) => {
+        return(
+            <>
+                ₱<span>{Product.product_price.toFixed(2)}</span>
+            </>
+        )
+    }
+
 
     return (
         <>
@@ -50,17 +79,21 @@ function ProductList() {
                 <div className="row">
                     <Card title="My Product">
                         <div className="d-flex justify-content-end mb-3">
-                            {/* <Link to="/user/add"><Button icon="pi pi-plus" className='p-button-sm p-button-info' label='Register Product' /></Link> */}
                         </div>
                         <DataTable value={Product} paginator rows={10} loading={loading} paginatorLeft>
                             <Column field='product_name' header="Product Name"></Column>
-                            <Column field='product_price' header="Product Price"></Column>
-                            <Column field='quantity_product' header="Product Price"></Column>
-                            <Column field='product_price' header="Action"></Column>
+                            <Column field='product_price' body={PriceFormat} header="Product Price"></Column>
+                            <Column field='price_status' body={product_status_data} header="Status"></Column>
+                            <Column field='uniq_key' body={product_action} header="Action"></Column>
                         </DataTable>
                     </Card>
                 </div>
             </div>
+            <Dialog header="Details" position='top' draggable={false} visible={visible} onHide={() => setVisible(false)}
+                style={{ width: '100%' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}>
+                <ProductDetails data={Details} />
+            </Dialog>
+
         </>
     )
 }
