@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 17, 2023 at 06:11 AM
+-- Generation Time: Dec 18, 2023 at 07:32 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.5
 
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `personal_access_tokens`
@@ -118,9 +118,12 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
 (29, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', 'e0910a9131a7e657d43b849c03695e559eef165c63fafa965568782436423772', '[\"server:admin\"]', '2023-12-14 09:32:25', '2023-12-14 02:33:42', '2023-12-14 09:32:25'),
-(31, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '73afa871ebe4b61da72822694855be81b281c77320ff064299a9fa34d3f99197', '[\"server:admin\"]', '2023-12-16 22:08:18', '2023-12-16 00:07:19', '2023-12-16 22:08:18'),
-(35, 'App\\Models\\User', 16, 'zigo@mailinator.com_User', '97d48492ce264b32f079b610c380b32cefa7c18cee564a8c97b186028c93869c', '[\"server:user\"]', '2023-12-16 22:08:42', '2023-12-16 11:12:41', '2023-12-16 22:08:42'),
-(36, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', 'fe943b7e9f0795ef445990ffc894be0eded6e7fa7a83045a2e715c83032883d2', '[\"server:user\"]', '2023-12-16 22:08:17', '2023-12-16 11:14:16', '2023-12-16 22:08:17');
+(31, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '73afa871ebe4b61da72822694855be81b281c77320ff064299a9fa34d3f99197', '[\"server:admin\"]', '2023-12-17 01:44:39', '2023-12-16 00:07:19', '2023-12-17 01:44:39'),
+(38, 'App\\Models\\User', 15, 'qolasepuci@mailinator.com_User', '35a545a498dbcdd7e960d561deb737a35dfa06f3164ee3c6f25b75df16ee69dc', '[\"server:user\"]', '2023-12-17 01:21:32', '2023-12-16 22:21:31', '2023-12-17 01:21:32'),
+(39, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '28e113b01c9385828f5366527ff158b6cb8864a85c2ccb1d3925b756bf8ff12f', '[\"server:admin\"]', '2023-12-17 11:30:06', '2023-12-17 10:50:22', '2023-12-17 11:30:06'),
+(42, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', 'a1b7176049e3b398d8f700f697c8e3cdeea32682303e9621522575c72beea4d4', '[\"server:user\"]', '2023-12-17 12:12:20', '2023-12-17 11:38:01', '2023-12-17 12:12:20'),
+(43, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '5bb1342e91a6ec0aefc16f5f5ccb0e8c582f2d1c82371571de86f8eaf2cc27e2', '[\"server:admin\"]', '2023-12-17 22:29:59', '2023-12-17 22:23:07', '2023-12-17 22:29:59'),
+(44, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', '303d7b756dcb69759a53d8f5677ba1a4e71fb238fbe9547c43239f5d5165eca0', '[\"server:user\"]', '2023-12-17 23:08:34', '2023-12-17 22:58:16', '2023-12-17 23:08:34');
 
 -- --------------------------------------------------------
 
@@ -247,14 +250,14 @@ CREATE TABLE IF NOT EXISTS `tbl_biddingamount` (
   PRIMARY KEY (`id`),
   KEY `tbl_biddingamount_bidding_amt_fk_foreign` (`bidding_amt_fk`),
   KEY `tbl_biddingamount_bidding_item_user_fk_foreign` (`bidding_item_user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_biddingamount`
 --
 
 INSERT INTO `tbl_biddingamount` (`id`, `bidding_amt_fk`, `amount_bidding`, `bidding_item_user_fk`, `created_at`, `updated_at`) VALUES
-(1, 1, 32.13, 2, '2023-12-16 10:53:55', '2023-12-16 13:12:09');
+(1, 1, 56.12, 2, '2023-12-16 10:53:55', '2023-12-16 22:21:48');
 
 -- --------------------------------------------------------
 
@@ -271,20 +274,22 @@ CREATE TABLE IF NOT EXISTS `tbl_biddinginfo` (
   `bidding_brgy_fk` bigint(20) UNSIGNED NOT NULL,
   `bidding_item_fk` bigint(20) UNSIGNED NOT NULL,
   `user_info_fk` bigint(20) UNSIGNED NOT NULL,
+  `tbl_productanme_tbl_fk` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `bidding_brgy_fk` (`bidding_brgy_fk`),
   KEY `user_info_fk` (`user_info_fk`),
-  KEY `bidding_item_fk` (`bidding_item_fk`)
+  KEY `bidding_item_fk` (`bidding_item_fk`),
+  KEY `tbl_productanme_tbl_fk` (`tbl_productanme_tbl_fk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_biddinginfo`
 --
 
-INSERT INTO `tbl_biddinginfo` (`id`, `product_name`, `product_price`, `address`, `bidding_brgy_fk`, `bidding_item_fk`, `user_info_fk`, `created_at`, `updated_at`) VALUES
-(1, 'Corn', 10.50, 'Butuan City', 24, 1, 2, '2023-12-16 10:53:55', '2023-12-16 10:53:55');
+INSERT INTO `tbl_biddinginfo` (`id`, `product_name`, `product_price`, `address`, `bidding_brgy_fk`, `bidding_item_fk`, `user_info_fk`, `tbl_productanme_tbl_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Corn', 10.50, 'Butuan City', 24, 1, 2, 3, '2023-12-16 10:53:55', '2023-12-16 10:53:55');
 
 -- --------------------------------------------------------
 
@@ -331,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_history` (
   PRIMARY KEY (`id`),
   KEY `tbl_bidding_history_tbl_biddingitem_fk_foreign` (`tbl_biddingitem_fk`),
   KEY `tbl_bidding_history_user_fk_foreign` (`user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_bidding_history`
@@ -339,7 +344,9 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_history` (
 
 INSERT INTO `tbl_bidding_history` (`id`, `tbl_biddingitem_fk`, `tbl_biddingprice_fk`, `user_fk`, `created_at`, `updated_at`) VALUES
 (1, 1, 10.50, 2, NULL, NULL),
-(3, 1, 32.13, 16, '2023-12-16 13:12:09', '2023-12-16 13:12:09');
+(3, 1, 32.13, 16, '2023-12-16 13:12:09', '2023-12-16 13:12:09'),
+(4, 1, 42.50, 16, '2023-12-16 22:18:30', '2023-12-16 22:18:30'),
+(5, 1, 56.12, 15, '2023-12-16 22:21:48', '2023-12-16 22:21:48');
 
 -- --------------------------------------------------------
 
@@ -382,7 +389,7 @@ CREATE TABLE IF NOT EXISTS `tbl_contact` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_contact_contact_user_fk_foreign` (`contact_user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_contact`
@@ -404,7 +411,8 @@ INSERT INTO `tbl_contact` (`id`, `contact_number`, `home_address`, `zipcode`, `c
 (13, 'Necessitati', 'Ab ullamco suscipit', '43567', 13, '2023-08-23 03:06:13', '2023-08-23 03:06:13'),
 (14, 'Dolor ad cu', 'Nemo velit soluta re', '30635', 14, '2023-08-23 03:13:24', '2023-08-23 03:13:24'),
 (15, '09232276437', 'Sunt ullam quisquam', '31054', 15, '2023-08-23 03:18:35', '2023-08-23 03:18:35'),
-(16, 'Ullamco sim', 'Et cupiditate vel il', '54916', 16, '2023-08-25 03:31:41', '2023-08-25 03:31:41');
+(16, 'Ullamco sim', 'Et cupiditate vel il', '54916', 16, '2023-08-25 03:31:41', '2023-08-25 03:31:41'),
+(17, '09091234512', 'Quis vel consectetur', '6000', 17, '2023-12-17 11:36:31', '2023-12-17 11:36:31');
 
 -- --------------------------------------------------------
 
@@ -421,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `tbl_logs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_logs_user_logs_fk_foreign` (`user_logs_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_logs`
@@ -488,7 +496,11 @@ INSERT INTO `tbl_logs` (`id`, `activity`, `user_logs_fk`, `created_at`, `updated
 (58, 'Creating Bidding Item Corn Sweet', 2, '2023-12-12 00:12:22', '2023-12-12 00:12:22'),
 (59, 'Creating Bidding Item Bulad', 2, '2023-12-12 00:16:01', '2023-12-12 00:16:01'),
 (60, 'Creating Bidding Item NPA Rice', 2, '2023-12-16 10:49:11', '2023-12-16 10:49:11'),
-(61, 'Creating Bidding Item Corn', 2, '2023-12-16 10:53:55', '2023-12-16 10:53:55');
+(61, 'Creating Bidding Item Corn', 2, '2023-12-16 10:53:55', '2023-12-16 10:53:55'),
+(62, 'nucegolegi@mailinator.com Sent Message-Approved', 1, '2023-12-17 22:24:15', '2023-12-17 22:24:15'),
+(63, 'nucegolegi@mailinator.com Sent Message-Approved', 1, '2023-12-17 22:26:31', '2023-12-17 22:26:31'),
+(64, 'nucegolegi@mailinator.com Sent Message-Approved', 1, '2023-12-17 22:27:26', '2023-12-17 22:27:26'),
+(65, 'fybokubyja@mailinator.com Sent Message-Approved', 1, '2023-12-17 22:28:36', '2023-12-17 22:28:36');
 
 -- --------------------------------------------------------
 
@@ -500,13 +512,13 @@ DROP TABLE IF EXISTS `tbl_message`;
 CREATE TABLE IF NOT EXISTS `tbl_message` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_message_fk` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_message_user_message_fk_foreign` (`user_message_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_message`
@@ -517,7 +529,11 @@ INSERT INTO `tbl_message` (`id`, `subject`, `message`, `user_message_fk`, `creat
 (2, 'Approved', '<p>adihaidhajdaiwhdawhd</p>', 3, '2023-08-23 03:21:27', '2023-08-23 03:21:27'),
 (3, 'Approved', '<p>Hello Approved na imong account pwede naka maka login.</p>', 4, '2023-08-26 07:01:02', '2023-08-26 07:01:02'),
 (4, 'Approved', '<p>sawdad</p>', 5, '2023-09-25 06:06:15', '2023-09-25 06:06:15'),
-(5, 'Blurred Image', '<p>dawdawdawd</p>', 6, '2023-12-11 12:34:18', '2023-12-11 12:34:18');
+(5, 'Blurred Image', '<p>dawdawdawd</p>', 6, '2023-12-11 12:34:18', '2023-12-11 12:34:18'),
+(6, 'Approved', NULL, 7, '2023-12-17 22:24:15', '2023-12-17 22:24:15'),
+(7, 'Approved', NULL, 7, '2023-12-17 22:26:31', '2023-12-17 22:26:31'),
+(8, 'Approved', NULL, 7, '2023-12-17 22:27:26', '2023-12-17 22:27:26'),
+(9, 'Approved', NULL, 8, '2023-12-17 22:28:36', '2023-12-17 22:28:36');
 
 -- --------------------------------------------------------
 
@@ -642,7 +658,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `user_brgy_fk` (`user_brgy_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -655,16 +671,17 @@ INSERT INTO `users` (`id`, `username`, `name_user`, `email`, `user_brgy_fk`, `ro
 (4, 'jamefakevi', 'Sherilyn Briones', 'byfekufi@mailinator.com', 2, 2, 1, 'Uploads/Files/Demetria Rose.png', 'August 31 2023', NULL, '$2y$10$F0AvO86B7L2ii.BWPSmzPOxkrlm.xOMBEt7m.zYwHJT.yuhc028Sa', NULL, '2023-08-22 17:06:39', '2023-08-26 07:01:02'),
 (5, 'ryhedar', 'Tyrone Meadows Quin Freeman Natalie Barber', 'bihij@mailinator.com', 1, 2, 1, 'Uploads/Files/Natalie Barber.png', 'August 07 2023', NULL, '$2y$10$.y1LQgq.d7luQWjzAFENU.0RAqvKq9hxuYBzZMaVI.VX.HLnQK9ai', NULL, '2023-08-22 17:07:45', '2023-09-25 06:06:15'),
 (6, 'jovukis', 'Barrett Bradshaw Kitra Brady Madison Oconnor', 'geti@mailinator.com', 3, 2, 1, 'Uploads/Files/Madison Oconnor.png', 'August 03 2023', NULL, '$2y$10$gifDKibgRydmTUl/WH1Njuy0BvWZp3kegj0gMnpBCJvJrByfFa9Ru', NULL, '2023-08-22 17:09:28', '2023-12-11 12:34:18'),
-(7, 'qolykane', 'Alika Hardy August Solomon Kelsie Rodgers', 'nucegolegi@mailinator.com', 3, 2, 0, 'Uploads/Files/Kelsie Rodgers.png', 'August 01 2023', NULL, '$2y$10$c2YbL8F/lACouuv65S9CCebWnC6fM0BtnDnIniu1F34LFhvhNDyU.', NULL, '2023-08-22 17:11:29', '2023-08-22 17:11:29'),
-(8, 'zuvewoto', 'Ray Dominguez Michelle Rocha Keefe Ray', 'fybokubyja@mailinator.com', 58, 2, 0, 'Uploads/Files/Keefe Ray.png', 'August 05 2023', NULL, '$2y$10$09FxFKlTdwvnQWLKSgSHvOgNZTI8ldL4suysBIDVYn7FHg9DfjD6a', NULL, '2023-08-22 17:11:59', '2023-08-22 17:11:59'),
+(7, 'qolykane', 'Alika Hardy August Solomon Kelsie Rodgers', 'nucegolegi@mailinator.com', 3, 2, 1, 'Uploads/Files/Kelsie Rodgers.png', 'August 01 2023', NULL, '$2y$10$c2YbL8F/lACouuv65S9CCebWnC6fM0BtnDnIniu1F34LFhvhNDyU.', NULL, '2023-08-22 17:11:29', '2023-12-17 22:27:26'),
+(8, 'zuvewoto', 'Ray Dominguez Michelle Rocha Keefe Ray', 'fybokubyja@mailinator.com', 58, 2, 1, 'Uploads/Files/Keefe Ray.png', 'August 05 2023', NULL, '$2y$10$09FxFKlTdwvnQWLKSgSHvOgNZTI8ldL4suysBIDVYn7FHg9DfjD6a', NULL, '2023-08-22 17:11:59', '2023-12-17 22:28:36'),
 (9, 'xugob', 'Abra Carpenter Ethan Wong Oleg Sykes', 'pyfequj@mailinator.com', 3, 2, 0, 'Uploads/Files/Oleg Sykes.png', 'August 20 2023', NULL, '$2y$10$qOQi6hWkW0XdJ.jdvpw28.WQSqVm/j21M4fM9IuuJX0rkrxoe852e', NULL, '2023-08-22 17:12:20', '2023-08-22 17:12:20'),
 (10, 'zobuvaf', 'Rafael Howard Tiger Nielsen Xandra Gill', 'lysep@mailinator.com', 46, 2, 0, 'Uploads/Files/Xandra Gill.png', 'August 24 2023', NULL, '$2y$10$U/RZqZtKq17c/kwRegZJ8.EPPqi.t.ctoUr93rqAqWVpFe.0UTq.2', NULL, '2023-08-23 03:00:18', '2023-08-23 03:00:18'),
 (11, 'wirudytahu', 'Jenna Banks Suki Wilkinson Wallace Freeman', 'tyfe@mailinator.com', 2, 2, 0, 'Uploads/Files/Wallace Freeman.png', 'November 18 2005', NULL, '$2y$10$O5Zp3cyYXfiTkv7IzBscseag6goJwItAj.xbbczzOjLtqVaHeKu6m', NULL, '2023-08-23 03:01:29', '2023-08-23 03:01:29'),
 (12, 'tawuk', 'Lacy Roberts Alexa Oneal Jael Nelson', 'cateju@mailinator.com', 43, 2, 0, 'Uploads/Files/Jael Nelson.png', 'November 30 2005', NULL, '$2y$10$BMDKijeH0D9arqqqLs.30OoT/3ou56hrVOT3cKKgOf/p7sUUy0C5C', NULL, '2023-08-23 03:02:15', '2023-08-23 03:02:15'),
 (13, 'xuwymi', 'Karyn Rogers Virginia Hicks Seth Petersen', 'jymy@mailinator.com', 1, 2, 0, 'Uploads/Files/Seth Petersen.png', 'August 24 2023', NULL, '$2y$10$dJrGIbG.wPcF2TzxCCliDOPx3en8Lq7XdojZwSCwGixWiZBPIbm2S', NULL, '2023-08-23 03:06:13', '2023-08-23 03:06:13'),
 (14, 'toronalylo', 'Brent Erickson Jerry Blackburn Keelie Cobb', 'tokuva@mailinator.com', 2, 2, 0, 'Uploads/Files/Keelie Cobb.png', 'August 16 2023', NULL, '$2y$10$eRg99Et2U9wIfAEqlbqTROL/fi.cOzyWVB0w0N.u/OrUGoJRY7bNC', NULL, '2023-08-23 03:13:24', '2023-08-23 03:13:24'),
-(15, 'fuhadeg', 'Melinda Mendoza Vladimir Carver Taylor Mcneil', 'qolasepuci@mailinator.com', 2, 2, 0, 'Uploads/Files/Taylor Mcneil.png', 'August 13 2023', NULL, '$2y$10$IeQhkkE450c76LBx7qQ3XuSKDVQhY7o0BKfWvw71IicmXOuNE.Vz6', NULL, '2023-08-23 03:18:35', '2023-08-23 03:18:35'),
-(16, 'neceqy', 'Yuri Navarro Genevieve Hopper Ashton Scott', 'zigo@mailinator.com', 3, 2, 1, 'Uploads/Files/Ashton Scott.png', 'August 30 2023', NULL, '$2y$10$v6n3e0JggRUxZGjNHpV2sOZcutFOq5XON721F.6gS9rKOmsckhDzS', NULL, '2023-08-25 03:31:41', '2023-08-25 03:31:41');
+(15, 'fuhadeg', 'Melinda Mendoza Vladimir Carver Taylor Mcneil', 'qolasepuci@mailinator.com', 2, 2, 1, 'Uploads/Files/Taylor Mcneil.png', 'August 13 2023', NULL, '$2y$10$v6n3e0JggRUxZGjNHpV2sOZcutFOq5XON721F.6gS9rKOmsckhDzS', NULL, '2023-08-23 03:18:35', '2023-08-23 03:18:35'),
+(16, 'neceqy', 'Yuri Navarro Genevieve Hopper Ashton Scott', 'zigo@mailinator.com', 3, 2, 1, 'Uploads/Files/Ashton Scott.png', 'August 30 2023', NULL, '$2y$10$v6n3e0JggRUxZGjNHpV2sOZcutFOq5XON721F.6gS9rKOmsckhDzS', NULL, '2023-08-25 03:31:41', '2023-08-25 03:31:41'),
+(17, 'muhely', 'Shay Travis Ruth Sampson Dante Suarez', 'xana@mailinator.com', 24, 2, 0, 'Uploads/Files/Dante Suarez.png', 'December 19 2023', NULL, '$2y$10$fLlCLrbkPDkEinHdPF3mpO5Lp4mQvEOowFk9qRw2ztEoYffPH/wqK', NULL, '2023-12-17 11:36:31', '2023-12-17 11:36:31');
 
 --
 -- Constraints for dumped tables
@@ -683,7 +700,8 @@ ALTER TABLE `tbl_biddingamount`
 ALTER TABLE `tbl_biddinginfo`
   ADD CONSTRAINT `tbl_biddinginfo_ibfk_1` FOREIGN KEY (`bidding_brgy_fk`) REFERENCES `tbl_barangay_coordinates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_biddinginfo_ibfk_2` FOREIGN KEY (`user_info_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_biddinginfo_ibfk_3` FOREIGN KEY (`bidding_item_fk`) REFERENCES `tbl_biddingitem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tbl_biddinginfo_ibfk_3` FOREIGN KEY (`bidding_item_fk`) REFERENCES `tbl_biddingitem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_biddinginfo_ibfk_4` FOREIGN KEY (`tbl_productanme_tbl_fk`) REFERENCES `tbl_productanme_tbl` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_bidding_history`
