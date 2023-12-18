@@ -15,6 +15,7 @@ class ProductData extends Model
         "product_name",
         "product_price",
         "type_of_quantity",
+        "product_color_code",
     ];
 
     

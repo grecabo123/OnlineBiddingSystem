@@ -38,25 +38,6 @@ class UserController extends Controller
 
 
         if($validate->fails()) {
-            // if($request->hasFile('files_upload')){
-               
-            //     foreach($request->files_upload as $files) {
-            //         // $count = 0;
-            //         $file = $files->file('file');
-            //         $extension = $file->getClientOriginalExtension();
-            //         $filename = $request->productname.".".$extension;
-            //         $file->move('Uploads/Files/',$filename);
-            //         $information->file = "Uploads/Files/".$filename;
-            //         // $array = array( 
-                        
-            //         // );
-
-
-    
-            //         // BiddingImage::insert($array);
-    
-            //     }
-            // }
             return response()->json([
                 "error"             =>          $validate->messages(),
               
@@ -65,6 +46,8 @@ class UserController extends Controller
         else{
 
             $product = ProductData::find($request->producttype);
+            // $product_list = ProductData
+
 
             $biddingitem = new BiddingItem;
             $biddingitem->name = $request->productname;
@@ -82,6 +65,7 @@ class UserController extends Controller
             $biddinginfo->bidding_brgy_fk = $request->barangay;
             $biddinginfo->bidding_item_fk = $biddingitem->id;
             $biddinginfo->user_info_fk = $request->user_logs;
+            $biddinginfo->tbl_productanme_tbl_fk = $product->id;
             $biddinginfo->save();
 
             $biddingimg = new BiddingImage;
@@ -107,7 +91,7 @@ class UserController extends Controller
             $productprice->save();
 
             $bidding_history = new BidHistory;
-            $bidding_history->tbl_bidding_history = $biddingitem->id;
+            $bidding_history->tbl_biddingitem_fk = $biddingitem->id;
             $bidding_history->tbl_biddingprice_fk = $product->product_price;
             $bidding_history->user_fk = $request->user_logs;
             $bidding_history->save();
@@ -115,6 +99,7 @@ class UserController extends Controller
             return response()->json([
                 "status"        =>          200,
                 "success"       =>          "Product Has Been Posted",
+                
             ]);
 
         }
