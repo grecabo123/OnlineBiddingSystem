@@ -30,6 +30,8 @@ function AccountPending() {
         })
     }, []);
 
+    
+
     const AccountStatus = (RegisteredData) => {
         return (
             <>
@@ -60,7 +62,7 @@ function AccountPending() {
     return (
         <div className='container-fluid'>
             <Card title="Pending Account" >
-                <DataTable value={RegisteredData} paginator paginatorLeft rows={10}>
+                <DataTable loading={loading} value={RegisteredData} paginator paginatorLeft rows={10}>
                     <Column field='name_user' header="Name of User"></Column>
                     <Column field='email' header="Email"></Column>
                     <Column field='status' body={AccountStatus} header="Status"></Column>

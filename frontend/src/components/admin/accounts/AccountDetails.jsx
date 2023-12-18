@@ -94,7 +94,8 @@ function AccountDetails({data}) {
                 toast.current.show({severity: "success", summary: res.data.message, details: "Message Sent", life: 3000});
                 document.getElementById('formmessage').reset();
                 setTimeout(() => {
-                    history.push('/admin/pending');
+                    window.location.reload();
+                    // history.push('/admin/pending');
                 },1500)
             }
             else{
@@ -144,13 +145,13 @@ function AccountDetails({data}) {
                                 </label>
                                 <InputText className='w-100' name='name' value={AccountInfo.contact_number} />
                             </div>
-                            <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
-                                <label htmlFor="name" className="form-label">
-                                    Barangay
-                                </label>
-                                <Dropdown className='w-100' value={BrgyPick} options={Barangay} onChange={(e) => setPickBrgy(e.target.value)}  />
+                            {/* <div className="col-lg-12 col-md-6 col-sm-12 mb-2"> */}
+                                {/* <label htmlFor="name" className="form-label"> */}
+                                    {/* Barangay */}
+                                {/* </label> */}
+                                {/* <Dropdown className='w-100' value={BrgyPick} options={Barangay} onChange={(e) => setPickBrgy(e.target.value)}  /> */}
                                 {/* <InputText className='w-100' name='name' value={AccountInfo.barangay_list} /> */}
-                            </div>
+                            {/* </div> */}
                             <div className="col-lg-12 col-md-6 col-sm-12 mb-2">
                                 <label htmlFor="name" className="form-label">
                                     Home Address
@@ -185,7 +186,7 @@ function AccountDetails({data}) {
                                                 <label htmlFor="" className="form-label">
                                                     Subject
                                                 </label>
-                                                <Dropdown  className='w-100' value={subjectvalue} onChange={(e) => setSubject(e.target.value)} placeholder='Subject' options={Subjects} />
+                                                <Dropdown className='w-100' value={subjectvalue} onChange={(e) => setSubject(e.target.value)} placeholder='Subject' options={Subjects} />
                                                 {/* <InputText className='w-100' name='subject' /> */}
                                             </div>
                                             <div className="col-lg-12 col-md-12 mb-2">

@@ -7,6 +7,8 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Password } from 'primereact/password';
 import Landing from './Landing';
+import swal from 'sweetalert';
+import { Dialog } from 'primereact/dialog';
 
 
 
@@ -19,7 +21,8 @@ function Login() {
     });
     const history = useHistory();
     const [value, setValue] = useState([]);
-    const [btndis , setbtndis] = useState(false)
+    const [btndis, setbtndis] = useState(false)
+    const [visible, setVisible] = useState(false);
 
     const handleinput = (e) => {
         e.persist();
@@ -37,21 +40,25 @@ function Login() {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post(`/api/Login`, data).then(res => {
                 if (res.data.status === 200) {
-                    if(res.data.role === 1){
+                    if (res.data.role === 1) {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
-                        swal('Success',res.data.message,'success')
+                        swal('Success', res.data.message, 'success')
                         history.push('/admin');
                     }
-                    else{
+                    else {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
-                        swal('Success',res.data.message,'success')
+                        swal('Success', res.data.message, 'success')
                         history.push('/user');
                     }
                 }
-                else{
-                    setLogin({...LoginData, error: res.data.error});
+                else if (res.data.status === 501) {
+                    setVisible(true);
+                    // swal("Warning","Your Account is not Verified Please ")
+                }
+                else {
+                    setLogin({ ...LoginData, error: res.data.error });
                 }
             }).catch((error) => {
                 console.log(error)
@@ -64,7 +71,10 @@ function Login() {
         });
     }
 
-    
+    const onHide = () => {
+        setVisible(false)
+    }
+
 
     const suggestions = <>
         <Divider></Divider>
@@ -98,6 +108,12 @@ function Login() {
     return (
         <div>
             <Landing />
+            
+            <Dialog position='top' draggable={false} header="Message"  visible={visible} onHide={onHide} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '50vw' }}>
+                <p className="p-0">
+                    Your Account is under checking please wait for a while to approve your account by admin.
+                </p>
+            </Dialog>
             <div className="mt-5">
                 <div class="container">
                     <div className="row justify-content-center align-items-center">
@@ -121,7 +137,7 @@ function Login() {
                                             <span className='text-danger'>{LoginData.error.password}</span>
                                         </div>
                                         <div className="mt-3">
-                                            <Button disabled={btndis}  className='p-button-sm p-button-info w-100' label='Login' />
+                                            <Button disabled={btndis} className='p-button-sm p-button-info w-100' label='Login' />
                                         </div>
                                         <div className="mt-3">
                                             <div className="d-flex justify-content-around">
@@ -131,7 +147,7 @@ function Login() {
                                         </div>
                                     </div>
                                 </form>
-                       
+
                             </Card>
                         </div>
                     </div>
