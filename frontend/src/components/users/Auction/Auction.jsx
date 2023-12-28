@@ -114,7 +114,6 @@ function Auction() {
     })
 
 
-    console.log(productlocation);
 
     const itemTemplate = (ProductData) => {
         return (

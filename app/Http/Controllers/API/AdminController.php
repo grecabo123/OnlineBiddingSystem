@@ -235,5 +235,38 @@ class AdminController extends Controller
         ]);
     }
     
+    public function DeleteItem($id){
+
+        $data = ProductData::find($id);
+
+        if($data){
+            $data->delete();
+            return response()->json([
+                "status"                =>          200,
+            ]);
+        }
+        else{
+            return response()->json([
+                "status"                =>          503,
+                "error"                 =>          "Data does not exists",
+            ]);
+        }
+    }
+    public function UpdateProduct(Request $request){
+
+        $data = ProductData::find($request->id);
+
+        if($data) {
+            $data->product_name = $request->name;
+            $data->product_price = $request->price;
+            $data->update();
+
+            return response()->json([
+                "status"            =>          200,
+                
+            ]);
+        }
+        
+    }
     
 }

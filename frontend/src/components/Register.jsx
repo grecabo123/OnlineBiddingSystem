@@ -17,7 +17,7 @@ import Landing from './Landing';
 
 
 
-function Register() {
+function Register(props) {
 
     const [barangaylist, setbarangay] = useState([]);
     const [loading, setloading] = useState(true);
