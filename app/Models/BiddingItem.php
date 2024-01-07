@@ -17,5 +17,6 @@ class BiddingItem extends Model
         "uniq_key",
         "product_type",
         "description",
+        "price_unit"
     ];
 }

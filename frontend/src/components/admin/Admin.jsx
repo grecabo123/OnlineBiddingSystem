@@ -27,6 +27,7 @@ function Admin() {
             if (res.data.status === 200) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_id');
+                localStorage.removeItem('auth_name');
                 swal('Success', res.data.message, 'success');
                 history.push('/login');
             }
@@ -116,6 +117,7 @@ function Admin() {
 
 
                         <ul class="header-nav ms-auto">
+                            <span className='me-3 text-light'><small>{localStorage.getItem('auth_name')}</small></span>
                         </ul>
                         <ul class="header-nav ms-3">
                             <Menu model={items} id="popup_menu" popup ref={menu} />

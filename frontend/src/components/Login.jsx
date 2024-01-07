@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
@@ -9,6 +9,8 @@ import { Password } from 'primereact/password';
 import Landing from './Landing';
 import swal from 'sweetalert';
 import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast';
+import moment from 'moment';
 
 
 
@@ -23,6 +25,7 @@ function Login() {
     const [value, setValue] = useState([]);
     const [btndis, setbtndis] = useState(false)
     const [visible, setVisible] = useState(false);
+    const toast = useRef();
 
     const handleinput = (e) => {
         e.persist();
@@ -43,12 +46,14 @@ function Login() {
                     if (res.data.role === 1) {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name',res.data.name);
                         swal('Success', res.data.message, 'success')
                         history.push('/admin');
                     }
                     else {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name',res.data.name);
                         swal('Success', res.data.message, 'success')
                         history.push('/user');
                     }
@@ -61,7 +66,6 @@ function Login() {
                     setLogin({ ...LoginData, error: res.data.error });
                 }
             }).catch((error) => {
-                console.log(error)
                 if (error.response.status === 500) {
                     swal("Warning", error.response.statusText, 'warning');
                     // setChecked(false)       
@@ -70,6 +74,8 @@ function Login() {
             })
         });
     }
+
+
 
     const onHide = () => {
         setVisible(false)
@@ -98,17 +104,22 @@ function Login() {
         </ul>
     </>
 
+    const SampleGerald = (e) => {
+        toast.current.show({severity: "success",summary: moment().format("MMM") ,detail: "Gwapo"});
+    }
+
 
     const bannertext = <div className='p-3'>
         <h2 className="text-center">
             Login
         </h2>
+        {/* <Button className='p-button-info p-button-sm' label='Sherilyn' data-love={'sherilyn'} onClick={(e) => SampleGerald(e)} /> */}
     </div>
 
     return (
         <div>
             <Landing />
-            
+            <Toast ref={toast} />    
             <Dialog position='top' draggable={false} header="Message"  visible={visible} onHide={onHide} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '50vw' }}>
                 <p className="p-0">
                     Your Account is under checking please wait for a while to approve your account by admin.

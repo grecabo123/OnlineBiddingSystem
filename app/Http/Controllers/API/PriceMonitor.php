@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\BiddingInfo;
 use App\Models\PriceUpdate;
@@ -66,11 +67,28 @@ class PriceMonitor extends Controller
         $total = BiddingInfo::where('user_info_fk',$id)->get();
         $whole = PriceUpdate::select('*')->whereIn('name_tag_int',[2])->orderBy('created_at','DESC')->get()->first();
         $user = User::where('id',$id)->first();
+        $sold = BiddingInfo::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_biddinginfo.bidding_item_fk')
+            ->selectRaw('tbl_biddingitem.price_status')
+                ->where('tbl_biddingitem.price_status',1)
+                    ->where('tbl_biddinginfo.user_info_fk',$id)
+                    ->get();
+
+        $pending = BiddingInfo::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_biddinginfo.bidding_item_fk')
+            ->selectRaw('tbl_biddingitem.price_status')
+                ->where('tbl_biddingitem.price_status',0)
+                    ->get();
+        $totalincome = Transaction::where('user_seller_fk',$id)
+            ->selectRaw('sum(total_amount) as total')
+        ->get();
+
         return response()->json([
             "status"            =>          200,
             "overall"           =>          $total->count(),
             "whole"             =>          $whole,
             "name"              =>          $user,
+            "income"            =>          $totalincome,
+            "sold"              =>          $sold->count(),
+            "pending"           =>          $pending->count(),
         ]);
     }
 

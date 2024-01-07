@@ -8,6 +8,7 @@ use App\Models\BiddingImage;
 use App\Models\BiddingPost;
 use App\Models\BidHistory;
 use App\Models\ProductData;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\AcitivityLogs;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,7 @@ class UserController extends Controller
             $biddingitem->start_date_now = $request->startbit;
             $biddingitem->end_date_now = $request->endbit;
             $biddingitem->milliseconds_data = $request->time_end;
+            $biddingitem->price_unit = $product->type_of_quantity;
             $biddingitem->save();
     
             $biddinginfo = new BiddingInfo;
@@ -123,8 +125,10 @@ class UserController extends Controller
         $bid = BiddingItem::where('uniq_key',$id)->first();
 
         $bid_user = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
-            ->selectRaw('tbl_bidding_history.tbl_biddingprice_fk,users.name_user')
+            ->join('tbl_contact','tbl_contact.contact_user_fk','=','users.id')
+            ->selectRaw('tbl_bidding_history.tbl_biddingprice_fk,users.name_user,tbl_contact.contact_number,tbl_bidding_history.created_at')
                 ->where('tbl_bidding_history.tbl_biddingitem_fk',$bid->id)
+                    ->orderBy('tbl_bidding_history.created_at','DESC')
                     ->get();
 
             $bidwin = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
@@ -196,12 +200,99 @@ class UserController extends Controller
             ]);
         }
     }
-    public function GetProductUpdate(){
+    public function GetProductUpdate($id){
         $product = ProductData::orderBy('product_name','ASC')->get();
+
+        $income = Transaction::selectRaw('month,sum(total_amount) as income')
+            ->where('user_seller_fk',$id)
+            ->groupBy('month')
+                    ->get();
 
         return response()->json([
             "status"            =>          200,
             "data"              =>          $product,
+            "income"            =>          $income,
         ]);
+    }
+
+    public function TransactionHistory ($id) {
+        $data = Transaction::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_transaction.product_fk')
+        ->join('users as seller','seller.id','=','tbl_transaction.user_seller_fk')
+        ->join('users as buyer','buyer.id','=','tbl_transaction.user_buyer_fk')
+        ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
+        ->where('tbl_transaction.user_seller_fk',$id)
+        ->get();
+
+    return response()->json([
+        "status"            =>          200,
+        "data"              =>          $data,
+    ]);
+    }
+
+    public function CloseBid (Request $request) {
+        $item = BiddingItem::where('uniq_key',$request->uniq)->first();
+
+        if($item) {
+            $item->price_status = 1;
+            $item->update();
+            $price = BidHistory::where('tbl_biddingitem_fk',$item->id)
+                ->where('user_fk',$request->id)
+                    ->first();
+            
+            // tbl_biddingpricefk
+    
+            $history = new Transaction;
+            $history->user_seller_fk = $request->from_user;
+            $history->user_buyer_fk = $request->id;
+            $history->product_fk = $item->id;
+            $history->month = $request->month;
+            $history->total_amount = $price->tbl_biddingprice_fk;
+            $history->total = $request->total_amt;
+            $history->price_unit = $request->unitprice;
+            $history->weight = $request->quantity;
+            $history->save();
+    
+            return response()->json([
+                "status"            =>              200,
+            ]);
+        }
+    }
+
+    public function Notification ($id) {
+        $data = Transaction::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_transaction.product_fk')
+            ->join('users','users.id','=','tbl_transaction.user_seller_fk')
+                ->where('user_buyer_fk',$id)->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function AverageKilo($id){
+
+        $data = Transaction::selectRaw('month,sum(weight) as total')
+            ->where('user_seller_fk',$id)
+                ->groupBy('month')
+                    ->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function ProductTransaction($id){
+
+        $data = Transaction::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_transaction.product_fk')
+            ->selectRaw('tbl_biddingitem.name, count(tbl_transaction.product_fk) as total')
+                ->where('tbl_transaction.user_seller_fk',$id)
+                    ->groupBy('tbl_transaction.product_fk')
+                ->get();
+
+                return response()->json([
+                    "status"            =>          200,
+                    "data"              =>          $data,
+                ]);   
     }
 }

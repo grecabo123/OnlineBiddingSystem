@@ -101,6 +101,7 @@ class AuthControll extends Controller
                         "role"              =>      $user->role,
                         "id"                =>      $user->id,
                         "token"             =>      $token,
+                        "name"              =>      $user->name_user,
                         "message"           =>      "Logged In Successfuly",
                     ]);
                 }

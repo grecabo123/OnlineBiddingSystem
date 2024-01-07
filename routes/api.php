@@ -12,6 +12,7 @@ use App\Http\Controllers\API\BarangayController;
 use App\Http\Controllers\API\PlaceBidController;
 use App\Http\Controllers\API\SearchingController;
 
+
 Route::post('Login',[AuthControll::class, 'Login']);
 Route::post('CreateAccount', [AuthControll::class, 'CreateAccount']);
 Route::get('BarangayData', [BarangayController::class, 'ListBarangay']);
@@ -64,9 +65,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::put('UpdateProduct',[AdminController::class, 'UpdateProduct']); 
     Route::delete('DeleteItem/{id}',[AdminController::class, 'DeleteItem']); 
     
-    
-    
-    
+        
 });
 
 
@@ -81,11 +80,15 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
     Route::post('AddProducts', [UserController::class,  'AddProducts']);
     Route::get('ProductDetails/{id}', [UserController::class,  'ProductDetails']);
     Route::delete('RemoveProducts/{id}', [UserController::class,  'RemoveProducts']);
-    Route::get('GetProductUpdate', [UserController::class, 'GetProductUpdate']);
+    Route::get('GetProductUpdate/{id}', [UserController::class, 'GetProductUpdate']);
     Route::get('ProductInformation/{id}', [UserController::class, 'ProductInformation']);
     Route::put('UpdateProductData/{$id}',[UserController::class, 'UpdateProductData']);
     Route::get('ProductDetailsInformation/{id}', [UserController::class,  'ProductDetailsInformation']);
-    
+    Route::get('TransactionHistory/{id}', [UserController::class,  'TransactionHistory']);
+    Route::get('Notification/{id}', [UserController::class,  'Notification']);
+    Route::post('CloseBid',[UserController::class, 'CloseBid']);
+    Route::get('AverageKilo/{id}',[UserController::class, 'AverageKilo']);
+    Route::get('ProductTransaction/{id}',[UserController::class, 'ProductTransaction']);
 });
 
 

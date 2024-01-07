@@ -69,7 +69,6 @@ function Auction() {
     const AuctionProduct = (e) => {
         e.preventDefault();
 
-
         const data = {
             amount: amountbid,
             key: productkey,
@@ -137,7 +136,18 @@ function Auction() {
                                 {
                                     ProductData.bidding_item_user_fk == localStorage.getItem('auth_id') ?
                                         <Tag className='' severity={'warning'} value="Your Product" /> :
-                                        <Button raised={true} data-details={ProductData.description} data-lat={ProductData.lat} data-lng={ProductData.lng} data-product-price={ProductData.amount_bidding} data-brgy={ProductData.brgy_name} data-color={ProductData.marker_color} data-product-uniq={ProductData.uniq_key} data-product-name={ProductData.product_name} onClick={PlaceBidOffer} className='p-button-sm p-button-raised p-button-danger' label='Place Bid' />
+                                        <Button raised={true} 
+                                        data-details={ProductData.description} 
+                                        data-lat={ProductData.lat} 
+                                        data-lng={ProductData.lng} 
+                                        data-product-price={ProductData.amount_bidding} 
+                                        data-brgy={ProductData.brgy_name} 
+                                        data-color={ProductData.marker_color}
+                                        data-product-uniq={ProductData.uniq_key} 
+                                        data-product-name={ProductData.product_name} 
+                                        onClick={PlaceBidOffer} 
+                                        className='p-button-sm p-button-raised p-button-danger' 
+                                        label='Place Bid' />
                                 }
                             </div>
                         </div>
@@ -150,7 +160,7 @@ function Auction() {
         <div className='container-fluid'>
             <Toast ref={toast} />
             <Card title="Auction Product">
-                <DataView value={ProductData} loading={loading} itemTemplate={itemTemplate} paginator paginatorPosition='both' paginatorLeft rows={5} className='border-0' />
+                <DataView header="List of Products" value={ProductData} loading={loading} itemTemplate={itemTemplate} paginator paginatorPosition='both' paginatorLeft rows={5} className='border-0' />
             </Card>
 
             <Dialog header={NameProduct} draggable={false} position='top' visible={visible} onHide={() => setVisible(false)}
@@ -167,9 +177,9 @@ function Auction() {
                             center={butuan}
                             zoom={13}
                             streetView={true}
-                            mapTypeId="satellite"   
+                            mapTypeId="satellite"
                         >
-                            <Marker position={{ lat: parseFloat(productlocation.lat), lng: parseFloat(productlocation.lng) }}   icon={`https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=` + `${productlocation.brgy_name}`.replace(/:/g, '') + '|' + `${productlocation.marker_color}` + '|000000'}>
+                            <Marker position={{ lat: parseFloat(productlocation.lat), lng: parseFloat(productlocation.lng) }} icon={`https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=` + `${productlocation.brgy_name}`.replace(/:/g, '') + '|' + `${productlocation.marker_color}` + '|000000'}>
 
                             </Marker>
 

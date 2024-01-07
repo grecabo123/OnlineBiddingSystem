@@ -13,6 +13,7 @@ import { Column } from 'primereact/column'
 import { Dialog } from 'primereact/dialog'
 import { Card } from 'primereact/card'
 import ProductDetails from './ProductDetails'
+import { Badge } from 'primereact/badge'
 
 function ProductList() {
 
@@ -71,6 +72,16 @@ function ProductList() {
         )
     }
 
+    const PriceUnit = (Product) => {
+        return (
+            <>
+                {
+                    Product.price_unit === 1 ? <Badge className='p-badge' value={'Per Kilo'} /> : <Badge className='' value={'Per Pieces'} />
+                }
+            </>
+        )
+    }
+
 
     return (
         <>
@@ -84,6 +95,7 @@ function ProductList() {
                             <Column field='product_name' header="Product Name"></Column>
                             <Column field='product_price' body={PriceFormat} header="Product Price"></Column>
                             <Column field='price_status' body={product_status_data} header="Status"></Column>
+                            <Column field='price_unit' body={PriceUnit} header="Price Unit"></Column>
                             <Column field='uniq_key' body={product_action} header="Action"></Column>
                         </DataTable>
                     </Card>

@@ -24,6 +24,7 @@ function User() {
             if (res.data.status === 200) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_id');
+                localStorage.removeItem('auth_name');
                 swal('Success', res.data.message, 'success');
                 history.push('/login');
             }
@@ -42,7 +43,8 @@ function User() {
         <>
             <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
                 <div class="sidebar-brand d-none d-md-flex">
-                    <h4>Bidder</h4>
+                    <h4>USER</h4>
+                    {/* <small>dawd</small> */}
                 </div>
                 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
                     <li class="nav-item"><a class="nav-link fs-5">
@@ -56,8 +58,8 @@ function User() {
                     
                     <li class="nav-item"><Link class="nav-link" to="/user/product">
                         <FcFolder className='nav-icon' /> Bid Items</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/user/product">
-                        <FcSms className='nav-icon' /> Notification</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/notification">
+                        <FcSms className='nav-icon' /> Notification <Badge value={6} severity={'danger'} /></Link></li>
 
           
                 
@@ -67,10 +69,16 @@ function User() {
                         <li class="nav-item"><Link class="nav-link" to="/user/product">
                         <FcStatistics className='nav-icon' /> Status Product</Link></li>
 
+
+
                         <li class="nav-title">Buy Product</li>
                         <li class="nav-item"><Link class="nav-link" to="/user/auction">
                         <FcSearch className='nav-icon' /> Auction Product</Link></li>
-                
+
+                        <li class="nav-title">Transaction History</li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/transaction">
+                        <FaDatabase className='nav-icon' /> Transaction</Link></li>
+
 
                         <li class="nav-title">History</li>
                         <li class="nav-item"><Link class="nav-link" to="/user/logs">
@@ -86,6 +94,7 @@ function User() {
                         {/* <Button className='p-button-sm p-button-info p-button-outlined' icon={PrimeIcons.REFRESH} label='Refresh' /> */}
 
                         <ul class="header-nav ms-auto">
+                            <span className='me-3 text-light'><small>{localStorage.getItem('auth_name')}</small></span>
                         </ul>
                         <ul class="header-nav ms-3">
                             <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

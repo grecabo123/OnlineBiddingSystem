@@ -182,9 +182,7 @@ function CreateProduct() {
 
     const UpdateDataProduct =  (e) => {
         e.preventDefault();
-
         const data = removeData;
-
         axios.put(`/api/UpdateProduct`,data).then(res => {
             if(res.data.status === 200){
                 toast.current.show({severity: "success", summary: "Data has been updated", detail: "Successfully"});

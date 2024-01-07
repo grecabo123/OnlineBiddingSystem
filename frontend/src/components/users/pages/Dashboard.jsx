@@ -13,6 +13,8 @@ import { Panel } from 'primereact/panel'
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Rating } from 'primereact/rating'
 import Monthly from '../Profit/Monthly'
+import Kilo from './Average/Kilo'
+import ProductTransaction from './Product/ProductTransaction'
 
 
 function Dashboard() {
@@ -21,6 +23,9 @@ function Dashboard() {
         overall: "",
         whole: "",
         name: "",
+        income: "",
+        sold: "",
+        pending: "",
     });
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -37,6 +42,9 @@ function Dashboard() {
                     overall: res.data.overall,
                     whole: res.data.whole,
                     name: res.data.name,
+                    income: res.data.income,
+                    sold: res.data.sold,
+                    pending: res.data.pending,
                 });
             }
             setloading(false)
@@ -44,6 +52,7 @@ function Dashboard() {
             swal("Warning", error.response.statusText, 'warning');
         })
     }
+
 
 
     return (
@@ -81,10 +90,11 @@ function Dashboard() {
                                         ease: [0, 0.71, 0.2, 1.01]
                                     }}
                                 >
-                                    <Card title="Monthly Profit" className='zoom' >
+                                    <Card title="Overall Income" className='zoom' >
                                         <div className="d-flex justify-content-between">
-                                            <span>Total </span>
-                                            <Badge severity={'success'} value={0} />
+                                            <span>Total Amount</span>
+                                            <span>₱{ProductCount.income[0].total === null ? "0.00" : ProductCount.income[0].total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                            {/* <Badge severity={'success'} value={0} /> */}
                                         </div>
                                     </Card>
                                 </motion.div>
@@ -102,7 +112,7 @@ function Dashboard() {
                                     <Card title="Product Sold" className='zoom' >
                                         <div className="d-flex justify-content-between">
                                             <span>Total </span>
-                                            <Badge severity={'success'} value={0} />
+                                            <Badge severity={'success'} value={ProductCount.sold == null ? 0 : ProductCount.sold} />
                                         </div>
                                     </Card>
                                 </motion.div>
@@ -120,7 +130,7 @@ function Dashboard() {
                                     <Card title="Product Sell" className='zoom' >
                                         <div className="d-flex justify-content-between">
                                             <span>Total </span>
-                                            <Badge severity={'success'} value={0} />
+                                            <Badge severity={'success'} value={ProductCount.pending} />
                                         </div>
                                     </Card>
                                 </motion.div>
@@ -172,12 +182,20 @@ function Dashboard() {
                                                 </TabPanel>
                                             </TabView>
                                         </Card>
+                                        
                                     </div>
                                 </motion.div>
                             </div>
-                            <div className="mt-3">
-                                <Panel header="Monthly Profit" >
-                                    <Monthly />
+                            <div className="mt-3 col-lg-6">
+                                <Panel header="Average Monthly Kilo" >
+                                    {/* <Monthly /> */}
+                                    <Kilo />
+                                </Panel>
+                            </div>
+                            <div className="mt-3 col-lg-6">
+                                <Panel header="Product Per Transaction" >
+                                    {/* <Monthly /> */}
+                                    <ProductTransaction />
                                 </Panel>
                             </div>
                         </div>
