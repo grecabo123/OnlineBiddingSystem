@@ -62,14 +62,36 @@ function History() {
         )
     }
 
+    const PriceUnit = (Transaction) => {
+        return (
+            <>
+                {
+                    Transaction.price_unit === 1 ? <Badge value={'Per Kilo'} /> : <Badge value={'Per Pieces'} />
+                }
+            </>
+        )
+    }
+
+    const Weight = (Transaction) => {
+        return (
+            <>
+                {
+                    Transaction.price_unit === 1 ? <span>{Transaction.weight} / Kilo</span> : <span>{Transaction.weight} / Pieces</span>
+                }
+            </>
+        )
+    }
+
     return (
         <div>
             <Card title="Transaction History">
                 <DataTable value={Transaction} paginator paginatorLeft loading={loading} rows={9} >
                     <Column field='name_user' header="Name of Buyer"></Column>
                     <Column field='name' header="Product Name"></Column>
+                    <Column field='price_unit' body={PriceUnit} header="Price Unit"></Column>
                     <Column field='product_price' body={PriceForm} header="Product Price"></Column>
                     <Column field='total_amount' body={FormatNum} header="Buyer Bid"></Column>
+                    <Column field='weight' body={Weight} header="Unit"></Column>
                     <Column field='total' body={FormatTotal} header="Total Amount"></Column>
                     
                 </DataTable>

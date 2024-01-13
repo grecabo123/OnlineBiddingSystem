@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Badge } from 'primereact/badge';
 import { Card } from 'primereact/card'
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
@@ -35,7 +36,27 @@ function Notify() {
     const FormatNumTotal = (NotificationData) => {
         return (
             <>
-                <span>₱{NotificationData.total_amount.toFixed(2)}</span>
+                <span>₱{NotificationData.total.toFixed(2)}</span>
+            </>
+        )
+    }
+
+    const PriceUnit = (Notification) => {
+        return (
+            <>
+                {
+                    Notification.price_unit === 1 ? <Badge value={'Per Kilo'} /> : <Badge value={'Per Pieces'} />
+                }
+            </>
+        )
+    }
+
+    const Weight = (NotificationData) => {
+        return (
+            <>
+                {
+                    NotificationData.price_unit === 1 ? <span>{NotificationData.weight} / Kilo</span> : <span>{NotificationData.weight} / Pieces</span>
+                }
             </>
         )
     }
@@ -47,7 +68,9 @@ function Notify() {
                     <Column field='name_user' header="Name of Seller"></Column>
                     <Column field='email' header="Email"></Column>
                     <Column field='name' header="Name of Product"></Column>
+                    <Column field='price_unit' body={PriceUnit} header="Price Unit"></Column>
                     <Column field='total_amount' body={FormatNum} header="Your Bid Offer"></Column>
+                    <Column field='weight' body={Weight} header="Unit"></Column>
                     <Column field='total' body={FormatNumTotal} header="Total Price"></Column>
                </DataTable>
             </Card>
