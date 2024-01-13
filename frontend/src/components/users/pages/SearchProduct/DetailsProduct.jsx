@@ -48,7 +48,6 @@ function DetailsProduct({ data }) {
 
     // console.log(quantity);
 
-    console.log(product);
 
     return (
         <div className='container'>
@@ -56,7 +55,6 @@ function DetailsProduct({ data }) {
                 loading ? <Skeleton className='w-100' borderRadius='20px' />
                     :
                     <>
-
                         <Image src={`http://127.0.0.1:8000/${product.image}`} preview className="clippath" alt="Image" width='100%' height='100%' />
                         <Divider>
                             <span className='p-tag'>Details</span>

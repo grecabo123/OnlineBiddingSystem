@@ -20,5 +20,6 @@ class Transaction extends Model
         "total",
         "price_unit",
         "weight",
+        "starting_price",
     ];
 }

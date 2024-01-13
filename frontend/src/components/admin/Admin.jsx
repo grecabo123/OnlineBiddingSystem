@@ -77,24 +77,24 @@ function Admin() {
                     </div> */}
 
                     <li class="nav-title">Manage</li>
-                    <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#price">
+                    {/* <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#price">
                         <FaBox className='nav-icon' />Price</a>
-                    </li>
-                    <div class="collapse" id='price'>
+                    </li> */}
                         <li class="nav-item"><Link class="nav-link" to="/admin/AddProduct"> <span className='nav-icon'></span>Add Product</Link></li>
+                    <div class="collapse" id='price'>
                     </div>
 
 
                     {/* Chart */}
-                    <li class="nav-title">Comnplaint</li>
+                    {/* <li class="nav-title">Comnplaint</li>
                     <li class="nav-item"><Link class="nav-link" to="/admin/issue">
-                        <FcSms className='nav-icon' /> Reports</Link></li>
+                        <FcSms className='nav-icon' /> Reports</Link></li> */}
 
 
                     {/* History */}
                     <li class="nav-title">History</li>
                     <li class="nav-item"><Link class="nav-link" to="/admin/logs">
-                        <FcSurvey className='nav-icon' /> Activity Logs</Link></li>
+                        <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
 
                     <li class="nav-item mt-auto"><a class="nav-link nav-link-danger fw-bold text-danger" target="_top">
                         <BiLogOut className="nav-icon" /> Logout

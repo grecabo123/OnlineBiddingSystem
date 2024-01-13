@@ -168,7 +168,7 @@ function AddProduct() {
                                                     <label htmlFor="Product Name" className="form-label">
                                                     <span className='text-danger'>*</span>Barangay
                                                     </label>
-                                                    <Dropdown className='w-100 p-inputtext-sm' placeholder='Choose Barangay' value={brgypick} options={Brgydata} onChange={(e) => setbrgypick(e.target.value)} />
+                                                    <Dropdown filter className='w-100 p-inputtext-sm' placeholder='Choose Barangay' value={brgypick} options={Brgydata} onChange={(e) => setbrgypick(e.target.value)} />
                                                     <small className='text-danger'>{ProductData.error.barangay}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 07, 2024 at 08:02 PM
+-- Generation Time: Jan 13, 2024 at 03:54 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.5
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -74,9 +74,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2023_10_05_144552_create_tbl_biddingamount_table', 8),
 (14, '2023_10_08_123258_create_tbl_price_table', 9),
 (15, '2023_11_27_075611_create_tbl_productanme_tbl', 10),
-(16, '2023_12_16_201612_create_tbl_bidding_history_table', 11),
 (17, '2024_01_05_215327_create_tbl_transaction_table', 12),
-(18, '2024_01_05_231217_create_tbl_rating_table', 13);
+(18, '2024_01_05_231217_create_tbl_rating_table', 13),
+(20, '2024_01_10_060008_create_tbl_buyerlist_table', 14),
+(21, '2023_12_16_201612_create_tbl_bidding_history_table', 15);
 
 -- --------------------------------------------------------
 
@@ -112,17 +113,20 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `personal_access_tokens`
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(13, 'App\\Models\\User', 4, 'byfekufi@mailinator.com_User', 'd94f0cd0609c7c2c2df3842728e47c171f1c8046ee7eb8a409a3846217beb060', '[\"server:user\"]', '2024-01-07 12:01:29', '2024-01-07 07:27:20', '2024-01-07 12:01:29'),
 (14, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '96f957c54e441423d0b122a8624183c8e87b82d2a2d8f6af5a7165e0f85c1ab0', '[\"server:admin\"]', '2024-01-07 12:02:49', '2024-01-07 07:42:32', '2024-01-07 12:02:49'),
-(17, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', '1530afc2148102c5178bb9b05d892e5ccfecccfb302047d1620e372e92a22af3', '[\"server:user\"]', '2024-01-07 10:35:04', '2024-01-07 08:22:31', '2024-01-07 10:35:04'),
-(18, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', '9846170232b4374221c120c5684cc44eb11cc8ec65b0976ed8f3ab5b0d905473', '[\"server:user\"]', '2024-01-07 12:02:39', '2024-01-07 10:39:18', '2024-01-07 12:02:39');
+(19, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '4f1a8f52f64d41e81fe9de8d7f0ca76649eaa2d8e44a29188be1ab50c9db7527', '[\"server:admin\"]', '2024-01-09 08:03:56', '2024-01-09 07:16:50', '2024-01-09 08:03:56'),
+(22, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', 'b55178cff03af114fe5bdcc310d2bc991bbcb6456014280a01ebd20a36483672', '[\"server:admin\"]', '2024-01-10 09:48:57', '2024-01-09 22:06:08', '2024-01-10 09:48:57'),
+(25, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', 'cc6bd7cf1c9accaf9abec535192a4804e3698783dfb5dd8be9c14cb3dd0cd35a', '[\"server:admin\"]', '2024-01-11 03:53:51', '2024-01-11 01:11:25', '2024-01-11 03:53:51'),
+(26, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '435b9c11eef7ea7735a36d729a2a53f54c6fc92471eff756cae0b914dd13e5f8', '[\"server:admin\"]', '2024-01-12 14:33:41', '2024-01-12 12:30:22', '2024-01-12 14:33:41'),
+(32, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', '52dcf94d2a9844ecbcd81ddc159c3efb506f263aef2d29a5c1cf3c516635866d', '[\"server:user\"]', '2024-01-12 19:53:52', '2024-01-12 19:05:50', '2024-01-12 19:53:52'),
+(33, 'App\\Models\\User', 4, 'byfekufi@mailinator.com_User', '200aa09965af256413b0057f7cddc03bf516b130d45dbadfb414195adf0d61a4', '[\"server:user\"]', '2024-01-12 19:53:43', '2024-01-12 19:53:36', '2024-01-12 19:53:43');
 
 -- --------------------------------------------------------
 
@@ -249,7 +253,14 @@ CREATE TABLE IF NOT EXISTS `tbl_biddingamount` (
   PRIMARY KEY (`id`),
   KEY `tbl_biddingamount_bidding_amt_fk_foreign` (`bidding_amt_fk`),
   KEY `tbl_biddingamount_bidding_item_user_fk_foreign` (`bidding_item_user_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_biddingamount`
+--
+
+INSERT INTO `tbl_biddingamount` (`id`, `bidding_amt_fk`, `amount_bidding`, `bidding_item_user_fk`, `created_at`, `updated_at`) VALUES
+(3, 1, 103.00, 2, NULL, '2024-01-12 19:05:14');
 
 -- --------------------------------------------------------
 
@@ -274,7 +285,14 @@ CREATE TABLE IF NOT EXISTS `tbl_biddinginfo` (
   KEY `user_info_fk` (`user_info_fk`),
   KEY `bidding_item_fk` (`bidding_item_fk`),
   KEY `tbl_productanme_tbl_fk` (`tbl_productanme_tbl_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_biddinginfo`
+--
+
+INSERT INTO `tbl_biddinginfo` (`id`, `product_name`, `product_price`, `address`, `bidding_brgy_fk`, `bidding_item_fk`, `user_info_fk`, `tbl_productanme_tbl_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Whole Nut', 90.59, 'Butuan City', 10, 1, 2, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -296,7 +314,14 @@ CREATE TABLE IF NOT EXISTS `tbl_biddingitem` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_biddingitem`
+--
+
+INSERT INTO `tbl_biddingitem` (`id`, `uniq_key`, `name`, `price_status`, `description`, `start_date_now`, `end_date_now`, `milliseconds_data`, `price_unit`, `created_at`, `updated_at`) VALUES
+(1, '8e126a4e2ce882beec6c6fc31ac5afd4', 'Copras', 1, 'Copras is copras', 'Jan 9 2024', 'Jan 11 2024', '11:20 pm', 1, '2024-01-09 07:22:15', '2024-01-12 19:51:50');
 
 -- --------------------------------------------------------
 
@@ -309,13 +334,26 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_history` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tbl_biddingitem_fk` bigint(20) UNSIGNED NOT NULL,
   `tbl_biddingprice_fk` double(10,2) NOT NULL,
+  `schedule` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
   `user_fk` bigint(20) UNSIGNED NOT NULL,
+  `buyer_pick` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_bidding_history_tbl_biddingitem_fk_foreign` (`tbl_biddingitem_fk`),
   KEY `tbl_bidding_history_user_fk_foreign` (`user_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_bidding_history`
+--
+
+INSERT INTO `tbl_bidding_history` (`id`, `tbl_biddingitem_fk`, `tbl_biddingprice_fk`, `schedule`, `comment`, `status`, `user_fk`, `buyer_pick`, `created_at`, `updated_at`) VALUES
+(1, 1, 90.59, NULL, NULL, 0, 2, 0, NULL, NULL),
+(3, 1, 102.00, 'dawed', 'Gusto ko ani', 0, 4, 0, '2024-01-12 16:14:08', '2024-01-12 19:14:45'),
+(4, 1, 103.00, 'daw', NULL, 1, 3, 1, '2024-01-12 19:05:14', '2024-01-12 19:19:36');
 
 -- --------------------------------------------------------
 
@@ -332,6 +370,31 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_image` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_bidding_image_item_fk_foreign` (`item_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_bidding_image`
+--
+
+INSERT INTO `tbl_bidding_image` (`id`, `image`, `item_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Uploads/Files/fc92e094d5bcb91ca843fa865410bb5e.png', 1, '2024-01-09 07:22:15', '2024-01-09 07:22:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_buyerlist`
+--
+
+DROP TABLE IF EXISTS `tbl_buyerlist`;
+CREATE TABLE IF NOT EXISTS `tbl_buyerlist` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_buyer_fk` bigint(20) UNSIGNED NOT NULL,
+  `schedule_visit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price_bid_user` double(20,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tbl_buyerlist_user_buyer_fk_foreign` (`user_buyer_fk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -391,7 +454,14 @@ CREATE TABLE IF NOT EXISTS `tbl_logs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_logs_user_logs_fk_foreign` (`user_logs_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_logs`
+--
+
+INSERT INTO `tbl_logs` (`id`, `activity`, `user_logs_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Creating Bidding Item Copras', 2, '2024-01-09 07:22:15', '2024-01-09 07:22:15');
 
 -- --------------------------------------------------------
 
@@ -443,10 +513,18 @@ CREATE TABLE IF NOT EXISTS `tbl_productanme_tbl` (
   `type_of_quantity` int(11) NOT NULL COMMENT '1=kilo, 2= per pieces',
   `product_color_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_productanme_tbl_tbl_price_fk_foreign` (`product_price`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_productanme_tbl`
+--
+
+INSERT INTO `tbl_productanme_tbl` (`id`, `product_name`, `product_price`, `type_of_quantity`, `product_color_code`, `created_at`, `status`, `updated_at`) VALUES
+(1, 'Whole Nut', 90.59, 2, 'bf41bf', '2024-01-09 07:18:12', 1, '2024-01-10 09:03:01');
 
 -- --------------------------------------------------------
 
@@ -495,6 +573,7 @@ CREATE TABLE IF NOT EXISTS `tbl_transaction` (
   `user_seller_fk` bigint(20) UNSIGNED NOT NULL,
   `user_buyer_fk` bigint(20) UNSIGNED NOT NULL,
   `product_fk` bigint(20) UNSIGNED NOT NULL,
+  `starting_price` double(20,2) NOT NULL,
   `total_amount` double(10,2) NOT NULL,
   `month` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `total` double(20,2) NOT NULL,
@@ -506,7 +585,14 @@ CREATE TABLE IF NOT EXISTS `tbl_transaction` (
   KEY `tbl_transaction_user_seller_fk_foreign` (`user_seller_fk`),
   KEY `tbl_transaction_user_buyer_fk_foreign` (`user_buyer_fk`),
   KEY `tbl_transaction_product_fk_foreign` (`product_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_transaction`
+--
+
+INSERT INTO `tbl_transaction` (`id`, `user_seller_fk`, `user_buyer_fk`, `product_fk`, `starting_price`, `total_amount`, `month`, `total`, `price_unit`, `weight`, `created_at`, `updated_at`) VALUES
+(1, 2, 4, 1, 4529.50, 102.00, 'Jan', 5150.00, 1, 50.00, '2024-01-12 19:51:50', '2024-01-12 19:51:50');
 
 -- --------------------------------------------------------
 
@@ -590,6 +676,12 @@ ALTER TABLE `tbl_bidding_history`
 --
 ALTER TABLE `tbl_bidding_image`
   ADD CONSTRAINT `tbl_bidding_image_item_fk_foreign` FOREIGN KEY (`item_fk`) REFERENCES `tbl_biddingitem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_buyerlist`
+--
+ALTER TABLE `tbl_buyerlist`
+  ADD CONSTRAINT `tbl_buyerlist_user_buyer_fk_foreign` FOREIGN KEY (`user_buyer_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_contact`

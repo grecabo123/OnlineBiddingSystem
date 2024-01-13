@@ -217,6 +217,7 @@ class AdminController extends Controller
             $product->product_price = $request->price;
             $product->type_of_quantity = $request->UnitType;
             $product->product_color_code = $request->color;
+            $product->status = 1;
             $product->save();
 
             return response()->json([
@@ -227,7 +228,7 @@ class AdminController extends Controller
     }
 
     public function GetProduct(){
-        $data = ProductData::all();
+        $data = ProductData::whereIn('status',[0,1])->get();
 
         return response()->json([
             "status"            =>          200,
@@ -235,12 +236,13 @@ class AdminController extends Controller
         ]);
     }
     
-    public function DeleteItem($id){
+    public function DeleteItem(Request $request){
 
-        $data = ProductData::find($id);
+        $data = ProductData::find($request->id);
 
         if($data){
-            $data->delete();
+            $data->status = $request->status == 1 ? 1 : 0;
+            $data->update();
             return response()->json([
                 "status"                =>          200,
             ]);

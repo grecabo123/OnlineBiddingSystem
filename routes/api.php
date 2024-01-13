@@ -63,7 +63,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::post('CreateProduct', [AdminController::class, 'CreateProduct']);
     Route::get('GetProduct',[AdminController::class, 'GetProduct']); 
     Route::put('UpdateProduct',[AdminController::class, 'UpdateProduct']); 
-    Route::delete('DeleteItem/{id}',[AdminController::class, 'DeleteItem']); 
+    Route::put('DeleteItem',[AdminController::class, 'DeleteItem']); 
     
         
 });
@@ -89,6 +89,13 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
     Route::post('CloseBid',[UserController::class, 'CloseBid']);
     Route::get('AverageKilo/{id}',[UserController::class, 'AverageKilo']);
     Route::get('ProductTransaction/{id}',[UserController::class, 'ProductTransaction']);
+    Route::post('AddedList',[UserController::class, 'AddedList']);
+    Route::get('Buyerlist/{id}',[UserController::class, 'Buyerlist']);
+    Route::put('Schedule',[UserController::class, 'Schedule']);
+    Route::put('RemoveList',[UserController::class, 'RemoveList']);
+
+    
+
 });
 
 

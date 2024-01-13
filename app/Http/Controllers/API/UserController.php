@@ -122,18 +122,23 @@ class UserController extends Controller
 
     public function ProductDetailsInformation($id){
 
-        $bid = BiddingItem::where('uniq_key',$id)->first();
+        $bid = BiddingItem::join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
+            ->selectRaw('tbl_biddingitem.id,tbl_biddinginfo.user_info_fk')
+            ->where('uniq_key',$id)
+                ->first();
 
         $bid_user = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
             ->join('tbl_contact','tbl_contact.contact_user_fk','=','users.id')
-            ->selectRaw('tbl_bidding_history.tbl_biddingprice_fk,users.name_user,tbl_contact.contact_number,tbl_bidding_history.created_at')
+            ->selectRaw('users.id as user_id, tbl_bidding_history.status,tbl_bidding_history.comment,tbl_bidding_history.schedule,tbl_bidding_history.tbl_biddingprice_fk,users.name_user,tbl_contact.contact_number,tbl_bidding_history.created_at')
                 ->where('tbl_bidding_history.tbl_biddingitem_fk',$bid->id)
+                    ->where('tbl_bidding_history.user_fk','!=',$bid->user_info_fk)
                     ->orderBy('tbl_bidding_history.created_at','DESC')
                     ->get();
 
             $bidwin = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
                 ->selectRaw('users.name_user,tbl_bidding_history.tbl_biddingprice_fk,users.id,users.email')
                     ->where('tbl_biddingitem_fk', $bid->id)
+                        ->where('tbl_bidding_history.user_fk', '!=',$bid->user_info_fk)
                         ->orderBy('tbl_bidding_history.tbl_biddingprice_fk','DESC')
                             ->first();
 
@@ -246,6 +251,7 @@ class UserController extends Controller
             $history->user_buyer_fk = $request->id;
             $history->product_fk = $item->id;
             $history->month = $request->month;
+            $history->starting_price = $request->starting;
             $history->total_amount = $price->tbl_biddingprice_fk;
             $history->total = $request->total_amt;
             $history->price_unit = $request->unitprice;
@@ -294,5 +300,81 @@ class UserController extends Controller
                     "status"            =>          200,
                     "data"              =>          $data,
                 ]);   
+    }
+
+    public function AddedList(Request $request){
+
+        $product = BiddingItem::where('uniq_key',$request->product)->first();
+        $data = BidHistory::where('tbl_biddingitem_fk',$product->id)
+            ->where('user_fk',$request->user)
+                ->first();
+
+        if($data) {
+
+            $data->status = 1;
+            $data->update();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+
+    public function Buyerlist ($id) {
+
+        $product = BiddingItem::where('uniq_key',$id)->first();
+
+        $data = BidHistory::join('users','users.id','=','tbl_bidding_history.user_fk')
+            ->join('tbl_contact','tbl_contact.contact_user_fk','=','users.id')
+            ->where('tbl_bidding_history.tbl_biddingitem_fk',$product->id)
+                ->where('tbl_bidding_history.status',1)
+                    ->selectRaw('users.name_user,users.email,tbl_bidding_history.status,tbl_bidding_history.comment,tbl_bidding_history.buyer_pick,
+                    tbl_bidding_history.schedule,tbl_bidding_history.tbl_biddingprice_fk,tbl_bidding_history.id,tbl_contact.contact_number,tbl_bidding_history.user_fk')
+                    ->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+        
+    }
+
+    public function Schedule (Request $request) {
+
+        $data = BidHistory::find($request->id);
+        $product = BiddingItem::where('uniq_key',$request->product)->first();
+
+        if($data && $product) {
+
+            $product->price_status = 2;
+            $product->update();
+
+            $data->schedule = $request->text;
+            $data->buyer_pick = 1;   
+            $data->update();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+
+    public function RemoveList(Request $request){
+        $data = BidHistory::find($request->id);
+
+        $product = BiddingItem::where('uniq_key',$request->product)->first();
+
+
+        if($data && $product) {
+            $data->status = 0;
+            $data->buyer_pick = 0;
+            $data->update();
+
+            $product->price_status = 0;
+            $product->update();
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
     }
 }

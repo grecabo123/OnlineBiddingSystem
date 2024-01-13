@@ -31,6 +31,7 @@ function CreateProduct() {
         indicator: "",
         price: "",
         title: "",
+        status: "",
     });
     const [color, setColor] = useState([]);
     const toast = useRef();
@@ -93,7 +94,7 @@ function CreateProduct() {
             <>
                 <div className="d-flex">
                     <Button className=' me-2 p-button-sm p-button-info' onClick={RemoveItem} data-indicator={1} data-product={product.product_name} data-price={product.product_price} data-id={product.id} label='Edit' />
-                    <Button className=' me-2 p-button-sm p-button-danger' onClick={RemoveItem} data-indicator={2} data-product={product.product_name} data-id={product.id} label='Delete' />
+                    <Button className={`me-2 p-button-sm ${product.status === 0 ? 'p-button-success' : 'p-button-danger'}`} onClick={RemoveItem} data-indicator={2} data-product={product.product_name} data-status={product.status} data-id={product.id} label={product.status === 0 ? "Activate" : "Deactivite"} />
                 </div>
             </>
         )
@@ -113,6 +114,7 @@ function CreateProduct() {
             name: name,
             indicator: e.currentTarget.getAttribute('data-indicator'),
             price: e.currentTarget.getAttribute('data-price'),
+            status: e.currentTarget.getAttribute('data-status'),
         });
 
     }
@@ -167,7 +169,12 @@ function CreateProduct() {
     const RemoveItemData = (e) => {
         e.preventDefault();
 
-        axios.delete(`/api/DeleteItem/${removeData.id}`).then(res => {
+        const data = {
+            id: removeData.id,
+            status: removeData.status == 0 ? 1 : 0,
+        }
+
+        axios.put(`/api/DeleteItem`,data).then(res => {
             if (res.data.status === 200) {
                 getProduct();
                 toast.current.show({ severity: "success", summary: "Data has been removed", detail: "Removed Item" });
@@ -200,6 +207,16 @@ function CreateProduct() {
         })
     }
 
+    const StatusProduct = (product) => {
+        return (
+            <>
+                {
+                    product.status === 1 ? <Badge severity={'success'} value={'Active'} /> : <Badge severity={'danger'} value={'Not Active'} />
+                }
+            </>
+        )
+    }
+
     const unit = [
         { label: "Per Kilo", value: 1 },
         { label: "Per Pieces", value: 2 },
@@ -214,6 +231,7 @@ function CreateProduct() {
                     <Column field='product_name' sortable header="Product Name"></Column>
                     <Column field='product_price' sortable body={PriceFormat} header="Product Price"></Column>
                     <Column field='product_name' sortable body={statusBodyTemplate} header="Per Unit"></Column>
+                    <Column field='status' sortable body={StatusProduct} header="Product Status"></Column>
                     <Column field='created_at' sortable body={CreatedFormat} header="Date Created"></Column>
                     <Column field='id' sortable body={ActionButton} header="Action"></Column>
                     <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
@@ -281,11 +299,11 @@ function CreateProduct() {
                             </div>
                         </form>
                     </> : <>
-                        Are you sure you want to remove this {removeData.name} ?
+                        Are you sure you want to {removeData.status === 1 ? 'Deactivate' : 'Activate'}  this {removeData.name} ?
 
                         <form onSubmit={RemoveItemData}>
                             <div className="d-flex justify-content-end">
-                                <Button className='p-button-sm p-button-danger' label='Remove' icon={PrimeIcons.TRASH} />
+                                <Button className={`p-button-sm  ${removeData.status == 1 ? 'p-button-danger' : 'p-button-success'}`} label={removeData.status == 1 ? 'Deactivate' : 'Activate'} icon={removeData.status == 1 ? PrimeIcons.TRASH : PrimeIcons.PLUS} />
                             </div>
                         </form>
                     </>

@@ -14,6 +14,9 @@ class BidHistory extends Model
     protected $fillable = [
         "tbl_biddingitem_fk",
         "tbl_biddingprice_fk",
+        "schedule",
+        "comment",
+        "status",
         "user_fk",
     ];
 

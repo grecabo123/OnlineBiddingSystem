@@ -72,15 +72,61 @@ class SearchItems extends Controller
 
     public function AllItems(){
 
+        // $data = DB::table('tbl_biddingitem')
+        //     ->join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
+        //         ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
+        //             ->join('tbl_barangay_coordinates','tbl_barangay_coordinates.id','=','tbl_biddinginfo.bidding_brgy_fk')
+        //                 ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
+        //                     ->join('tbl_productanme_tbl','tbl_biddinginfo.tbl_productanme_tbl_fk','=','tbl_productanme_tbl.id')
+        //                         ->selectRaw('tbl_biddinginfo.product_name,tbl_biddingitem.uniq_key,tbl_biddingitem.price_unit
+        //                             ,tbl_barangay_coordinates.brgy_name,tbl_barangay_coordinates.lat,tbl_barangay_coordinates.lng
+        //                             ,tbl_barangay_coordinates.marker_color,tbl_biddingitem.description
+        //                             ,tbl_biddingamount.amount_bidding,tbl_bidding_image.image,tbl_biddinginfo.product_price
+        //                             ,tbl_biddingamount.bidding_amt_fk
+        //                         ')
+        //                         ->where('tbl_biddingitem.price_status',0)
+        //                         // ->groupBy('tbl_biddingamount.bidding_amt_fk')
+        //                         ->orderBy('tbl_biddingitem.created_at','ASC')
+        //                             ->get();
+
+
+
         $data = DB::table('tbl_biddingitem')
-            ->join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
-                ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
-                    ->join('tbl_barangay_coordinates','tbl_barangay_coordinates.id','=','tbl_biddinginfo.bidding_brgy_fk')
-                        ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
-                            ->join('tbl_productanme_tbl','tbl_biddinginfo.tbl_productanme_tbl_fk','=','tbl_productanme_tbl.id')
-                                ->where('tbl_biddingitem.price_status',0)
-                                ->orderBy('tbl_biddingitem.created_at','ASC')
-                                    ->get();
+        ->join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
+            ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
+                ->join('tbl_barangay_coordinates','tbl_barangay_coordinates.id','=','tbl_biddinginfo.bidding_brgy_fk')
+                    ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
+                        ->join('tbl_productanme_tbl','tbl_biddinginfo.tbl_productanme_tbl_fk','=','tbl_productanme_tbl.id')
+                            ->whereIn('tbl_biddingitem.price_status',[0,2])
+                            ->orderBy('tbl_biddingitem.created_at','ASC')
+                                ->get();
+
+        // $data = BiddingItem::join('tbl_bidding_image','tbl_bidding_image.item_fk','=','tbl_biddingitem.id')
+        //     ->join('tbl_biddinginfo','tbl_biddinginfo.bidding_item_fk','=','tbl_biddingitem.id')
+        //     ->join('tbl_biddingamount','tbl_biddingamount.bidding_amt_fk','=','tbl_biddingitem.id')
+        //     ->selectRaw('tbl_biddinginfo.product_name,tbl_biddingitem.uniq_key,tbl_biddingitem.price_unit,
+        //         tbl_biddingitem.description
+        //         ,tbl_biddingamount.amount_bidding,tbl_bidding_image.image,tbl_biddinginfo.product_price
+        //         ,tbl_biddingamount.bidding_amt_fk
+        //     ')
+        //     ->where('tbl_biddingitem.price_status',0)
+        //     ->groupBy('tbl_biddingamount.bidding_amt_fk')
+        //     ->orderBy('tbl_biddingitem.created_at','ASC')
+        //     ->get();
+        // $data = DB::table('tbl_biddingitem')
+        // ->join('tbl_bidding_image', 'tbl_bidding_image.item_fk', '=', 'tbl_biddingitem.id')
+        // ->join('tbl_biddinginfo', 'tbl_biddinginfo.bidding_item_fk', '=', 'tbl_biddingitem.id')
+        // ->join('tbl_barangay_coordinates', 'tbl_barangay_coordinates.id', '=', 'tbl_biddinginfo.bidding_brgy_fk')
+        // ->join('tbl_biddingamount', 'tbl_biddingamount.bidding_amt_fk', '=', 'tbl_biddingitem.id')
+        // ->join('tbl_productanme_tbl', 'tbl_biddinginfo.tbl_productanme_tbl_fk', '=', 'tbl_productanme_tbl.id')
+        // ->selectRaw('tbl_biddinginfo.product_name, tbl_biddingitem.uniq_key, tbl_biddingitem.price_unit,
+        //     tbl_barangay_coordinates.brgy_name, tbl_barangay_coordinates.lat, tbl_barangay_coordinates.lng,
+        //     tbl_barangay_coordinates.marker_color, tbl_biddingitem.description,
+        //     MAX(tbl_biddingamount.amount_bidding) as max_amount_bidding, tbl_bidding_image.image,
+        //     tbl_biddingamount.bidding_amt_fk')
+        // ->where('tbl_biddingitem.price_status', 0)
+        // ->orderBy('tbl_biddingitem.created_at', 'ASC')
+        // ->get();
 
         
 

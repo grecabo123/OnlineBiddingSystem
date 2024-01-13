@@ -27,7 +27,6 @@ function TableRecords() {
         })
     }, []);
 
-    console.log(tbldata);
 
     const PriceFormat = (tbldata) => {
         return (
