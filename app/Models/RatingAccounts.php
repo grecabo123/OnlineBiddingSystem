@@ -13,5 +13,6 @@ class RatingAccounts extends Model
     protected $fillable = [
         "user_rating_fk",
         "rating_num",
+        "descrip",
     ];
 }

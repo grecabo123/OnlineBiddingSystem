@@ -97,6 +97,9 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
     Route::put('RemoveList',[UserController::class, 'RemoveList']);
     Route::get('Acknowledge/{id}',[UserController::class, 'Acknowledge']);
     Route::get('ProductFilter/{id}',[UserController::class, 'ProductFilter']);
+    Route::put('RateAccount',[UserController::class, 'RateAccount']);
+
+    
     
 
     

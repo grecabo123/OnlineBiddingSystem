@@ -9,6 +9,7 @@ use App\Models\BiddingImage;
 use App\Models\BiddingPost;
 use App\Models\BidHistory;
 use App\Models\ProductData;
+use App\Models\RatingAccounts;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\AcitivityLogs;
@@ -268,6 +269,10 @@ class UserController extends Controller
     public function Notification ($id) {
         $data = Transaction::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_transaction.product_fk')
             ->join('users','users.id','=','tbl_transaction.user_seller_fk')
+                ->selectRaw('tbl_transaction.id,users.name_user,users.email,tbl_transaction.total_amount,tbl_transaction.weight,
+                tbl_transaction.rate_acc,tbl_biddingitem.price_status,tbl_biddingitem.price_unit,tbl_biddingitem.name,
+                tbl_transaction.total
+                ')
                 ->where('user_buyer_fk',$id)->get();
 
         return response()->json([
@@ -405,5 +410,26 @@ class UserController extends Controller
             "status"            =>          200,
             "data"              =>          $data,
         ]);
+    }
+    public function RateAccount (Request $request) {
+
+        $transact = Transaction::find($request->transaction_id);
+
+        if($transact) {
+            $transact->rate_acc = 1;
+            $transact->update();
+    
+            $rate = new RatingAccounts;
+    
+            $rate->user_rating_fk = $request->buyer_fk;
+            $rate->rating_num = $request->star;
+            $rate->descrip = $request->say;
+    
+            $rate->save();
+    
+            return response()->json([
+                "status"                =>          200,
+            ]);
+        }
     }
 }
