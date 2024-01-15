@@ -224,7 +224,7 @@ function AddProduct() {
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                        <span className='text-danger'>*</span>Product Description
+                                                        <span className='text-danger'>*</span>Remarks / Description
                                                     </label>
                                                     <InputTextarea className='w-100 p-inputtext-sm' onChange={handleInput} name='productdetails' rows={5} />
                                                     <small className='text-danger'>{ProductData.error.productdetails}</small>
