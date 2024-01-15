@@ -45,13 +45,13 @@ function AccountPending() {
         return (
             <>
 
-                <Button className="p-button-info p-button-sm" value={RegisteredData.id} label="View" onClick={GetDetails} />
+                <Button className="p-button-info p-button-sm" data-id={RegisteredData.id} label="View" onClick={GetDetails} />
             </>
         )
     }
 
     const GetDetails = (e) => {
-        setDataId(e.target.value);
+        setDataId(e.currentTarget.getAttribute('data-id'));
         setVisible(true)
     }
     const onHide = () => {

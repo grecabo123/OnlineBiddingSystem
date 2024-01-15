@@ -1,53 +1,76 @@
-import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-
+import React, { useEffect, useState } from 'react';
+import { Chart } from 'primereact/chart';
+import { Card } from 'primereact/card';
+import axios from 'axios';
+import swal from 'sweetalert';
 
 function PieChartdata() {
 
-    const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-    ];
+    var product_name = [];
+    var product_price = [];
+    var product_color = [];
+    const [BarFetch, setBarData] = useState([]);
+
+    useEffect(() => {
+        BarData();
+    },[]);
 
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    const BarData = () => {
+        axios.get(`/api/MostSells`).then(res => {
+            if(res.data.status === 200) {
+                setBarData(res.data.data);
+            }
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning');
+            }
+        })
+    }
 
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    for (let index = 0; index < BarFetch.length; index++) {
+        product_name.push(BarFetch[index].name);
+        product_price.push(BarFetch[index].total);
+    }
 
-        return (
-            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-                {`${(percent * 100).toFixed(0)}%`}
-            </text>
-        );
+
+
+    const data = {
+        
+        labels: product_name,
+        datasets: [
+            {
+                label: 'Most Sells Product',
+                data: product_price,
+                backgroundColor: ['#42A5F5'],
+                borderWidth: 1
+            }
+        ]
+    };
+    const options = {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    display: false
+                }
+            }
+        }
     };
 
     return (
-        <div className='card' style={{height: "200px", border: "none", backgroundColor: "transparent" }}>
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={500} height={400}>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+        <div className=''>
+            <Chart type="bar" style={{ height: "320px" }} width='100%'   data={data} options={options} />
         </div>
+        
     )
 }
 

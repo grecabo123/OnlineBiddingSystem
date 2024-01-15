@@ -41,7 +41,7 @@ function BarChartdata() {
         labels: product_name,
         datasets: [
             {
-                label: 'Product Price Chart',
+                label: 'Product Current Price',
                 data: product_price,
                 backgroundColor: product_color,
                 borderWidth: 1

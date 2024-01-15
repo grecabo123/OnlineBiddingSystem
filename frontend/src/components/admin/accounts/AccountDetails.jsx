@@ -193,7 +193,7 @@ function AccountDetails({data}) {
                                                 <label htmlFor="" className="form-label">
                                                     Message
                                                 </label>
-                                                <Editor style={{ height: '290px' }} value={text} onTextChange={(e) => setText(e.htmlValue)} />
+                                                <Editor style={{ height: '290px', color: "black !important" }} value={text} onTextChange={(e) => setText(e.htmlValue)} />
                                             </div>
                                             <div className="mt-2">
                                                 <Button className='p-button-sm p-button-info' label='Send Message' />

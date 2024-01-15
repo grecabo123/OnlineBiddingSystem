@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\AcknowledgeMent;
 use App\Models\BiddingInfo;
 use App\Models\BiddingItem;
 use App\Models\BiddingImage;
@@ -25,7 +26,7 @@ class UserController extends Controller
         // dd($request->all());
 
         $validate = Validator::make($request->all(), [
-            "productname"           =>          "required",
+            // "productname"           =>          "required",
             "productdetails"        =>          "required",
             // "auctiondate"           =>          "required",
             "producttype"           =>          "required",
@@ -51,7 +52,7 @@ class UserController extends Controller
 
 
             $biddingitem = new BiddingItem;
-            $biddingitem->name = $request->productname;
+            $biddingitem->name = $product->product_name;
             $biddingitem->uniq_key = md5(time().$request->productname);
             $biddingitem->description = $request->productdetails;
             $biddingitem->start_date_now = $request->startbit;
@@ -208,7 +209,7 @@ class UserController extends Controller
     public function GetProductUpdate($id){
         $product = ProductData::orderBy('product_name','ASC')->get();
 
-        $income = Transaction::selectRaw('month,sum(total_amount) as income')
+        $income = Transaction::selectRaw('month,sum(total) as income')
             ->where('user_seller_fk',$id)
             ->groupBy('month')
                     ->get();
@@ -291,9 +292,9 @@ class UserController extends Controller
     public function ProductTransaction($id){
 
         $data = Transaction::join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_transaction.product_fk')
-            ->selectRaw('tbl_biddingitem.name, count(tbl_transaction.product_fk) as total')
+            ->selectRaw('tbl_biddingitem.name, count(tbl_biddingitem.name) as total')
                 ->where('tbl_transaction.user_seller_fk',$id)
-                    ->groupBy('tbl_transaction.product_fk')
+                    ->groupBy('tbl_biddingitem.name')
                 ->get();
 
                 return response()->json([
@@ -345,13 +346,19 @@ class UserController extends Controller
         $product = BiddingItem::where('uniq_key',$request->product)->first();
 
         if($data && $product) {
-
             $product->price_status = 2;
             $product->update();
-
             $data->schedule = $request->text;
             $data->buyer_pick = 1;   
             $data->update();
+
+            $acknowledge = new AcknowledgeMent;
+            $acknowledge->seller_fk = $request->seller_fk;
+            $acknowledge->buyer_fk = $request->buyer_fk;
+            $acknowledge->product_key = $product->id;
+            $acknowledge->amout_bid = $data->tbl_biddingprice_fk;
+            $acknowledge->remark = $request->text;
+            $acknowledge->save();
 
             return response()->json([
                 "status"            =>          200,
@@ -376,5 +383,27 @@ class UserController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+
+    public function Acknowledge($id) {
+        $data = AcknowledgeMent::join('users','users.id','=','tbl_acknowledge.seller_fk')
+            ->join('tbl_biddingitem','tbl_biddingitem.id','=','tbl_acknowledge.product_key')
+                ->where('buyer_fk',$id)
+                    ->get();
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function ProductFilter($id) {
+
+        $data = ProductData::find($id);
+
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
     }
 }

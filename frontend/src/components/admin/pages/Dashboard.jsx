@@ -148,12 +148,12 @@ function Dashboard() {
                             }}
                         >
                             <div className="row mb-3">
-                                <div className="col-lg-4 col-sm-12 mb-2">
-                                    <Card title="Products">
+                                <div className="col-lg-6 col-sm-12 mb-2">
+                                    {/* <Card title="Most Sells Product"> */}
                                         <PieChartdata />
-                                    </Card>
+                                    {/* </Card> */}
                                 </div>
-                                <div className="col-lg-8 col-sm-12 mb-2">
+                                <div className="col-lg-6 col-sm-12 mb-2">
                                     {/* <Card title="Products"> */}
                                         <BarChartdata />
                                         {/* <PieChartdata /> */}

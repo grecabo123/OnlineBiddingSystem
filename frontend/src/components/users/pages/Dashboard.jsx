@@ -162,12 +162,12 @@ function Dashboard() {
                                         ease: [0, 0.71, 0.2, 1.01]
                                     }}
                                 >
-                                    <Card title="Price Monitoring">
+                                    {/* <Card title="Price Monitoring"> */}
                                         <BarChartdata />
                                         <div className="mt-3 ">
                                             The Price of product will update after 1 week.
                                         </div>
-                                    </Card>
+                                    {/* </Card> */}
                                     <div className="col-lg-12 mt-3 mb-3">
                                         <Card title="Account Review">
                                             <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>

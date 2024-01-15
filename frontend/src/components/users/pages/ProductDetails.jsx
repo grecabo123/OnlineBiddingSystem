@@ -151,11 +151,11 @@ function ProductDetails({ data }) {
         e.preventDefault();
         setbtn(true)
         const data = {
-            id: userid,
-            uniq: uniq,
-            from_user: localStorage.getItem('auth_id'),
+            id: userid, // winner user id
+            uniq: uniq, // product key 
+            from_user: localStorage.getItem('auth_id'), // buyer
             month: moment().format('MMM'),
-            total_amt: Amt,
+            total_amt: Amt,  // amt bid
             starting: StartingPrice,
             quantity: total,
             unitprice: Unitprice,
@@ -196,7 +196,7 @@ function ProductDetails({ data }) {
         )
     }
 
-
+// console.log(BuyerListData);
     const BuyerModule = (e) => {
         // alert(e.currentTarget.getAttribute('data-user'))
 
@@ -232,13 +232,14 @@ function ProductDetails({ data }) {
                         data-email={BuyerListData.email}
                         data-contact={BuyerListData.contact_number}
                         data-bid={BuyerListData.tbl_biddingprice_fk}
-                        data-id={BuyerListData.id}
+                        data-id={BuyerListData.user_fk}
                         />
                 }
                 <Button className='p-button-danger me-2 p-button-sm' label='Remove List' data-user={BuyerListData.id} onClick={RemoveList} data-id={BuyerListData.user_fk} data-comment={BuyerListData.comment} />
             </>
         )
     }
+    // console.log(ProductDetailsInfo);
 
     const TransactionModal = (e) => {
         setVisible(true)
@@ -278,15 +279,18 @@ function ProductDetails({ data }) {
         })
     }
 
+    // console.log();
+
     const Schedule = (e) => {
         e.preventDefault();
         setSave(true)
 
         const data_ = {
             text: schedtext,
-            id: UserId,
-            user_fk: userfk,
+            seller_fk: localStorage.getItem('auth_id'),
+            buyer_fk: userfk,
             product: data,
+            id: UserId,
         };
 
         axios.put(`/api/Schedule`, data_).then(res => {
@@ -320,7 +324,7 @@ function ProductDetails({ data }) {
                                     <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                                         <p>{ProductDetailsInfo.description}</p>
                                     </div>
-                                    <h6>Highest Bid: <Tag className='' severity={'success'} value={BiddingUserWin == null ? '' : BiddingUserWin.name_user} /> - <Tag severity={'success'} value={BiddingUserWin === null ? '0.00' : `₱${BiddingUserWin.tbl_biddingprice_fk.toFixed(2)}`} /></h6>
+                                    <h6 className='text-dark'>Highest Bid: <Tag className='' severity={'success'} value={BiddingUserWin == null ? '' : BiddingUserWin.name_user} /> - <Tag severity={'success'} value={BiddingUserWin === null ? '0.00' : `₱${BiddingUserWin.tbl_biddingprice_fk.toFixed(2)}`} /></h6>
                                     <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                                         <DataTable value={BiddingUser} header="Bid User" paginatorLeft paginator rows={10}>
                                             <Column field='name_user' header="Name of Bidder" ></Column>
@@ -330,7 +334,10 @@ function ProductDetails({ data }) {
                                         </DataTable>
                                     </div>
                                     <div className="mt-3 d-flex justify-content-end">
-                                        <Button onClick={EndBidProduct} className='p-button-sm p-button-info' label='Show List Buyer' icon={PrimeIcons.USERS} />
+                                        {
+
+                                        }
+                                        <Button onClick={EndBidProduct} disabled={ProductDetailsInfo.price_status === 1 ? true : false} className='p-button-sm p-button-info' label='Show List Buyer' icon={PrimeIcons.USERS} />
                                     </div>
 
                                 </>
@@ -376,7 +383,7 @@ function ProductDetails({ data }) {
                         </li>
 
                         <li className="bg-transparent mb-2 list-group-item d-flex justify-content-between align-items-center border-0">
-                            <span className='text-dark'>{ProductDetailsInfo.price_unit === 2 ? "Quantity" : "Per Kilo"} </span>
+                            <span className='text-dark'>{ProductDetailsInfo.price_unit === 2 ? "Quantity" : "Total Kilo"} </span>
                             {
                                 ProductDetailsInfo.price_unit === 2 ? <InputText className='p-inputtext-sm w-25' keyfilter={'pint'} required onChange={handleinput} placeholder='Number of Quantity' />
                                     :
@@ -430,7 +437,7 @@ function ProductDetails({ data }) {
                             </DataTable>
 
                             <div className="mt-3 d-flex justify-content-end">
-                                <Button className='p-button-info p-button-sm' onClick={CloseBidModal} label='End' />
+                                {/* <Button className='p-button-info p-button-sm' onClick={CloseBidModal} label='End' /> */}
                             </div>
                         </>
 
@@ -446,19 +453,19 @@ function ProductDetails({ data }) {
                         <div className="row">
                             <div className="col-lg-12 col-sm-12 mb-3">
                                 <label htmlFor="" className="form-label">
-                                    Comment
+                                    Comment From Buyer
                                 </label>
                                 <InputTextarea className='w-100' value={comment} readOnly rows={5} cols={5} style={{ resize: 'none' }} placeholder='...' />
                             </div>
                             <div className="col-lg-12 col-sm-12 mb-3">
                                 <label htmlFor="" className="form-label">
-                                    Schedule
+                                    Remark
                                 </label>
                                 <InputTextarea className='w-100' name='text' rows={5} cols={5} onChange={(e) => setText(e.target.value)} style={{ resize: 'none' }} placeholder='...' />
                             </div>
                         </div>
                         <div className="mt-3 d-flex justify-content-end">
-                            <Button className='p-button-success p-button-sm' loading={saveshed} label='Set Schedule' icon={PrimeIcons.CALENDAR} />
+                            <Button className='p-button-success p-button-sm' loading={saveshed} label='Submit' icon={PrimeIcons.CALENDAR} />
                         </div>
                     </div>
                 </form>

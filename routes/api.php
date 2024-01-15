@@ -16,6 +16,7 @@ use App\Http\Controllers\API\SearchingController;
 Route::post('Login',[AuthControll::class, 'Login']);
 Route::post('CreateAccount', [AuthControll::class, 'CreateAccount']);
 Route::get('BarangayData', [BarangayController::class, 'ListBarangay']);
+Route::get('Muninicaplity', [BarangayController::class, 'Muninicaplity']);
 // Searching Controller
 Route::get('AllUsers',[SearchingController::class, 'AllUsers']);
 Route::get('Logs/{id}', [ActivityLogs::class, 'Logs']);
@@ -42,6 +43,7 @@ Route::delete('removeprice/{id}',[PriceMonitor::class ,'remove']);
 Route::get('AllProductsTotal/{id}',[PriceMonitor::class ,'AllProductsTotal']);
 
 Route::get('PriceProduct',[PriceMonitor::class, 'PriceData']);
+Route::get('MostSells',[PriceMonitor::class, 'MostSells']);
 
 
 // Admin router
@@ -93,6 +95,9 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function () {
     Route::get('Buyerlist/{id}',[UserController::class, 'Buyerlist']);
     Route::put('Schedule',[UserController::class, 'Schedule']);
     Route::put('RemoveList',[UserController::class, 'RemoveList']);
+    Route::get('Acknowledge/{id}',[UserController::class, 'Acknowledge']);
+    Route::get('ProductFilter/{id}',[UserController::class, 'ProductFilter']);
+    
 
     
 

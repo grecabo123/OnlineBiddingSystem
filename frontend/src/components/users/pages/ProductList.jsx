@@ -92,7 +92,7 @@ function ProductList() {
                         <div className="d-flex justify-content-end mb-3">
                         </div>
                         <DataTable value={Product} paginator rows={10} loading={loading} paginatorLeft>
-                            <Column field='product_name' header="Product Name"></Column>
+                            <Column field='name' header="Product Name"></Column>
                             <Column field='product_price' body={PriceFormat} header="Product Price"></Column>
                             <Column field='price_status' body={product_status_data} header="Status"></Column>
                             <Column field='price_unit' body={PriceUnit} header="Price Unit"></Column>

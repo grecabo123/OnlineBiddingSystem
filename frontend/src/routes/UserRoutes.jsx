@@ -1,4 +1,5 @@
 import Auction from "../components/users/Auction/Auction";
+import Acknow from "../components/users/pages/Acknowledge/Acknow";
 import AddProduct from "../components/users/pages/AddProduct";
 import Dashboard from "../components/users/pages/Dashboard";
 import InviteUser from "../components/users/pages/InviteUser";
@@ -21,6 +22,7 @@ const UserRoutes = [
     {path: "/user/transaction", exact: true, name: "Logs", component: History},
     {path: '/user/update/refid=:id', exact: true, name: "Products", component: UpdateProducts},
     {path: '/user/product/details/refid=:id', exact: true, name: "Products", component: ProductDetails},
+    {path: '/user/ackowledge', exact: true, name: "Products", component: Acknow},
 
 ];
 

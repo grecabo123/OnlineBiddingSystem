@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { Divider } from 'primereact/divider';
 import { Menubar } from 'primereact/menubar';
-import { FcComments, FcOvertime, FcOpenedFolder, FcHome, FcList, FcPositiveDynamic, FcPaid, FcHighPriority, FcFolder, FcSms, FcSearch, FcStatistics } from 'react-icons/fc'
+import { FcComments, FcOvertime, FcOpenedFolder, FcHome, FcList, FcPositiveDynamic, FcPaid, FcHighPriority, FcFolder, FcSms, FcSearch, FcStatistics, FcInfo } from 'react-icons/fc'
 import { FaBars, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaUserAlt, FaUsers } from 'react-icons/fa'
 import { Button } from 'primereact/button';
 import axios from 'axios';
@@ -14,6 +14,7 @@ import { Avatar } from 'primereact/avatar';
 import { BiLogOut } from 'react-icons/bi';
 import { Menu } from 'primereact/menu';
 import { PrimeIcons } from 'primereact/api';
+import logo from '../../../src/assets/icon/bid.png';
  
 function User() {
 
@@ -43,7 +44,7 @@ function User() {
         <>
             <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
                 <div class="sidebar-brand d-none d-md-flex">
-                    <h4>USER</h4>
+                    <h4>COCOBID   <img src={logo} alt="" height={40} width={40} /></h4>
                     {/* <small>dawd</small> */}
                 </div>
                 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
@@ -60,6 +61,8 @@ function User() {
                         <FcFolder className='nav-icon' /> Bid Items</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/notification">
                         <FcSms className='nav-icon' /> Notification <Badge value={6} severity={'danger'} /></Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/ackowledge">
+                        <FcInfo className='nav-icon' /> Acknowledge </Link></li>
 
           
                 

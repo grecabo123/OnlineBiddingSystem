@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\BiddingItem;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\BiddingInfo;
@@ -78,7 +79,7 @@ class PriceMonitor extends Controller
                 ->where('tbl_biddingitem.price_status',0)
                     ->get();
         $totalincome = Transaction::where('user_seller_fk',$id)
-            ->selectRaw('sum(total_amount) as total')
+            ->selectRaw('sum(total) as total')
         ->get();
 
         return response()->json([
@@ -93,7 +94,20 @@ class PriceMonitor extends Controller
     }
 
     public function PriceData(){
-        $data = ProductData::orderBy('product_name','ASC')->get();
+        $data = ProductData::where('status',1)->orderBy('product_name','ASC')->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+        
+    }
+
+    public function MostSells(){
+        $data = BiddingItem::selectRaw('name, count(name) as total')
+        ->groupBy('name')
+        ->orderBy('total','DESC')
+        ->get();
 
         return response()->json([
             "status"            =>          200,

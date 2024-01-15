@@ -41,11 +41,14 @@ function AddProduct() {
     const [startbit, setStart] = useState([]);
     const [endbit, setEnd] = useState([]);
     const [files, setFiles] = useState([]);
+    const [details, setDetails] = useState([]);
+    const [productid, setProductId] = useState();
+    const [productloading, setloadingpro] = useState(true);
 
     useEffect(() => {
-        axios.get(`/api/BarangayData`).then(res => {
+        axios.get(`/api/Muninicaplity`).then(res => {
             if (res.data.status === 200) {
-                setbarangay(res.data.brgy);
+                setbarangay(res.data.municipality);
             }
             setloading(false)
         }).catch((error) => {
@@ -57,7 +60,7 @@ function AddProduct() {
 
     useEffect(() => {
         axios.get(`/api/PriceProduct`).then(res => {
-            if(res.data.status === 200) {
+            if (res.data.status === 200) {
                 setPrice(res.data.data);
             }
         }).catch((error) => {
@@ -65,7 +68,7 @@ function AddProduct() {
                 swal("Warning", error.response.statusText, 'warning');
             }
         })
-    },[]);
+    }, []);
 
     const handleInput = (e) => {
         e.persist();
@@ -74,8 +77,10 @@ function AddProduct() {
 
     const handleFile = (e) => {
         e.persist();
-        setFiles({ file: e.target.files[0]});
+        setFiles({ file: e.target.files[0] });
     }
+
+    // console.log(files);
 
     const AddProductData = (e) => {
         e.preventDefault();
@@ -84,18 +89,19 @@ function AddProduct() {
 
         data.append('productname', ProductData.productname);
         data.append('productdetails', ProductData.productdetails);
-        data.append('producttype',TypeProductData);
-        data.append('barangay',brgypick);
-        data.append('youtube',ProductData.youtube);
-        data.append('startbit',moment(startbit).format('MMM D YYYY '));
-        data.append('endbit',moment(endbit).format("MMM D YYYY"));
-        data.append('time_end',moment(endbit).format('hh:mm a'));
-        data.append('num_days',moment(endbit).diff(startbit,'days'));
-        data.append('address',ProductData.address);
-        data.append('user_logs',localStorage.getItem('auth_id'));
-        data.append('files',files.file);
+        // data.append('producttype', TypeProductData);
+        data.append('producttype', productid);
+        data.append('barangay', brgypick);
+        data.append('youtube', ProductData.youtube);
+        data.append('startbit', moment(startbit).format('MMM D YYYY '));
+        data.append('endbit', moment(endbit).format("MMM D YYYY"));
+        data.append('time_end', moment(endbit).format('hh:mm a'));
+        data.append('num_days', moment(endbit).diff(startbit, 'days'));
+        data.append('address', ProductData.address);
+        data.append('user_logs', localStorage.getItem('auth_id'));
+        data.append('files', files.file);
 
-        
+
         axios.post(`/api/AddProducts`, data).then(res => {
             if (res.data.status === 200) {
                 document.getElementById('reset_form').reset();
@@ -119,20 +125,46 @@ function AddProduct() {
 
     const Brgydata = barangaylist.map((data) => {
         return (
-            { label: data.brgy_name, value: data.id }
+            { label: data.municipality, value: data.id }
         )
     });
 
     const TypeProduct = PriceData.map((data) => {
         return (
-            {label: data.product_name+' - '+'₱'+data.product_price, value: data.id}
+            {
+                label: data.product_name,
+                value: data.id,
+            }
         )
     });
 
     const onHide = () => {
         setVisible(false)
     }
-   
+
+    const getDataValue = (e) => {
+        // console.log(e.target.value);
+        // console.log(e.currentTarget.getAtribute('date_price'));
+        setTypeData(e.value)
+
+        axios.get(`/api/ProductFilter/${e.target.value}`).then(res => {
+            if (res.data.status === 200) {
+                setDetails(res.data.data)
+                setProductId(res.data.data.id);
+            }
+            // console.log(res.data.data.id);
+            setloadingpro(false);
+        }).catch((error) => {
+            if (error.response.status === 500) {
+
+            }
+        })
+
+
+    }
+
+
+
     return (
         <div className='container-fluid p-3'>
             <Toast ref={toast} />
@@ -150,44 +182,56 @@ function AddProduct() {
                                     <div className="mt-3">
                                         <form onSubmit={AddProductData} id='reset_form' encType='multipart/form-data'>
                                             <div className="row">
-                                                <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
+                                                {/* <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
                                                         <span className='text-danger'>*</span>Product Name
                                                     </label>
                                                     <InputText className="w-100 p-inputtext-sm" onChange={handleInput} name='productname' />
                                                     <small className='text-danger'>{ProductData.error.productname}</small>
-                                                </div>
+                                                </div> */}
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Product Category
+                                                        <span className='text-danger'>*</span>Product Name
                                                     </label>
-                                                    <Dropdown filter placeholder='Type of Product' className='w-100 p-inputtext-sm' value={TypeProductData} name='product_type' options={TypeProduct} onChange={(e) => setTypeData(e.target.value)} />
+                                                    <Dropdown filter placeholder='Type of Product' className='w-100 p-inputtext-sm' value={TypeProductData} name='product_type' options={TypeProduct} onChange={getDataValue} />
                                                     <small className='text-danger'>{ProductData.error.producttype}</small>
                                                 </div>
+                                                {
+                                                    productloading ? "" :
+                                                        <>
+                                                            <div className='col-lg-12 col-md-6 col-sm-12 mb-3'>
+                                                                <label htmlFor="" className="form-label">
+                                                                    Current Price
+                                                                </label>
+                                                                <InputText className='w-100' readOnly name='product_price' value={details.product_price} />
+                                                            </div>
+                                                            {/* <InputText  /> */}
+                                                        </>
+                                                }
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Barangay
+                                                        <span className='text-danger'>*</span>Municipality
                                                     </label>
-                                                    <Dropdown filter className='w-100 p-inputtext-sm' placeholder='Choose Barangay' value={brgypick} options={Brgydata} onChange={(e) => setbrgypick(e.target.value)} />
+                                                    <Dropdown filter className='w-100 p-inputtext-sm' placeholder='Choose Municipality' value={brgypick} options={Brgydata} onChange={(e) => setbrgypick(e.target.value)} />
                                                     <small className='text-danger'>{ProductData.error.barangay}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Address
+                                                        <span className='text-danger'>*</span>Address
                                                     </label>
                                                     <InputText className="w-100 p-inputtext-sm" onChange={handleInput} name='address' />
                                                     <small className='text-danger'>{ProductData.error.address}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Product Description
+                                                        <span className='text-danger'>*</span>Product Description
                                                     </label>
                                                     <InputTextarea className='w-100 p-inputtext-sm' onChange={handleInput} name='productdetails' rows={5} />
                                                     <small className='text-danger'>{ProductData.error.productdetails}</small>
                                                 </div>
                                                 <div className="col-lg-12 col-md-6 col-sm-12 mb-3">
                                                     <label htmlFor="Product Name" className="form-label">
-                                                    <span className='text-danger'>*</span>Link Youtube 
+                                                        Link Youtube
                                                     </label>
                                                     <InputText className="w-100 p-inputtext-sm" onChange={handleInput} name='youtube' />
                                                     <small className='text-danger'>{ProductData.error.youtube}</small>
@@ -196,27 +240,27 @@ function AddProduct() {
                                                     <label htmlFor="" className="form-label">
                                                         Upload Images
                                                     </label>
-                                                    <InputText type='file' multiple onChange={handleFile} className="w-100" />
+                                                    <InputText type='file'name='files' onChange={handleFile} className="w-100" />
                                                     {/* <small><span className='text-danger'>*</span>Upload atleast 5 images</small><br /> */}
                                                     <small><span className='text-danger'>{ProductData.error.files}</span></small>
                                                 </div>
                                                 <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
                                                     <label htmlFor="" className="form-label">
-                                                    <span className='text-danger'>*</span>Start Bid
+                                                        <span className='text-danger'>*</span>Start Bid
                                                     </label>
-                                                    <Calendar className='w-100 p-calendar' showTime={true} placeholder='Month Day Year ' onChange={(e) => setStart(e.target.value)} showIcon showButtonBar/>
+                                                    <Calendar className='w-100 p-calendar' showTime={true} placeholder='Month Day Year ' onChange={(e) => setStart(e.target.value)} showIcon showButtonBar />
                                                     <small>
-                                                    <span className='text-danger'>{ProductData.error.startbit}</span>
+                                                        <span className='text-danger'>{ProductData.error.startbit}</span>
 
                                                     </small>
                                                 </div>
                                                 <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
                                                     <label htmlFor="" className="form-label">
-                                                    <span className='text-danger'>*</span>End Bid
+                                                        <span className='text-danger'>*</span>End Bid
                                                     </label>
-                                                    <Calendar className='w-100 p-calendar' showTime={true} onChange={(e) => setEnd(e.target.value)} showIcon showButtonBar/>
+                                                    <Calendar className='w-100 p-calendar' showTime={true} onChange={(e) => setEnd(e.target.value)} showIcon showButtonBar />
                                                     <small>
-                                                    <span className='text-danger'>{ProductData.error.endbit}</span>
+                                                        <span className='text-danger'>{ProductData.error.endbit}</span>
 
                                                     </small>
                                                 </div>

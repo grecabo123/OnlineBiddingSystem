@@ -16,6 +16,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow, Data } from '@react-goog
 import { Badge } from 'primereact/badge';
 import { Divider } from 'primereact/divider';
 import { InputTextarea } from 'primereact/inputtextarea';
+import moment from 'moment';
 
 
 
@@ -60,6 +61,7 @@ function Auction() {
 
     const PlaceBidOffer = (e) => {
         setVisible(true);
+        setbtndis(true)
         setNameProduct(e.currentTarget.getAttribute('data-product-name'));
         setproductkey(e.currentTarget.getAttribute('data-product-uniq'));
         setproductprice(e.currentTarget.getAttribute('data-product-price'));
@@ -132,12 +134,16 @@ function Auction() {
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <div className="d-flex justify-content-evenly p-2">
-                                    <Image className='me-1' preview src={`http://127.0.0.1:8000/${ProductData.image}`} width='200' height='150' />
+                                    <Image className='me-1' preview src={`http://127.0.0.1:8000/${ProductData.image}`} width='200' height='250' />
                                     <div className="m-2 p-3">
+                                    <div className='mb-2'> <span className='fs-6'>Seller Name:</span> {ProductData.name_user}</div>
                                         <div className='mb-2'> <span className='fs-6'>Product Name:</span> {ProductData.product_name}</div>
-                                        <div className='mb-2'> <span className='fs-6'>Product Price:</span> ₱{ProductData.amount_bidding.toFixed(2)}</div>
+                                        <div className='mb-2'> <span className='fs-6'>Current Price:</span> ₱{ProductData.amount_bidding.toFixed(2)}</div>
                                         <div className='mb-2'> <span className='fs-6'>Per Unit:</span> {ProductData.type_of_quantity == 1 ? <Badge severity="info" value="Per Kilo" /> : <Badge severity={'success'} value={"Per Pieces"} />}</div>
-
+                                        <div className='mb-2'> <span className='fs-6'>Start Bid:</span> {ProductData.start_date_now}</div>
+                                        <div className='mb-2'> <span className='fs-6'>End Bid:</span> {ProductData.end_date_now}</div>
+                                        <div className='mb-2'> <span className='fs-6'>Date Posted:</span> {moment(ProductData.created_at).format('MMM DD YYYY')}</div>
+                                        
                                         <div className='mb-2'> <Rating style={{ color: "yellow" }} value={4} readOnly cancel={false} /></div>
                                     </div>
                                 </div>

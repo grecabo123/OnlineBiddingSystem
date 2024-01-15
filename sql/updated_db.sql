@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 13, 2024 at 03:54 AM
+-- Generation Time: Jan 15, 2024 at 02:59 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.5
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -77,7 +77,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2024_01_05_215327_create_tbl_transaction_table', 12),
 (18, '2024_01_05_231217_create_tbl_rating_table', 13),
 (20, '2024_01_10_060008_create_tbl_buyerlist_table', 14),
-(21, '2023_12_16_201612_create_tbl_bidding_history_table', 15);
+(21, '2023_12_16_201612_create_tbl_bidding_history_table', 15),
+(22, '2024_01_14_205159_create_tbl_acknowledge_table', 16);
 
 -- --------------------------------------------------------
 
@@ -113,20 +114,47 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `personal_access_tokens`
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(14, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '96f957c54e441423d0b122a8624183c8e87b82d2a2d8f6af5a7165e0f85c1ab0', '[\"server:admin\"]', '2024-01-07 12:02:49', '2024-01-07 07:42:32', '2024-01-07 12:02:49'),
-(19, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '4f1a8f52f64d41e81fe9de8d7f0ca76649eaa2d8e44a29188be1ab50c9db7527', '[\"server:admin\"]', '2024-01-09 08:03:56', '2024-01-09 07:16:50', '2024-01-09 08:03:56'),
-(22, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', 'b55178cff03af114fe5bdcc310d2bc991bbcb6456014280a01ebd20a36483672', '[\"server:admin\"]', '2024-01-10 09:48:57', '2024-01-09 22:06:08', '2024-01-10 09:48:57'),
-(25, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', 'cc6bd7cf1c9accaf9abec535192a4804e3698783dfb5dd8be9c14cb3dd0cd35a', '[\"server:admin\"]', '2024-01-11 03:53:51', '2024-01-11 01:11:25', '2024-01-11 03:53:51'),
-(26, 'App\\Models\\User', 1, 'artamay1@gmail.com_Admin', '435b9c11eef7ea7735a36d729a2a53f54c6fc92471eff756cae0b914dd13e5f8', '[\"server:admin\"]', '2024-01-12 14:33:41', '2024-01-12 12:30:22', '2024-01-12 14:33:41'),
-(32, 'App\\Models\\User', 2, 'artamay12@gmail.com_User', '52dcf94d2a9844ecbcd81ddc159c3efb506f263aef2d29a5c1cf3c516635866d', '[\"server:user\"]', '2024-01-12 19:53:52', '2024-01-12 19:05:50', '2024-01-12 19:53:52'),
-(33, 'App\\Models\\User', 4, 'byfekufi@mailinator.com_User', '200aa09965af256413b0057f7cddc03bf516b130d45dbadfb414195adf0d61a4', '[\"server:user\"]', '2024-01-12 19:53:43', '2024-01-12 19:53:36', '2024-01-12 19:53:43');
+(46, 'App\\Models\\User', 1, 'admin@gmail.com_Admin', '66cbbd5675814387eef21ecfe9ce13def739241440214515908c5c309c964f07', '[\"server:admin\"]', '2024-01-14 18:40:46', '2024-01-14 17:11:15', '2024-01-14 18:40:46'),
+(47, 'App\\Models\\User', 2, 'dytiw@mailinator.com_User', '7b8db6105c8d8d28fea6671e13d1e2744624a3174dda41a1d8ce11b509c1981c', '[\"server:user\"]', '2024-01-14 18:58:52', '2024-01-14 17:22:42', '2024-01-14 18:58:52'),
+(48, 'App\\Models\\User', 3, 'nyqirihoxa@mailinator.com_User', 'c58c85bf6b14a948d3e368c2ebd8d2b28e1955e46fbd662d5a83595c25c17c2e', '[\"server:user\"]', '2024-01-14 18:58:42', '2024-01-14 17:46:31', '2024-01-14 18:58:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_acknowledge`
+--
+
+DROP TABLE IF EXISTS `tbl_acknowledge`;
+CREATE TABLE IF NOT EXISTS `tbl_acknowledge` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `seller_fk` bigint(20) UNSIGNED NOT NULL,
+  `buyer_fk` bigint(20) UNSIGNED NOT NULL,
+  `product_key` bigint(20) UNSIGNED NOT NULL,
+  `amout_bid` double(30,2) NOT NULL,
+  `remark` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tbl_acknowledge_seller_fk_foreign` (`seller_fk`),
+  KEY `tbl_acknowledge_buyer_fk_foreign` (`buyer_fk`),
+  KEY `product_key` (`product_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_acknowledge`
+--
+
+INSERT INTO `tbl_acknowledge` (`id`, `seller_fk`, `buyer_fk`, `product_key`, `amout_bid`, `remark`, `created_at`, `updated_at`) VALUES
+(1, 3, 2, 2, 96.70, 'Ok', '2024-01-14 18:44:21', '2024-01-14 18:44:21'),
+(2, 3, 2, 1, 60.00, 'Ok', '2024-01-14 18:45:03', '2024-01-14 18:45:03'),
+(3, 3, 2, 3, 89.32, 'Ok', '2024-01-14 18:47:01', '2024-01-14 18:47:01');
 
 -- --------------------------------------------------------
 
@@ -253,14 +281,16 @@ CREATE TABLE IF NOT EXISTS `tbl_biddingamount` (
   PRIMARY KEY (`id`),
   KEY `tbl_biddingamount_bidding_amt_fk_foreign` (`bidding_amt_fk`),
   KEY `tbl_biddingamount_bidding_item_user_fk_foreign` (`bidding_item_user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_biddingamount`
 --
 
 INSERT INTO `tbl_biddingamount` (`id`, `bidding_amt_fk`, `amount_bidding`, `bidding_item_user_fk`, `created_at`, `updated_at`) VALUES
-(3, 1, 103.00, 2, NULL, '2024-01-12 19:05:14');
+(1, 1, 60.00, 3, '2024-01-14 18:41:28', '2024-01-14 18:43:27'),
+(2, 2, 96.70, 3, '2024-01-14 18:42:34', '2024-01-14 18:43:48'),
+(3, 3, 89.32, 3, '2024-01-14 18:46:24', '2024-01-14 18:46:41');
 
 -- --------------------------------------------------------
 
@@ -281,18 +311,20 @@ CREATE TABLE IF NOT EXISTS `tbl_biddinginfo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `bidding_brgy_fk` (`bidding_brgy_fk`),
   KEY `user_info_fk` (`user_info_fk`),
   KEY `bidding_item_fk` (`bidding_item_fk`),
-  KEY `tbl_productanme_tbl_fk` (`tbl_productanme_tbl_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `tbl_productanme_tbl_fk` (`tbl_productanme_tbl_fk`),
+  KEY `tbl_biddinginfo_ibfk_1` (`bidding_brgy_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_biddinginfo`
 --
 
 INSERT INTO `tbl_biddinginfo` (`id`, `product_name`, `product_price`, `address`, `bidding_brgy_fk`, `bidding_item_fk`, `user_info_fk`, `tbl_productanme_tbl_fk`, `created_at`, `updated_at`) VALUES
-(1, 'Whole Nut', 90.59, 'Butuan City', 10, 1, 2, 1, NULL, NULL);
+(1, NULL, 59.53, 'P-27 Baan Km3', 13, 1, 3, 2, '2024-01-14 18:41:28', '2024-01-14 18:41:28'),
+(2, NULL, 54.00, 'P-2 Libertad', 13, 2, 3, 1, '2024-01-14 18:42:34', '2024-01-14 18:42:34'),
+(3, NULL, 59.53, 'Surigao', 24, 3, 3, 2, '2024-01-14 18:46:24', '2024-01-14 18:46:24');
 
 -- --------------------------------------------------------
 
@@ -314,14 +346,16 @@ CREATE TABLE IF NOT EXISTS `tbl_biddingitem` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_biddingitem`
 --
 
 INSERT INTO `tbl_biddingitem` (`id`, `uniq_key`, `name`, `price_status`, `description`, `start_date_now`, `end_date_now`, `milliseconds_data`, `price_unit`, `created_at`, `updated_at`) VALUES
-(1, '8e126a4e2ce882beec6c6fc31ac5afd4', 'Copras', 1, 'Copras is copras', 'Jan 9 2024', 'Jan 11 2024', '11:20 pm', 1, '2024-01-09 07:22:15', '2024-01-12 19:51:50');
+(1, 'b4dd26ee8fb66e72e3916b8a94ae9707', 'Copras', 1, 'dawdwadwa', 'Jan 15 2024', 'Jan 19 2024', '10:40 am', 1, '2024-01-14 18:41:28', '2024-01-14 18:45:31'),
+(2, '448620cfc8671255c9e5ea3763d12b34', 'Whole Nut', 1, 'gyhuijokp,ldwadwadawdawdawd', 'Jan 15 2024', 'Jan 18 2024', '10:40 am', 2, '2024-01-14 18:42:34', '2024-01-14 18:44:39'),
+(3, 'eee3784d4380a23f9602acea37c47496', 'Copras', 1, 'crtvbyunoim,l.[;daw', 'Jan 15 2024', 'Jan 17 2024', '10:45 am', 1, '2024-01-14 18:46:24', '2024-01-14 18:47:23');
 
 -- --------------------------------------------------------
 
@@ -344,16 +378,19 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_history` (
   PRIMARY KEY (`id`),
   KEY `tbl_bidding_history_tbl_biddingitem_fk_foreign` (`tbl_biddingitem_fk`),
   KEY `tbl_bidding_history_user_fk_foreign` (`user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_bidding_history`
 --
 
 INSERT INTO `tbl_bidding_history` (`id`, `tbl_biddingitem_fk`, `tbl_biddingprice_fk`, `schedule`, `comment`, `status`, `user_fk`, `buyer_pick`, `created_at`, `updated_at`) VALUES
-(1, 1, 90.59, NULL, NULL, 0, 2, 0, NULL, NULL),
-(3, 1, 102.00, 'dawed', 'Gusto ko ani', 0, 4, 0, '2024-01-12 16:14:08', '2024-01-12 19:14:45'),
-(4, 1, 103.00, 'daw', NULL, 1, 3, 1, '2024-01-12 19:05:14', '2024-01-12 19:19:36');
+(1, 1, 59.53, NULL, NULL, 0, 3, 0, '2024-01-14 18:41:28', '2024-01-14 18:41:28'),
+(2, 2, 54.00, NULL, NULL, 0, 3, 0, '2024-01-14 18:42:34', '2024-01-14 18:42:34'),
+(3, 1, 60.00, 'Ok', 'Please Noticed me', 1, 2, 1, '2024-01-14 18:43:27', '2024-01-14 18:45:03'),
+(4, 2, 96.70, 'Ok', 'Majority Price', 1, 2, 1, '2024-01-14 18:43:48', '2024-01-14 18:44:21'),
+(5, 3, 59.53, NULL, NULL, 0, 3, 0, '2024-01-14 18:46:24', '2024-01-14 18:46:24'),
+(6, 3, 89.32, 'Ok', NULL, 1, 2, 1, '2024-01-14 18:46:41', '2024-01-14 18:47:01');
 
 -- --------------------------------------------------------
 
@@ -370,14 +407,16 @@ CREATE TABLE IF NOT EXISTS `tbl_bidding_image` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_bidding_image_item_fk_foreign` (`item_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_bidding_image`
 --
 
 INSERT INTO `tbl_bidding_image` (`id`, `image`, `item_fk`, `created_at`, `updated_at`) VALUES
-(1, 'Uploads/Files/fc92e094d5bcb91ca843fa865410bb5e.png', 1, '2024-01-09 07:22:15', '2024-01-09 07:22:15');
+(1, 'Uploads/Files/b4dd26ee8fb66e72e3916b8a94ae9707.jpg', 1, '2024-01-14 18:41:28', '2024-01-14 18:41:28'),
+(2, 'Uploads/Files/448620cfc8671255c9e5ea3763d12b34.png', 2, '2024-01-14 18:42:34', '2024-01-14 18:42:34'),
+(3, 'Uploads/Files/eee3784d4380a23f9602acea37c47496.png', 3, '2024-01-14 18:46:24', '2024-01-14 18:46:24');
 
 -- --------------------------------------------------------
 
@@ -414,30 +453,15 @@ CREATE TABLE IF NOT EXISTS `tbl_contact` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_contact_contact_user_fk_foreign` (`contact_user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_contact`
 --
 
 INSERT INTO `tbl_contact` (`id`, `contact_number`, `home_address`, `zipcode`, `contact_user_fk`, `created_at`, `updated_at`) VALUES
-(1, '09213123123', 'Baan Km3', '8600', 1, '2023-08-19 21:35:47', '2023-08-19 21:35:47'),
-(2, '09213123123', 'Baan Km3', '8600', 2, '2023-08-20 18:58:19', '2023-08-20 18:58:19'),
-(3, 'Vel quis sed quasi v', 'Ut excepteur laboris', '39112', 3, '2023-08-22 09:04:19', '2023-08-22 09:04:19'),
-(4, '09213123123', 'Et in dolore impedit', '33730', 4, '2023-08-22 09:06:39', '2023-08-22 09:06:39'),
-(5, 'Id quibusda', 'Consequat Duis dolo', '90926', 5, '2023-08-22 09:07:45', '2023-08-22 09:07:45'),
-(6, 'Dolores non', 'Facere qui earum nis', '44545', 6, '2023-08-22 09:09:28', '2023-08-22 09:09:28'),
-(7, 'Et incidunt', 'Culpa soluta repelle', '23913', 7, '2023-08-22 09:11:29', '2023-08-22 09:11:29'),
-(8, 'Dolore volu', 'Velit culpa ex labor', '89922', 8, '2023-08-22 09:11:59', '2023-08-22 09:11:59'),
-(9, 'In explicab', 'Molestiae natus dolo', '41106', 9, '2023-08-22 09:12:20', '2023-08-22 09:12:20'),
-(10, 'Eum eos rem', 'Illo elit sunt volu', '79179', 10, '2023-08-22 19:00:18', '2023-08-22 19:00:18'),
-(11, '12312321543', 'Maxime vel dolores s', '68515', 11, '2023-08-22 19:01:29', '2023-08-22 19:01:29'),
-(12, '09213254354', 'Perspiciatis quis v', '71548', 12, '2023-08-22 19:02:15', '2023-08-22 19:02:15'),
-(13, 'Necessitati', 'Ab ullamco suscipit', '43567', 13, '2023-08-22 19:06:13', '2023-08-22 19:06:13'),
-(14, 'Dolor ad cu', 'Nemo velit soluta re', '30635', 14, '2023-08-22 19:13:24', '2023-08-22 19:13:24'),
-(15, '09232276437', 'Sunt ullam quisquam', '31054', 15, '2023-08-22 19:18:35', '2023-08-22 19:18:35'),
-(16, 'Ullamco sim', 'Et cupiditate vel il', '54916', 16, '2023-08-24 19:31:41', '2023-08-24 19:31:41'),
-(17, '09091234512', 'Quis vel consectetur', '6000', 17, '2023-12-17 03:36:31', '2023-12-17 03:36:31');
+(1, '09837217312', 'Do dolorem laborum p', '12935', 2, '2024-01-14 17:13:26', '2024-01-14 17:13:26'),
+(2, '09456789312', 'Ut proident rerum e', '71453', 3, '2024-01-14 17:21:47', '2024-01-14 17:21:47');
 
 -- --------------------------------------------------------
 
@@ -454,14 +478,21 @@ CREATE TABLE IF NOT EXISTS `tbl_logs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_logs_user_logs_fk_foreign` (`user_logs_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_logs`
 --
 
 INSERT INTO `tbl_logs` (`id`, `activity`, `user_logs_fk`, `created_at`, `updated_at`) VALUES
-(1, 'Creating Bidding Item Copras', 2, '2024-01-09 07:22:15', '2024-01-09 07:22:15');
+(1, 'dytiw@mailinator.com Sent Message-Approved', 1, '2024-01-14 17:20:11', '2024-01-14 17:20:11'),
+(2, 'nyqirihoxa@mailinator.com Sent Message-Approved', 1, '2024-01-14 17:22:11', '2024-01-14 17:22:11'),
+(3, 'Creating Bidding Item ', 2, '2024-01-14 17:38:38', '2024-01-14 17:38:38'),
+(4, 'Creating Bidding Item ', 2, '2024-01-14 17:43:19', '2024-01-14 17:43:19'),
+(5, 'Creating Bidding Item ', 2, '2024-01-14 18:03:37', '2024-01-14 18:03:37'),
+(6, 'Creating Bidding Item ', 3, '2024-01-14 18:41:28', '2024-01-14 18:41:28'),
+(7, 'Creating Bidding Item ', 3, '2024-01-14 18:42:34', '2024-01-14 18:42:34'),
+(8, 'Creating Bidding Item ', 3, '2024-01-14 18:46:24', '2024-01-14 18:46:24');
 
 -- --------------------------------------------------------
 
@@ -479,7 +510,66 @@ CREATE TABLE IF NOT EXISTS `tbl_message` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_message_user_message_fk_foreign` (`user_message_fk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_message`
+--
+
+INSERT INTO `tbl_message` (`id`, `subject`, `message`, `user_message_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Approved', '<p>awydvyadgwaduawedrfgthynjm</p>', 2, '2024-01-14 17:20:11', '2024-01-14 17:20:11'),
+(2, 'Approved', '<p>xcrvtbynm,l</p>', 3, '2024-01-14 17:22:11', '2024-01-14 17:22:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_municipality`
+--
+
+DROP TABLE IF EXISTS `tbl_municipality`;
+CREATE TABLE IF NOT EXISTS `tbl_municipality` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `municipality` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_municipality`
+--
+
+INSERT INTO `tbl_municipality` (`id`, `municipality`) VALUES
+(1, 'Butuan City'),
+(2, 'Tandag'),
+(3, 'San Francisco - Agusan del sur'),
+(4, 'Alegria'),
+(5, 'Gigaquit'),
+(6, 'Tagana-an'),
+(7, 'Trento'),
+(8, 'Madrid'),
+(9, 'Nasipit'),
+(10, 'Carrascal'),
+(11, 'Magallanes'),
+(12, 'Surigao City'),
+(13, 'Bayugan City'),
+(14, 'Tubod'),
+(15, 'Bacuag'),
+(16, 'Malimono'),
+(17, 'Bunawan'),
+(18, 'Las Nieves'),
+(19, 'Prosperidad'),
+(20, 'San Francisco - Surigao del norte'),
+(21, 'Cagwait'),
+(22, 'La Paz'),
+(23, 'Cabadbaran City'),
+(24, 'Bislig'),
+(25, 'Mainit'),
+(26, 'Del Carmen'),
+(27, 'Pilar'),
+(28, 'Caraga'),
+(29, 'Santa Josefa'),
+(30, 'Kitcharao'),
+(31, 'Jabonga'),
+(32, 'Sibagat');
 
 -- --------------------------------------------------------
 
@@ -517,14 +607,15 @@ CREATE TABLE IF NOT EXISTS `tbl_productanme_tbl` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_productanme_tbl_tbl_price_fk_foreign` (`product_price`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_productanme_tbl`
 --
 
 INSERT INTO `tbl_productanme_tbl` (`id`, `product_name`, `product_price`, `type_of_quantity`, `product_color_code`, `created_at`, `status`, `updated_at`) VALUES
-(1, 'Whole Nut', 90.59, 2, 'bf41bf', '2024-01-09 07:18:12', 1, '2024-01-10 09:03:01');
+(1, 'Whole Nut', 54.00, 2, '9c4b9c', '2024-01-14 18:40:18', 1, '2024-01-14 18:40:18'),
+(2, 'Copras', 59.53, 1, '5527a1', '2024-01-14 18:40:45', 1, '2024-01-14 18:40:45');
 
 -- --------------------------------------------------------
 
@@ -585,14 +676,16 @@ CREATE TABLE IF NOT EXISTS `tbl_transaction` (
   KEY `tbl_transaction_user_seller_fk_foreign` (`user_seller_fk`),
   KEY `tbl_transaction_user_buyer_fk_foreign` (`user_buyer_fk`),
   KEY `tbl_transaction_product_fk_foreign` (`product_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_transaction`
 --
 
 INSERT INTO `tbl_transaction` (`id`, `user_seller_fk`, `user_buyer_fk`, `product_fk`, `starting_price`, `total_amount`, `month`, `total`, `price_unit`, `weight`, `created_at`, `updated_at`) VALUES
-(1, 2, 4, 1, 4529.50, 102.00, 'Jan', 5150.00, 1, 50.00, '2024-01-12 19:51:50', '2024-01-12 19:51:50');
+(1, 3, 2, 2, 39528.00, 96.70, 'Jan', 70784.40, 2, 732.00, '2024-01-14 18:44:39', '2024-01-14 18:44:39'),
+(2, 3, 2, 1, 94771.76, 60.00, 'Jan', 95520.00, 1, 1592.00, '2024-01-14 18:45:31', '2024-01-14 18:45:31'),
+(3, 3, 2, 3, 50600.50, 89.32, 'Jan', 75922.00, 1, 850.00, '2024-01-14 18:47:23', '2024-01-14 18:47:23');
 
 -- --------------------------------------------------------
 
@@ -606,10 +699,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name_user` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_brgy_fk` bigint(20) UNSIGNED NOT NULL,
+  `user_brgy_fk` bigint(20) UNSIGNED DEFAULT NULL,
   `role` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL,
-  `files` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `files` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthdate` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -619,34 +712,28 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `user_brgy_fk` (`user_brgy_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `name_user`, `email`, `user_brgy_fk`, `role`, `status`, `files`, `birthdate`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'arta', 'Mel Exclamador', 'artamay1@gmail.com', 9, 1, 1, 'Uploads/Files/Recabo.png', 'August 20 2023', NULL, '$2y$10$qsFKTQZmw6Fx.7teuFIwMuxdqPYb7gbdOHVJcNNdPNRl7vo1LLHAq', NULL, '2023-08-20 05:35:47', '2023-08-20 05:35:47'),
-(2, 'arta', 'John Pandaa ArtaMay', 'artamay12@gmail.com', 46, 2, 1, 'Uploads/Files/ArtaMay.png', 'August 24 2023', NULL, '$2y$10$qSITeM88v4gnl4ZZF2KD7eiYtT133xRN1O6L0oIKrAjDiNA1EjRJO', NULL, '2023-08-21 02:58:19', '2023-08-22 04:49:50'),
-(3, 'byfyvyq', 'Adrienne Richardson Stephen Guzman Imelda Conner', 'jepexuv@mailinator.com', 29, 2, 1, 'Uploads/Files/Imelda Conner.jpg', 'August 09 2023', NULL, '$2y$10$7DtdfMLCR2HjloK16Uk9/eDKmGQV5zLqLTbVD8P4ppQqSTEv.xHUe', NULL, '2023-08-22 17:04:19', '2023-08-23 03:21:27'),
-(4, 'jamefakevi', 'Sherilyn Briones', 'byfekufi@mailinator.com', 2, 2, 1, 'Uploads/Files/Demetria Rose.png', 'August 31 2023', NULL, '$2y$10$F0AvO86B7L2ii.BWPSmzPOxkrlm.xOMBEt7m.zYwHJT.yuhc028Sa', NULL, '2023-08-22 17:06:39', '2023-08-26 07:01:02'),
-(5, 'ryhedar', 'Tyrone Meadows Quin Freeman Natalie Barber', 'bihij@mailinator.com', 1, 2, 1, 'Uploads/Files/Natalie Barber.png', 'August 07 2023', NULL, '$2y$10$.y1LQgq.d7luQWjzAFENU.0RAqvKq9hxuYBzZMaVI.VX.HLnQK9ai', NULL, '2023-08-22 17:07:45', '2023-09-25 06:06:15'),
-(6, 'jovukis', 'Barrett Bradshaw Kitra Brady Madison Oconnor', 'geti@mailinator.com', 3, 2, 1, 'Uploads/Files/Madison Oconnor.png', 'August 03 2023', NULL, '$2y$10$gifDKibgRydmTUl/WH1Njuy0BvWZp3kegj0gMnpBCJvJrByfFa9Ru', NULL, '2023-08-22 17:09:28', '2023-12-11 12:34:18'),
-(7, 'qolykane', 'Alika Hardy August Solomon Kelsie Rodgers', 'nucegolegi@mailinator.com', 3, 2, 1, 'Uploads/Files/Kelsie Rodgers.png', 'August 01 2023', NULL, '$2y$10$c2YbL8F/lACouuv65S9CCebWnC6fM0BtnDnIniu1F34LFhvhNDyU.', NULL, '2023-08-22 17:11:29', '2023-12-17 22:27:26'),
-(8, 'zuvewoto', 'Ray Dominguez Michelle Rocha Keefe Ray', 'fybokubyja@mailinator.com', 58, 2, 1, 'Uploads/Files/Keefe Ray.png', 'August 05 2023', NULL, '$2y$10$09FxFKlTdwvnQWLKSgSHvOgNZTI8ldL4suysBIDVYn7FHg9DfjD6a', NULL, '2023-08-22 17:11:59', '2023-12-17 22:28:36'),
-(9, 'xugob', 'Abra Carpenter Ethan Wong Oleg Sykes', 'pyfequj@mailinator.com', 3, 2, 0, 'Uploads/Files/Oleg Sykes.png', 'August 20 2023', NULL, '$2y$10$qOQi6hWkW0XdJ.jdvpw28.WQSqVm/j21M4fM9IuuJX0rkrxoe852e', NULL, '2023-08-22 17:12:20', '2023-08-22 17:12:20'),
-(10, 'zobuvaf', 'Rafael Howard Tiger Nielsen Xandra Gill', 'lysep@mailinator.com', 46, 2, 0, 'Uploads/Files/Xandra Gill.png', 'August 24 2023', NULL, '$2y$10$U/RZqZtKq17c/kwRegZJ8.EPPqi.t.ctoUr93rqAqWVpFe.0UTq.2', NULL, '2023-08-23 03:00:18', '2023-08-23 03:00:18'),
-(11, 'wirudytahu', 'Jenna Banks Suki Wilkinson Wallace Freeman', 'tyfe@mailinator.com', 2, 2, 0, 'Uploads/Files/Wallace Freeman.png', 'November 18 2005', NULL, '$2y$10$O5Zp3cyYXfiTkv7IzBscseag6goJwItAj.xbbczzOjLtqVaHeKu6m', NULL, '2023-08-23 03:01:29', '2023-08-23 03:01:29'),
-(12, 'tawuk', 'Lacy Roberts Alexa Oneal Jael Nelson', 'cateju@mailinator.com', 43, 2, 0, 'Uploads/Files/Jael Nelson.png', 'November 30 2005', NULL, '$2y$10$BMDKijeH0D9arqqqLs.30OoT/3ou56hrVOT3cKKgOf/p7sUUy0C5C', NULL, '2023-08-23 03:02:15', '2023-08-23 03:02:15'),
-(13, 'xuwymi', 'Karyn Rogers Virginia Hicks Seth Petersen', 'jymy@mailinator.com', 1, 2, 0, 'Uploads/Files/Seth Petersen.png', 'August 24 2023', NULL, '$2y$10$dJrGIbG.wPcF2TzxCCliDOPx3en8Lq7XdojZwSCwGixWiZBPIbm2S', NULL, '2023-08-23 03:06:13', '2023-08-23 03:06:13'),
-(14, 'toronalylo', 'Brent Erickson Jerry Blackburn Keelie Cobb', 'tokuva@mailinator.com', 2, 2, 0, 'Uploads/Files/Keelie Cobb.png', 'August 16 2023', NULL, '$2y$10$eRg99Et2U9wIfAEqlbqTROL/fi.cOzyWVB0w0N.u/OrUGoJRY7bNC', NULL, '2023-08-23 03:13:24', '2023-08-23 03:13:24'),
-(15, 'fuhadeg', 'Melinda Mendoza Vladimir Carver Taylor Mcneil', 'qolasepuci@mailinator.com', 2, 2, 1, 'Uploads/Files/Taylor Mcneil.png', 'August 13 2023', NULL, '$2y$10$v6n3e0JggRUxZGjNHpV2sOZcutFOq5XON721F.6gS9rKOmsckhDzS', NULL, '2023-08-23 03:18:35', '2023-08-23 03:18:35'),
-(16, 'neceqy', 'Yuri Navarro Genevieve Hopper Ashton Scott', 'zigo@mailinator.com', 3, 2, 1, 'Uploads/Files/Ashton Scott.png', 'August 30 2023', NULL, '$2y$10$v6n3e0JggRUxZGjNHpV2sOZcutFOq5XON721F.6gS9rKOmsckhDzS', NULL, '2023-08-25 03:31:41', '2023-08-25 03:31:41'),
-(17, 'muhely', 'Shay Travis Ruth Sampson Dante Suarez', 'xana@mailinator.com', 24, 2, 1, 'Uploads/Files/Dante Suarez.png', 'December 19 2023', NULL, '$2y$10$fLlCLrbkPDkEinHdPF3mpO5Lp4mQvEOowFk9qRw2ztEoYffPH/wqK', NULL, '2023-12-17 11:36:31', '2023-12-17 11:36:31');
+(1, 'Admin', 'Admin', 'admin@gmail.com', NULL, 1, 1, NULL, 'Nov 18 1996', NULL, '$2y$10$qsFKTQZmw6Fx.7teuFIwMuxdqPYb7gbdOHVJcNNdPNRl7vo1LLHAq', NULL, NULL, NULL),
+(2, 'wanoki', 'Wallace Berry Hayfa Booker Jorden Cervantes', 'dytiw@mailinator.com', 21, 2, 1, 'Uploads/Files/Jorden Cervantes.png', 'January 18 2024', NULL, '$2y$10$oVGTbWofOLQfflyEThVgFuvwdrz8iRAVT9IXW60lbA/IxwAVDARc.', NULL, '2024-01-14 17:13:26', '2024-01-14 17:20:11'),
+(3, 'rorehiwi', 'Joel Sparks Aphrodite Doyle Elaine Dominguez', 'nyqirihoxa@mailinator.com', 21, 2, 1, 'Uploads/Files/Elaine Dominguez.png', 'January 19 2024', NULL, '$2y$10$uX4Zgg2TXAM/7nu9ko79TuPL4zKJ5JbCVws2tNkVSPg6i0kkFq0eK', NULL, '2024-01-14 17:21:47', '2024-01-14 17:22:11');
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_acknowledge`
+--
+ALTER TABLE `tbl_acknowledge`
+  ADD CONSTRAINT `tbl_acknowledge_buyer_fk_foreign` FOREIGN KEY (`buyer_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_acknowledge_ibfk_1` FOREIGN KEY (`product_key`) REFERENCES `tbl_biddingitem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_acknowledge_seller_fk_foreign` FOREIGN KEY (`seller_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_biddingamount`
@@ -659,7 +746,7 @@ ALTER TABLE `tbl_biddingamount`
 -- Constraints for table `tbl_biddinginfo`
 --
 ALTER TABLE `tbl_biddinginfo`
-  ADD CONSTRAINT `tbl_biddinginfo_ibfk_1` FOREIGN KEY (`bidding_brgy_fk`) REFERENCES `tbl_barangay_coordinates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_biddinginfo_ibfk_1` FOREIGN KEY (`bidding_brgy_fk`) REFERENCES `tbl_municipality` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_biddinginfo_ibfk_2` FOREIGN KEY (`user_info_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_biddinginfo_ibfk_3` FOREIGN KEY (`bidding_item_fk`) REFERENCES `tbl_biddingitem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_biddinginfo_ibfk_4` FOREIGN KEY (`tbl_productanme_tbl_fk`) REFERENCES `tbl_productanme_tbl` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
