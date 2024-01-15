@@ -39,6 +39,9 @@ function Auction() {
         lng: "",
         brgy: "",
         color: "",
+        name: "",
+        end: "",
+        start: "",
     });
     const [btndis, setbtndis] = useState(true);
 
@@ -72,6 +75,9 @@ function Auction() {
             lat: e.currentTarget.getAttribute('data-lat'),
             lng: e.currentTarget.getAttribute('data-lng'),
             brgy: e.currentTarget.getAttribute('data-brgy'),
+            name: e.currentTarget.getAttribute('data-name'),
+            start: e.currentTarget.getAttribute('data-start'),
+            end: e.currentTarget.getAttribute('data-end'),
             color: e.currentTarget.getAttribute('data-color').replace(/:/g, ''),
         })
     }
@@ -136,14 +142,14 @@ function Auction() {
                                 <div className="d-flex justify-content-evenly p-2">
                                     <Image className='me-1' preview src={`http://127.0.0.1:8000/${ProductData.image}`} width='200' height='250' />
                                     <div className="m-2 p-3">
-                                    <div className='mb-2'> <span className='fs-6'>Seller Name:</span> {ProductData.name_user}</div>
+                                        <div className='mb-2'> <span className='fs-6'>Seller Name:</span> {ProductData.name_user}</div>
                                         <div className='mb-2'> <span className='fs-6'>Product Name:</span> {ProductData.product_name}</div>
                                         <div className='mb-2'> <span className='fs-6'>Current Price:</span> ₱{ProductData.amount_bidding.toFixed(2)}</div>
                                         <div className='mb-2'> <span className='fs-6'>Per Unit:</span> {ProductData.type_of_quantity == 1 ? <Badge severity="info" value="Per Kilo" /> : <Badge severity={'success'} value={"Per Pieces"} />}</div>
                                         <div className='mb-2'> <span className='fs-6'>Start Bid:</span> {ProductData.start_date_now}</div>
                                         <div className='mb-2'> <span className='fs-6'>End Bid:</span> {ProductData.end_date_now}</div>
                                         <div className='mb-2'> <span className='fs-6'>Date Posted:</span> {moment(ProductData.created_at).format('MMM DD YYYY')}</div>
-                                        
+
                                         <div className='mb-2'> <Rating style={{ color: "yellow" }} value={4} readOnly cancel={false} /></div>
                                     </div>
                                 </div>
@@ -152,21 +158,24 @@ function Auction() {
                                 {
                                     ProductData.bidding_item_user_fk == localStorage.getItem('auth_id') ?
                                         <Tag className='' severity={'warning'} value="Your Product" /> :
-                                       ProductData.price_status === 2 ? <Badge severity={'danger'} className='p-badge' value={'Pending'} /> :  <Button raised={true}
-                                       data-details={ProductData.description}
-                                       data-lat={ProductData.lat}
-                                       data-lng={ProductData.lng}
-                                       data-product-price={ProductData.product_price}
-                                       data-brgy={ProductData.brgy_name}
-                                       data-color={ProductData.marker_color}
-                                       data-product-uniq={ProductData.uniq_key}
-                                       data-product-name={ProductData.product_name}
-                                       data-unit={ProductData.price_unit}
-                                       onClick={PlaceBidOffer}
-                                       data-bid={ProductData.amount_bidding}
-                                       className='p-button-sm p-button-raised p-button-danger'
-                                    //    text={true}
-                                       label='Place Bid' />
+                                        ProductData.price_status === 2 ? <Badge severity={'danger'} className='p-badge' value={'Pending'} /> : <Button raised={true}
+                                            data-details={ProductData.description}
+                                            data-lat={ProductData.lat}
+                                            data-lng={ProductData.lng}
+                                            data-product-price={ProductData.product_price}
+                                            data-brgy={ProductData.brgy_name}
+                                            data-color={ProductData.marker_color}
+                                            data-product-uniq={ProductData.uniq_key}
+                                            data-product-name={ProductData.product_name}
+                                            data-unit={ProductData.price_unit}
+                                            data-name={ProductData.name_user}
+                                            data-end={ProductData.end_date_now}
+                                            data-start={ProductData.start_date_now}
+                                            onClick={PlaceBidOffer}
+                                            data-bid={ProductData.amount_bidding}
+                                            className='p-button-sm p-button-raised p-button-danger'
+                                            //    text={true}
+                                            label='Place Bid' />
                                 }
                             </div>
                         </div>
@@ -189,24 +198,37 @@ function Auction() {
                 </Divider>
 
                 <div className="container mb-3">
-                <ul className="list-group">
-                    <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
-                        Product Name
-                        <span>{NameProduct}</span>
-                    </li>
-                    <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
-                        Product Price
-                        <span>₱{productprice}</span>
-                    </li>
-                    <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
-                        Bid Price
-                        <span>₱{bidamt}</span>
-                    </li>
-                    <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
-                       Price Unit
-                        <span>{productunit === 1 ? "Per Kilo" : "Per Pieces"}</span>
-                    </li>
-                </ul>
+                    <ul className="list-group">
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Name Seller
+                            <span>{productlocation.name}</span>
+                        </li>
+                        
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Product Name
+                            <span>{NameProduct}</span>
+                        </li>
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Product Price
+                            <span>₱{productprice}</span>
+                        </li>
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Bid Price
+                            <span>₱{bidamt}</span>
+                        </li>
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Price Unit
+                            <span>{productunit === 1 ? "Per Kilo" : "Per Pieces"}</span>
+                        </li>
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            Start Bid
+                            <span>{productlocation.start}</span>
+                        </li>
+                        <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+                            End Bid
+                            <span>{productlocation.end}</span>
+                        </li>
+                    </ul>
                 </div>
 
                 <form onSubmit={AuctionProduct}>
